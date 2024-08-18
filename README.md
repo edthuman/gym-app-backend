@@ -39,3 +39,11 @@ export { uri }
 ## Working on the API
 
 You're now set up to begin working on the API!
+
+To create a version of the server that updates with live changes made, run the command:
+
+```
+npm run app
+```
+
+This sets up a live development server using nodemon that allows you to make requests to your API via your browser or a platform like Insomnia (https://insomnia.rest/).
