@@ -1,9 +1,12 @@
 import express, { Express, Request, Response } from 'express'
+import router from './router'
 
 const app: Express = express();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world!');
-});
+app.use(router)
+
+app.all("*", (req: Request, res: Response) => {
+  res.status(404).send("Not found")
+})
 
 export default app
