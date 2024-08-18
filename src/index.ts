@@ -5,4 +5,8 @@ const app: Express = express();
 
 app.use(router)
 
+app.all("*", (req: Request, res: Response) => {
+  res.status(404).send("Not found")
+})
+
 export default app
