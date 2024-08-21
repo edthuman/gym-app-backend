@@ -9,8 +9,7 @@ describe("GET /api", ()=>{
         .get("/api")
         .expect(200)
         .then((response) => {
-            const parsedResponse = JSON.parse(response.text)
-            expect(parsedResponse).toEqual(endpoints)
+            expect(response.body).toEqual(endpoints)
         })
     })
 
