@@ -30,7 +30,7 @@ export { uri }
 ```
 
 > [!NOTE]
-> For information on obtaining a connection string, refer to the MongoDB docs: https://www.mongodb.com/docs/, 
+> For information on obtaining a connection string, refer to the MongoDB docs: https://www.mongodb.com/docs/
 >
 > Or see this page about connection strings: https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string
 >
