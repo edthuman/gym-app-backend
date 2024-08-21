@@ -8,7 +8,8 @@ router.get('/api', (req: Request, res: Response) => {
       if (err) {
         res.status(500).send(err)
       } else {
-        res.send(endpointsJSON)
+        const parsedEndpoints = JSON.parse(endpointsJSON)
+        res.send({ endpoints : parsedEndpoints })
       }
     })
 });
