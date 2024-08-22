@@ -47,3 +47,46 @@ describe("/api", ()=>{
         })
     })
 })
+
+describe("non-existent endpoints", () => {
+    test("GET 404: returns a Not Found error message", () => {
+        return request(app)
+        .get("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
+    test("POST 404: returns a Not Found error message", () => {
+        return request(app)
+        .post("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
+    test("PATCH 404: returns a Not Found error message", () => {
+        return request(app)
+        .patch("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
+    test("DELETE 404: returns a Not Found error message", () => {
+        return request(app)
+        .delete("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
+    test("PUT 404: returns a Not Found error message", () => {
+        return request(app)
+        .put("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
+})
