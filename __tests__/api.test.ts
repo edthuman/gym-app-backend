@@ -10,16 +10,16 @@ describe("/api", ()=>{
         return request(app)
         .get("/api")
         .expect(200)
-        .then((response) => {
-            expect(response.body).toEqual(expectedEndpoints)
+        .then(({ body }) => {
+            expect(body).toEqual(expectedEndpoints)
         })
     })
     test("POST 405: returns an error message", ()=> {
         return request(app)
         .post("/api")
         .expect(405)
-        .then((response) => {
-            expect(response.body).toEqual({ "msg" : "Request method not allowed on this endpoint" })
+        .then(({ body: { msg }}) => {
+            expect(msg).toBe("Request method not allowed on this endpoint")
         })
     })
 })
