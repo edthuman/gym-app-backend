@@ -81,4 +81,12 @@ describe("non-existent endpoints", () => {
             expect(msg).toBe("Requested endpoint does not exist")
         })
     })
+    test("PUT 404: returns a Not Found error message", () => {
+        return request(app)
+        .put("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
 })
