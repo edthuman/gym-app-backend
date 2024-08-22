@@ -14,11 +14,19 @@ describe("/api", ()=>{
             expect(body).toEqual(expectedEndpoints)
         })
     })
-    test("POST 405: returns an error message", ()=> {
+    test("POST 405: returns a Method Not Allowed error message", () => {
         return request(app)
         .post("/api")
         .expect(405)
         .then(({ body: { msg }}) => {
+            expect(msg).toBe("Request method not allowed on this endpoint")
+        })
+    })
+    test("PATCH 405: returns a Method Not Allowed error message", () => {
+        return request(app)
+        .patch("/api")
+        .expect(405)
+        .then(({ body : { msg }}) => {
             expect(msg).toBe("Request method not allowed on this endpoint")
         })
     })
