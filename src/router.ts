@@ -23,4 +23,8 @@ router.patch("/api", (req: Request, res: Response) => {
   sendMethodNotAllowedError(res)
 })
 
+router.delete("/api", (req: Request, res: Response) => {
+  sendMethodNotAllowedError(res)
+})
+
 export default router
