@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import { readFile } from "fs";
+import { sendMethodNotAllowedError } from "./error-handlers"
 
 const router = express.Router()
 
@@ -15,7 +16,7 @@ router.get("/api", (req: Request, res: Response) => {
 });
 
 router.post("/api", (req: Request, res: Response) => {
-  res.status(405).send({ msg : "Request method not allowed on this endpoint"})
-})
+  sendMethodNotAllowedError(res)
+  })
 
 export default router
