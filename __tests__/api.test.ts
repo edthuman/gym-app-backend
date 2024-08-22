@@ -3,8 +3,8 @@ import request from 'supertest'
 
 const endpoints = require("../endpoints.json")
 
-describe("GET /api", ()=>{
-    it("returns the expected json file", () => {
+describe("/api", ()=>{
+    test("GET 200: returns the expected json file", () => {
         const expectedEndpoints = { endpoints }
 
         return request(app)
@@ -14,5 +14,12 @@ describe("GET /api", ()=>{
             expect(response.body).toEqual(expectedEndpoints)
         })
     })
-
+    test("POST 405: returns an error message", ()=> {
+        return request(app)
+        .post("/api")
+        .expect(405)
+        .then((response) => {
+            expect(response.body).toEqual({ "msg" : "Request method not allowed on this endpoint" })
+        })
+    })
 })
