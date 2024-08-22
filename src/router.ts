@@ -15,7 +15,7 @@ router.get("/api", (req: Request, res: Response) => {
   })
 });
 
-router.use("/api", (req: Request, res: Response) => {
+router.all("/api", (req: Request, res: Response) => {
   sendMethodNotAllowedError(res)
 })
 
