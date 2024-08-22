@@ -30,4 +30,12 @@ describe("/api", ()=>{
             expect(msg).toBe("Request method not allowed on this endpoint")
         })
     })
+    test("DELETE 405: returns a Method Not Allowed error message", () => {
+        return request(app)
+        .delete("/api")
+        .expect(405)
+        .then(({ body : { msg }}) => {
+            expect(msg).toBe("Request method not allowed on this endpoint")
+        })
+    })
 })
