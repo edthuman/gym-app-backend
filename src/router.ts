@@ -17,6 +17,10 @@ router.get("/api", (req: Request, res: Response) => {
 
 router.post("/api", (req: Request, res: Response) => {
   sendMethodNotAllowedError(res)
-  })
+})
+
+router.patch("/api", (req: Request, res: Response) => {
+  sendMethodNotAllowedError(res)
+})
 
 export default router
