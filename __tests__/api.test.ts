@@ -47,3 +47,14 @@ describe("/api", ()=>{
         })
     })
 })
+
+describe("non-existent endpoints", () => {
+    test("GET 404: returns a Not Found error message", () => {
+        return request(app)
+        .get("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
+})
