@@ -15,15 +15,7 @@ router.get("/api", (req: Request, res: Response) => {
   })
 });
 
-router.post("/api", (req: Request, res: Response) => {
-  sendMethodNotAllowedError(res)
-})
-
-router.patch("/api", (req: Request, res: Response) => {
-  sendMethodNotAllowedError(res)
-})
-
-router.delete("/api", (req: Request, res: Response) => {
+router.use("/api", (req: Request, res: Response) => {
   sendMethodNotAllowedError(res)
 })
 
