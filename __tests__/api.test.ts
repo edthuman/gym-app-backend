@@ -65,4 +65,12 @@ describe("non-existent endpoints", () => {
             expect(msg).toBe("Requested endpoint does not exist")
         })
     })
+    test("PATCH 404: returns a Not Found error message", () => {
+        return request(app)
+        .patch("/endpoint")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+            expect(msg).toBe("Requested endpoint does not exist")
+        })
+    })
 })
