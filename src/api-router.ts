@@ -4,7 +4,7 @@ import { sendMethodNotAllowedError } from "./error-handlers"
 
 const apiRouter = express.Router()
 
-apiRouter.get("/api", (req: Request, res: Response) => {
+apiRouter.get("/", (req: Request, res: Response) => {
   readFile(`${__dirname}/../endpoints.json`, { encoding: "utf-8" }, (err, endpointsJSON)=>{
     if (err) {
       res.status(500).send(err)
@@ -15,7 +15,7 @@ apiRouter.get("/api", (req: Request, res: Response) => {
   })
 });
 
-apiRouter.all("/api", (req: Request, res: Response) => {
+apiRouter.all("/", (req: Request, res: Response) => {
   sendMethodNotAllowedError(res)
 })
 

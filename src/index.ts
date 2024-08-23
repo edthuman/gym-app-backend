@@ -4,7 +4,7 @@ import apiRouter from './api-router';
 
 const app: Express = express();
 
-app.use(apiRouter)
+app.use("/api", apiRouter)
 
 app.all("*", (req: Request, res: Response) => {
   sendNotFoundError(res)
