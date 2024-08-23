@@ -1,10 +1,10 @@
 import express, { Express, Request, Response } from 'express'
-import router from './router'
 import { sendNotFoundError } from './error-handlers';
+import apiRouter from './api-router';
 
 const app: Express = express();
 
-app.use(router)
+app.use("/api", apiRouter)
 
 app.all("*", (req: Request, res: Response) => {
   sendNotFoundError(res)
