@@ -90,6 +90,17 @@ describe("/api", ()=>{
                 expect(msg).toBe("No request body given")
             })
         })
+        test("POST 400: returns an error message if no username property on body", () => {
+            const noUsernameObject = {"key": "value"}
+            
+            return request(app)
+            .post("/api/users")
+            .send(noUsernameObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No username given")
+            })
+        })
     })
 })
 
