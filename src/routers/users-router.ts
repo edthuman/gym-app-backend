@@ -6,8 +6,6 @@ const usersRouter = express.Router()
 
 usersRouter.get("/", getUsers)
 usersRouter.post("/", postUser)
-usersRouter.all("/", (req: Request, res: Response) => {
-    sendMethodNotAllowedError(res)
-})
+usersRouter.all("/", sendMethodNotAllowedError)
 
 export default usersRouter
