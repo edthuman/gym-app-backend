@@ -8,6 +8,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+    // declare db as any type to allow access to client
     const database: any = (await db)
     const client: MongoClient = database.client
     client.close()
