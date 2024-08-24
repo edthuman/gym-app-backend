@@ -3,7 +3,7 @@ import { db } from "../connection";
 import seed from "../src/seeding/seed";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-const users = require("../src/seed/data/users.json");
+const users = require("../src/seeding/data/users.json");
 
 beforeAll(async () => {
     await seed(await db, users);
