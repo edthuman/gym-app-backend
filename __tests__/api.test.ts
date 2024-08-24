@@ -120,7 +120,7 @@ describe("/api", ()=>{
             .send(user)
             .expect(400)
             .then(({body: {msg}}) => {
-                expect(msg).toBe("Body should only provide a username")
+                expect(msg).toBe("Request body should only provide a username")
             })
         })
     })
