@@ -112,6 +112,17 @@ describe("/api", ()=>{
                 expect(msg).toBe("No username given")
             })
         })
+        test("POST 400: returns an error message if given username is not a string", () => {
+            const nonStringUsername = { username: [ "username" ] }
+            
+            return request(app)
+            .post("/api/users")
+            .send(nonStringUsername)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Username is not a string")
+            })
+        })
         test("POST 400: returns an error message if body has extra properties", () => {
             const user = { username : "valid-name", extraProp: "not needed"}
             
