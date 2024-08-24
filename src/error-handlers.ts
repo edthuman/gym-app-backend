@@ -8,4 +8,8 @@ const sendMethodNotAllowedError = (res: Response) => {
     res.status(405).send({msg: "Request method not allowed on this endpoint"})
 }
 
-export { sendNotFoundError, sendMethodNotAllowedError }
+const sendBadRequestError = (res: Response, msg: String) => {
+    res.status(400).send({ msg })
+}
+
+export { sendNotFoundError, sendMethodNotAllowedError, sendBadRequestError }
