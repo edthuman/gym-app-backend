@@ -1,8 +1,5 @@
 import { Db } from "mongodb"
-
-interface UserInput {
-    username: String
-}
+import { UserInput } from "../types";
 
 const seed = async (db: Db, users: UserInput[]) => {
     await db.collection("users").drop()
