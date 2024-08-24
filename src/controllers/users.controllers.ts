@@ -11,6 +11,8 @@ const postUser = async (req: Request, res: Response) => {
     const userObject = req.body
     if (Object.keys(userObject).length === 0) {
         sendBadRequestError(res, "No request body given")
+    } else if (userObject.username === undefined) {
+        sendBadRequestError(res, "No username given")
     } else {
         const user = await insertUser(userObject)
         res.status(201).send({ user })
