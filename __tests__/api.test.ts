@@ -120,7 +120,7 @@ describe("/api", ()=>{
             .send(nonStringUsername)
             .expect(400)
             .then(({body: {msg}}) => {
-                expect(msg).toBe("Username is not a string")
+                expect(msg).toBe("Username must be a string")
             })
         })
         test("POST 400: returns an error message if body has extra properties", () => {
