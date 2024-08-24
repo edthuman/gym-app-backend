@@ -82,6 +82,14 @@ describe("/api", ()=>{
                 })
             })
         })
+        test("POST 400: returns an error message if provided no body", () => {
+            return request(app)
+            .post("/api/users")
+            .expect(400)
+            .then(({body: { msg }}) => {
+                expect(msg).toBe("No request body given")
+            })
+        })
     })
 })
 
