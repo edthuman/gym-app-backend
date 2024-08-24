@@ -134,6 +134,14 @@ describe("/api", ()=>{
                 expect(msg).toBe("Request body should only provide a username")
             })
         })
+        test("PATCH 405: returns a Method Not Allowed error message", () => {
+            return request(app)
+            .patch("/api/users")
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
     })
 })
 
