@@ -1,4 +1,5 @@
 import { db } from "../../connection"
+import { UserInput } from "../types";
 
 const selectAllUsers = async () => {
     const usersArray = [];
@@ -9,4 +10,13 @@ const selectAllUsers = async () => {
     return usersArray
 }
 
-export { selectAllUsers }
+const insertUser = async (user: UserInput) => {
+    const response = await (await db).collection("users").insertOne(user)
+    
+    const _id = response.insertedId
+    const { username } = user
+
+    return { _id, username }
+}
+
+export { selectAllUsers, insertUser }
