@@ -5,13 +5,11 @@ import { uri } from "./uri";
 
 const getClient = async () => {
   let uriToUse
-
-  if (process.env.ENV === "test") {
+  if (process.env.NODE_ENV === "test") {
     // global instance created to allow reuse
     const instance: MongoMemoryServer = await MongoMemoryServer.create();
     uriToUse = instance.getUri();
     (global as any).__MONGOINSTANCE = instance;
-
   } else {
     uriToUse = uri
   }
