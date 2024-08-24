@@ -1,19 +1,34 @@
 const { ServerApiVersion } = require('mongodb');
-import { MongoClient } from "mongodb";
+import { Db, MongoClient } from "mongodb";
+import { MongoMemoryServer } from "mongodb-memory-server";
 import { uri } from "./uri";
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
 const getClient = async () => {
+  let uriToUse
+
+  if (process.env.ENV === "test") {
+    // global instance created to allow reuse
+    const instance: MongoMemoryServer = await MongoMemoryServer.create();
+    uriToUse = instance.getUri();
+    (global as any).__MONGOINSTANCE = instance;
+
+  } else {
+    uriToUse = uri
+  }
+  
+  const client: MongoClient = new MongoClient(uriToUse, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+  });
+
   await client.connect()
-  const db = client.db("gym-app");
+  const db: Db = client.db("gym-app");
   return db
 }
 
-export default getClient
+const db = getClient()
+
+export { db }
