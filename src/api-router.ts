@@ -7,9 +7,7 @@ const apiRouter = express.Router()
 
 apiRouter.get("/", getEndpoints);
 
-apiRouter.all("/", (req: Request, res: Response) => {
-  sendMethodNotAllowedError(res)
-})
+apiRouter.all("/", sendMethodNotAllowedError)
 
 apiRouter.use("/users", usersRouter)
 
