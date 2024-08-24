@@ -68,6 +68,20 @@ describe("/api", ()=>{
                 })
             })
         })
+        test("POST 200: posts and returns a given user", () => {
+            const userObject = { username: "givenUser"}
+            
+            return request(app)
+            .post("/api/users")
+            .send(userObject)
+            .expect(201)
+            .then(({body: { user }}) => {
+                expect(user).toMatchObject({
+                    _id: expect.any(String),
+                    username: expect.stringMatching(userObject.username)
+                })
+            })
+        })
     })
 })
 
