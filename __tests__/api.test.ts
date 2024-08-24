@@ -46,6 +46,27 @@ describe("/api", ()=>{
             expect(msg).toBe("Request method not allowed on this endpoint")
         })
     })
+    describe("/users", () => {
+        test("GET 200: returns a list of all users", () => {
+            return request(app)
+            .get("/api/users")
+            .expect(200)
+            .then(({body: { users }}) => {
+                expect(users).toHaveLength(4)
+
+                users.forEach((user: any) => {
+                    const numberOfProperties = Object.keys(user).length
+                    
+                    expect(numberOfProperties).toBe(2)
+                    
+                    expect(user).toMatchObject({
+                        _id: expect.any(String),
+                        username: expect.any(String)
+                    })
+                })
+            })
+        })
+    })
 })
 
 describe("non-existent endpoints", () => {
