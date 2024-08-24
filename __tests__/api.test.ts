@@ -101,6 +101,17 @@ describe("/api", ()=>{
                 expect(msg).toBe("No username given")
             })
         })
+        test("POST 400: returns an error message if given username is an empty string", () => {
+            const emptyStringUsername = { username: "" }
+            
+            return request(app)
+            .post("/api/users")
+            .send(emptyStringUsername)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No username given")
+            })
+        })
     })
 })
 
