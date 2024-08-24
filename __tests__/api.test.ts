@@ -1,5 +1,5 @@
 import app from "../src";
-import request from 'supertest'
+import request from 'supertest';
 
 const endpoints = require("../endpoints.json")
 
