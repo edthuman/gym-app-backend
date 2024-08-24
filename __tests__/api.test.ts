@@ -1,8 +1,6 @@
 import app from "../src";
 import request from 'supertest';
-import { MongoMemoryServer } from "mongodb-memory-server";
 
-const server: MongoMemoryServer = (global as any).__MONGOINSTANCE;
 const endpoints = require("../endpoints.json")
 
 describe("/api", ()=>{
