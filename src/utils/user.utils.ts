@@ -1,0 +1,4 @@
+const validateUserInput = () => {
+}
+
+export { validateUserInput }
