@@ -112,6 +112,17 @@ describe("/api", ()=>{
                 expect(msg).toBe("No username given")
             })
         })
+        test("POST 400: returns an error message if body has extra properties", () => {
+            const user = { username : "valid-name", extraProp: "not needed"}
+            
+            return request(app)
+            .post("/api/users")
+            .send(user)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Body should only provide a username")
+            })
+        })
     })
 })
 
