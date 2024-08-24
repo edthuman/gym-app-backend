@@ -9,9 +9,10 @@ const getUsers = async (req: Request, res: Response) => {
 
 const postUser = async (req: Request, res: Response) => {
     const userObject = req.body
+    const {username} = req.body
     if (Object.keys(userObject).length === 0) {
         sendBadRequestError(res, "No request body given")
-    } else if (userObject.username === undefined) {
+    } else if (username === undefined || username === "") {
         sendBadRequestError(res, "No username given")
     } else {
         const user = await insertUser(userObject)
