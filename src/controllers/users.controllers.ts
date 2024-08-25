@@ -3,12 +3,12 @@ import { insertUser, selectAllUsers } from "../models/users.models"
 import { sendBadRequestError, sendConflictError } from "../error-handlers"
 import { generateUserErrorMessage } from "../utils/user.utils"
 
-const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
     const users = await selectAllUsers()
     res.send({ users })
 }
 
-const postUser = async (req: Request, res: Response) => {
+export const postUser = async (req: Request, res: Response) => {
     const userObject = req.body
 
     const userErrorMessage = generateUserErrorMessage(userObject)
@@ -24,5 +24,3 @@ const postUser = async (req: Request, res: Response) => {
     }
     }
 }
-
-export { getUsers, postUser }
