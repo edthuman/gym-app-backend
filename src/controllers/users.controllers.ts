@@ -4,7 +4,7 @@ import { sendBadRequestError, sendConflictError } from "../error-handlers"
 import { generateUserErrorMessage } from "../utils/user.utils"
 
 export const getUsers = async (req: Request, res: Response) => {
-    const { sort } = req.query
+    const { sort, order } = req.query
     const users = await selectAllUsers()
     if (sort === "username" || sort === "") {
         users.sort((a, b) => {
@@ -14,6 +14,9 @@ export const getUsers = async (req: Request, res: Response) => {
             if (x > y) return 1
             return 0
         })
+    }
+    if (order === "DESC") {
+        users.reverse()
     }
     res.send({ users })
 }
