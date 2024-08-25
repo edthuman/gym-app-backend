@@ -1,4 +1,4 @@
-import { db } from "../../connection"
+import db from "../../connection"
 import { UserInput } from "../types";
 
 export const selectAllUsers = async () => {
