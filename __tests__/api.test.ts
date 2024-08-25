@@ -340,6 +340,23 @@ describe("/api", ()=>{
                     })
                 })
             })
+            describe("sort & order", () => {
+                test("returns correct response when given both sort and order queries", () => {
+                    return request(app)
+                    .get("/api/users?sort=username&order=desc")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
+                            const x = a.username.toLowerCase()
+                            const y = b.username.toLowerCase()
+                            if (x > y) return -1
+                            if (x < y) return 1
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
+            })
         })
     })
 })
