@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { db } from "../connection";
+import db from "../connection";
 import seed from "../src/seeding/seed";
 import { MongoMemoryServer } from "mongodb-memory-server";
 

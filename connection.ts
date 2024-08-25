@@ -29,4 +29,4 @@ const getClient = async () => {
 
 const db = getClient()
 
-export { db }
+export default db
