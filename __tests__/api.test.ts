@@ -134,6 +134,17 @@ describe("/api", ()=>{
                 expect(msg).toBe("Request body should only provide a username")
             })
         })
+        test("POST 409: returns an error message if username already exists", () => {
+            const duplicateUser = { username: "gymbro" } // exists in seed data
+            
+            return request(app)
+            .post("/api/users")
+            .send(duplicateUser)
+            .expect(409)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("A user already exists with given username")
+            })
+        })
         test("PATCH 405: returns a Method Not Allowed error message", () => {
             return request(app)
             .patch("/api/users")

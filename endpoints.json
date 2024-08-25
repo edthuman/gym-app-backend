@@ -1,5 +1,29 @@
 {
     "GET /api" : {
         "description": "serves a json representation of available endpoints"
+    },
+    "GET /api/users": {
+        "description": "serves all users",
+        "example response": { 
+            "users": [
+                {
+                    "_id": "1",
+                    "username": "goodUsername"
+                },
+                {
+                    "_id": "2",
+                    "username": "badUsername"
+                }
+            ]
+        }
+    },
+    "POST /api/users" : {
+        "description": "adds a given user object, returns the added user object",
+        "example response": {
+            "user": {
+                "_id": "3",
+                "username" : "new_user"
+            }
+        }
     }
 }

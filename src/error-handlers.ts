@@ -12,4 +12,8 @@ const sendBadRequestError = (res: Response, msg: String) => {
     res.status(400).send({ msg })
 }
 
-export { sendNotFoundError, sendMethodNotAllowedError, sendBadRequestError }
+const sendConflictError = (res: Response, msg: String) => {
+    res.status(409).send({msg})
+}
+
+export { sendNotFoundError, sendMethodNotAllowedError, sendBadRequestError, sendConflictError }

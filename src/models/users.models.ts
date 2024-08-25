@@ -11,12 +11,22 @@ const selectAllUsers = async () => {
 }
 
 const insertUser = async (user: UserInput) => {
+    const isDuplicateUser = await findUser(user)
+    if (isDuplicateUser) {
+        return { isDuplicateUser: true }
+    }
+
     const response = await (await db).collection("users").insertOne(user)
     
     const _id = response.insertedId
     const { username } = user
 
     return { _id, username }
+}
+
+const findUser = async (user: UserInput) => {
+    const matchingUser = await (await db).collection("users").findOne(user)
+    return matchingUser
 }
 
 export { selectAllUsers, insertUser }
