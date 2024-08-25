@@ -6,7 +6,7 @@ import { generateUserErrorMessage } from "../utils/user.utils"
 export const getUsers = async (req: Request, res: Response) => {
     const { sort } = req.query
     const users = await selectAllUsers()
-    if (sort === "") {
+    if (sort === "username" || sort === "") {
         users.sort((a, b) => {
             const x = a.username.toLowerCase()
             const y = b.username.toLowerCase()
