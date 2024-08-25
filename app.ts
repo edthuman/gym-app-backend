@@ -1,7 +1,7 @@
-import getClient from "./connection"
+import db from "./connection"
 
 const main = async () => {
-    const db = await getClient
+    await db
 }
 
 main()
