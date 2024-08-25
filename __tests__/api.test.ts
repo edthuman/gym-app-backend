@@ -1,5 +1,6 @@
 import app from "../src";
 import request from 'supertest';
+import { MongoDBUser } from "../src/types";
 
 const endpoints = require("../endpoints.json")
 
@@ -176,7 +177,7 @@ describe("/api", ()=>{
                     .get("/api/users?sort")
                     .expect(200)
                     .then(({body: {users}}) => {
-                        const orderedUsers = users.toSorted((a:any, b:any)=>{
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
                             const x = a.username.toLowerCase()
                             const y = b.username.toLowerCase()
                             if (x < y) {
