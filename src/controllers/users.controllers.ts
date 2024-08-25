@@ -15,7 +15,7 @@ export const getUsers = async (req: Request, res: Response) => {
             return 0
         })
     }
-    if (order === "DESC") {
+    if (order === "DESC" || order === "desc") {
         users.reverse()
     }
     res.send({ users })
