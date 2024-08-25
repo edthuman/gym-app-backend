@@ -294,7 +294,21 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
-
+                test("returns users ordered by descending _id when passed DESC", () => {
+                    return request(app)
+                    .get("/api/users?order=DESC")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
+                            const x = a._id.toLowerCase()
+                            const y = b._id.toLowerCase()
+                            if (x > y) return -1
+                            if (x < y) return 1
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
             })
         })
     })
