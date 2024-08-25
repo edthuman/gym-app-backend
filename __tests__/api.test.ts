@@ -50,124 +50,126 @@ describe("/api", ()=>{
         })
     })
     describe("/users", () => {
-        test("GET 200: returns a list of all users", () => {
-            return request(app)
-            .get("/api/users")
-            .expect(200)
-            .then(({body: { users }}) => {
-                expect(users).toHaveLength(4)
-
-                users.forEach((user: any) => {
-                    const numberOfProperties = Object.keys(user).length
-
-                    expect(numberOfProperties).toBe(2)
-                    
-                    expect(user).toMatchObject({
-                        _id: expect.any(String),
-                        username: expect.any(String)
+        describe("/", () => {
+            test("GET 200: returns a list of all users", () => {
+                return request(app)
+                .get("/api/users")
+                .expect(200)
+                .then(({body: { users }}) => {
+                    expect(users).toHaveLength(4)
+    
+                    users.forEach((user: any) => {
+                        const numberOfProperties = Object.keys(user).length
+    
+                        expect(numberOfProperties).toBe(2)
+                        
+                        expect(user).toMatchObject({
+                            _id: expect.any(String),
+                            username: expect.any(String)
+                        })
                     })
                 })
             })
-        })
-        test("POST 200: posts and returns a given user", () => {
-            const userObject = { username: "givenUser"}
-            
-            return request(app)
-            .post("/api/users")
-            .send(userObject)
-            .expect(201)
-            .then(({body: { user }}) => {
-                expect(user).toMatchObject({
-                    _id: expect.any(String),
-                    username: expect.stringMatching(userObject.username)
+            test("POST 200: posts and returns a given user", () => {
+                const userObject = { username: "givenUser"}
+                
+                return request(app)
+                .post("/api/users")
+                .send(userObject)
+                .expect(201)
+                .then(({body: { user }}) => {
+                    expect(user).toMatchObject({
+                        _id: expect.any(String),
+                        username: expect.stringMatching(userObject.username)
+                    })
                 })
             })
-        })
-        test("POST 400: returns an error message if provided no body", () => {
-            return request(app)
-            .post("/api/users")
-            .expect(400)
-            .then(({body: { msg }}) => {
-                expect(msg).toBe("No request body given")
+            test("POST 400: returns an error message if provided no body", () => {
+                return request(app)
+                .post("/api/users")
+                .expect(400)
+                .then(({body: { msg }}) => {
+                    expect(msg).toBe("No request body given")
+                })
             })
-        })
-        test("POST 400: returns an error message if no username property on body", () => {
-            const noUsernameObject = {"key": "value"}
-            
-            return request(app)
-            .post("/api/users")
-            .send(noUsernameObject)
-            .expect(400)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("No username given")
+            test("POST 400: returns an error message if no username property on body", () => {
+                const noUsernameObject = {"key": "value"}
+                
+                return request(app)
+                .post("/api/users")
+                .send(noUsernameObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No username given")
+                })
             })
-        })
-        test("POST 400: returns an error message if given username is an empty string", () => {
-            const emptyStringUsername = { username: "" }
-            
-            return request(app)
-            .post("/api/users")
-            .send(emptyStringUsername)
-            .expect(400)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("No username given")
+            test("POST 400: returns an error message if given username is an empty string", () => {
+                const emptyStringUsername = { username: "" }
+                
+                return request(app)
+                .post("/api/users")
+                .send(emptyStringUsername)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No username given")
+                })
             })
-        })
-        test("POST 400: returns an error message if given username is not a string", () => {
-            const nonStringUsername = { username: [ "username" ] }
-            
-            return request(app)
-            .post("/api/users")
-            .send(nonStringUsername)
-            .expect(400)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("Username must be a string")
+            test("POST 400: returns an error message if given username is not a string", () => {
+                const nonStringUsername = { username: [ "username" ] }
+                
+                return request(app)
+                .post("/api/users")
+                .send(nonStringUsername)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username must be a string")
+                })
             })
-        })
-        test("POST 400: returns an error message if body has extra properties", () => {
-            const user = { username : "valid-name", extraProp: "not needed"}
-            
-            return request(app)
-            .post("/api/users")
-            .send(user)
-            .expect(400)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("Request body should only provide a username")
+            test("POST 400: returns an error message if body has extra properties", () => {
+                const user = { username : "valid-name", extraProp: "not needed"}
+                
+                return request(app)
+                .post("/api/users")
+                .send(user)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request body should only provide a username")
+                })
             })
-        })
-        test("POST 409: returns an error message if username already exists", () => {
-            const duplicateUser = { username: "gymbro" } // exists in seed data
-            
-            return request(app)
-            .post("/api/users")
-            .send(duplicateUser)
-            .expect(409)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("A user already exists with given username")
+            test("POST 409: returns an error message if username already exists", () => {
+                const duplicateUser = { username: "gymbro" } // exists in seed data
+                
+                return request(app)
+                .post("/api/users")
+                .send(duplicateUser)
+                .expect(409)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("A user already exists with given username")
+                })
             })
-        })
-        test("PATCH 405: returns a Method Not Allowed error message", () => {
-            return request(app)
-            .patch("/api/users")
-            .expect(405)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("Request method not allowed on this endpoint")
+            test("PATCH 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .patch("/api/users")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
             })
-        })
-        test("DELETE 405: returns a Method Not Allowed error message", () => {
-            return request(app)
-            .delete("/api/users")
-            .expect(405)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("Request method not allowed on this endpoint")
+            test("DELETE 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .delete("/api/users")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
             })
-        })
-        test("PUT 405: returns a Method Not Allowed error message", () => {
-            return request(app)
-            .put("/api/users")
-            .expect(405)
-            .then(({body: {msg}}) => {
-                expect(msg).toBe("Request method not allowed on this endpoint")
+            test("PUT 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .put("/api/users")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
             })
         })
         describe("?",() => {
