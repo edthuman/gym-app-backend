@@ -4,6 +4,7 @@
     },
     "GET /api/users": {
         "description": "serves all users",
+        "queries": [ "order", "sort" ],
         "example response": { 
             "users": [
                 {
