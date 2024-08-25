@@ -169,6 +169,32 @@ describe("/api", ()=>{
                 expect(msg).toBe("Request method not allowed on this endpoint")
             })
         })
+        describe("?",() => {
+            describe("sort", () => {
+                test("returns all users ordered by username when given no input", () => {
+                    return request(app)
+                    .get("/api/users?sort")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a:any, b:any)=>{
+                            const x = a.username.toLowerCase()
+                            const y = b.username.toLowerCase()
+                            if (x < y) {
+                                // a before b alphabetically
+                                return -1
+                            }
+                            if (x > y) {
+                                // b before a alphabetically
+                                return 1
+
+                            }
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
+            })
+        })
     })
 })
 
