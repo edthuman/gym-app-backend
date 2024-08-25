@@ -19,4 +19,9 @@ const insertUser = async (user: UserInput) => {
     return { _id, username }
 }
 
+const findUser = async (user: UserInput) => {
+    const matchingUser = await (await db).collection("users").findOne(user)
+    return matchingUser
+}
+
 export { selectAllUsers, insertUser }
