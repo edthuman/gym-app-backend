@@ -172,7 +172,7 @@ describe("/api", ()=>{
         })
         describe("?",() => {
             describe("sort", () => {
-                test("returns all users ordered by username when given no input", () => {
+                test("returns users ordered by username when given no input", () => {
                     return request(app)
                     .get("/api/users?sort")
                     .expect(200)
@@ -187,7 +187,7 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
-                test("returns all users ordered by username when queried with username", () => {
+                test("returns users ordered by username when queried with username", () => {
                     return request(app)
                     .get("/api/users?sort=username")
                     .expect(200)
@@ -202,7 +202,7 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
-                test("returns all users ordered by _id when queried with id", () => {
+                test("returns users ordered by _id when queried with id", () => {
                     return request(app)
                     .get("/api/users?sort=id")
                     .expect(200)
@@ -217,9 +217,26 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
-                test("returns all users ordered by _id when queried with _id", () => {
+                test("returns users ordered by _id when queried with _id", () => {
                     return request(app)
                     .get("/api/users?sort=_id")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
+                            const x = a._id.toLowerCase()
+                            const y = b._id.toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
+            })
+            describe("order", () => {
+                test("returns users ordered by ascending _id when given no input", () => {
+                    return request(app)
+                    .get("/api/users?order")
                     .expect(200)
                     .then(({body: {users}}) => {
                         const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
