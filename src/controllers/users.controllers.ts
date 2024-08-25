@@ -4,7 +4,17 @@ import { sendBadRequestError, sendConflictError } from "../error-handlers"
 import { generateUserErrorMessage } from "../utils/user.utils"
 
 export const getUsers = async (req: Request, res: Response) => {
+    const { sort } = req.query
     const users = await selectAllUsers()
+    if (sort === "") {
+        users.sort((a, b) => {
+            const x = a.username.toLowerCase()
+            const y = b.username.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+    }
     res.send({ users })
 }
 
