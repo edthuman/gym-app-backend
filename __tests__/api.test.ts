@@ -279,7 +279,7 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
-                test("returns users ordered by ascending _id when passed ASC", () => {
+                test("returns users ordered by ascending _id when passed 'ascending'", () => {
                     return request(app)
                     .get("/api/users?order=ascending")
                     .expect(200)
@@ -294,6 +294,7 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
+
             })
         })
     })
