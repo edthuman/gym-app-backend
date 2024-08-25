@@ -249,6 +249,51 @@ describe("/api", ()=>{
                         expect(users).toEqual(orderedUsers)
                     })
                 })
+                test("returns users ordered by ascending _id when passed ASC", () => {
+                    return request(app)
+                    .get("/api/users?order=ASC")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
+                            const x = a._id.toLowerCase()
+                            const y = b._id.toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
+                test("returns users ordered by ascending _id when passed asc", () => {
+                    return request(app)
+                    .get("/api/users?order=asc")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
+                            const x = a._id.toLowerCase()
+                            const y = b._id.toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
+                test("returns users ordered by ascending _id when passed ASC", () => {
+                    return request(app)
+                    .get("/api/users?order=ascending")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        const orderedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser)=>{
+                            const x = a._id.toLowerCase()
+                            const y = b._id.toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+                        expect(users).toEqual(orderedUsers)
+                    })
+                })
             })
         })
     })
