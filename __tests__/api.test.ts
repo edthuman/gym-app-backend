@@ -58,7 +58,7 @@ describe("/api", ()=>{
                 .then(({body: { users }}) => {
                     expect(users).toHaveLength(4)
     
-                    users.forEach((user: any) => {
+                    users.forEach((user: MongoDBUser) => {
                         const numberOfProperties = Object.keys(user).length
     
                         expect(numberOfProperties).toBe(2)
