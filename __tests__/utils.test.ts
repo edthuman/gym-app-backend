@@ -1,4 +1,5 @@
-import { generateUserErrorMessage } from "../src/utils/user.utils";
+import { MongoDBUser } from "../src/types";
+import { generateUserErrorMessage, sortUsers } from "../src/utils/user.utils";
 
 describe("generateUserErrorMessage", () => {
     it("returns an empty string if provided a valid user object", () => {
@@ -50,4 +51,85 @@ describe("generateUserErrorMessage", () => {
         expect(output).toBe("Request body should only provide a username")
     })
     // no need for a test checking user is an object, as this is req.body
+})
+
+describe("sortUsers", () => {
+    const users = require("../src/seeding/data/users.json")
+
+    test("returns user array sorted by ascending _id when given undefined sort and order", () => {
+        const output = sortUsers(users, undefined, undefined)
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted by username when sort is 'username'", () => {
+        const output = sortUsers(users, "username", undefined)
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a.username.toLowerCase()
+            const y = b.username.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted by username when sort is an empty string", () => {
+        const output = sortUsers(users, "", undefined)
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a.username.toLowerCase()
+            const y = b.username.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted ascending when order is 'ASC'", () => {
+        const output = sortUsers(users, undefined, "ASC")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        console.log(output)
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted ascending when order is 'asc'", () => {
+        const output = sortUsers(users, undefined, "asc")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        console.log(output)
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted ascending when order is 'ascending'", () => {
+        const output = sortUsers(users, undefined, "ascending")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
 })
