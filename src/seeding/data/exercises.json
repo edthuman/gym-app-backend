@@ -1,0 +1,38 @@
+[
+    {
+        "_id": "1",
+        "name": "Pull Up",
+        "description": "H from a bar or handles, pull yourself fully up and then back down",
+        "icon": "pull-up"
+    },
+    {
+        "_id": "2",
+        "name": "Chin Up",
+        "description": "Hang from a bar or handles, pull yourself up to your chin and then go back down",
+        "icon": "chin-up"
+    },
+    {
+        "_id": "3",
+        "name": "Leg Press",
+        "description": "From a sitting position, push the weight with both legs out and return",
+        "icon": "leg-press"
+    },
+    {
+        "_id": "4",
+        "name": "Treadmill",
+        "description": "Walk or run on the machine",
+        "icon": "treadmill"
+    },
+    {
+        "_id": "5",
+        "name": "Stair Machine",
+        "description": "Climb stairs continuously",
+        "icon": "stairs"
+    },
+    {
+        "_id": "6",
+        "name": "Rowing Machine",
+        "description": "Row back and forth",
+        "icon": "rowing"
+    }
+]
