@@ -36,15 +36,14 @@ export const postUser = async (req: Request, res: Response) => {
         sendBadRequestError(res, userErrorMessage)
         return
     }
-    const user = await insertUser(userObject)
-    if (user._id === undefined) {
-        sendInternalServerError(res, "Error uploading user")
-        return
-    }
-    
+    const user = await insertUser(userObject)    
     if (user.isDuplicateUser) {
         sendConflictError(res, "A user already exists with given username")
         return 
+    }
+    if (user._id === undefined) {
+        sendInternalServerError(res, "Error uploading user")
+        return
     }
     res.status(201).send({ user })
 }
