@@ -34,13 +34,13 @@ export const postUser = async (req: Request, res: Response) => {
     const userErrorMessage = generateUserErrorMessage(userObject)
     if (userErrorMessage) {
         sendBadRequestError(res, userErrorMessage)
-    } else {
+        return
+    }
     const user = await insertUser(userObject)
     
     if (user.isDuplicateUser) {
         sendConflictError(res, "A user already exists with given username")
-    } else {
-        res.status(201).send({ user })
+        return 
     }
-    }
+    res.status(201).send({ user })
 }
