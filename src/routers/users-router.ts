@@ -1,6 +1,6 @@
-import express, { Request, Response } from "express"
+import express from "express"
 import { getUsers, postUser } from "../controllers/users.controllers"
-import { sendBadRequestError, sendMethodNotAllowedError } from "../error-handlers"
+import { sendMethodNotAllowedError } from "../error-handlers"
 
 const usersRouter = express.Router()
 
