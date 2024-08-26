@@ -25,8 +25,8 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const postUser = async (req: Request, res: Response) => {
     const userObject = req.body
+    const userErrorMessage = generateUserErrorMessage(userObject) // returns empty string if no error, else provides error message
 
-    const userErrorMessage = generateUserErrorMessage(userObject)
     if (userErrorMessage) {
         sendBadRequestError(res, userErrorMessage)
     } else {
