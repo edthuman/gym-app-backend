@@ -15,3 +15,7 @@ export const sendBadRequestError = (res: Response, msg: String) => {
 export const sendConflictError = (res: Response, msg: String) => {
     res.status(409).send({msg})
 }
+
+export const sendInternalServerError = (res: Response, msg: String) => {
+    res.status(500).send({msg})
+}

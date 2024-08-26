@@ -6,3 +6,10 @@ export interface MongoDBUser {
     _id: String,
     username: String
 }
+
+export interface MongoDBExercise {
+    _id: String,
+    name: String,
+    description: String,
+    icon_file: String
+}

@@ -17,6 +17,10 @@ export const insertUser = async (user: UserInput) => {
     }
 
     const response = await (await db).collection("users").insertOne(user)
+
+    if (!response.insertedId) {
+        return {}
+    }
     
     const _id = response.insertedId
     const { username } = user
