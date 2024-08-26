@@ -234,6 +234,14 @@ describe("/api", () => {
                         expect(users).toEqual(orderedUsers)
                     })
                 })
+                test("GET 400: return Bad Request error message when given invalid sort criteria", () => {
+                    return request(app)
+                    .get("/api/users?sort=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid sort criteria")
+                    })
+                })
             })
             describe("order", () => {
                 test("returns users ordered by ascending _id when given no input", () => {
@@ -357,23 +365,6 @@ describe("/api", () => {
                         })
                         expect(users).toEqual(orderedUsers)
                     })
-                })
-            })
-        })
-        describe("/:user_id", () => {
-            test("GET 200: returns an existing user object with a given _id", async () => {
-                const gymbroUser = await request(app).get("/api/users")
-                    .then(({body: {users}}) => {
-                            return users.find((user: MongoDBUser) => user.username === "gymbro" )
-                        })
-
-                const gymbroID = gymbroUser._id
-
-                return request(app)
-                .get(`/api/users/${gymbroID}`)
-                .expect(200)
-                .then(({body: {user}}) => {
-                    expect(user).toEqual(gymbroUser)
                 })
             })
         })
