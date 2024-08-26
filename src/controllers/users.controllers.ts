@@ -10,6 +10,7 @@ export const getUsers = async (req: Request, res: Response) => {
     const isServerError = users.length === 0
     if (isServerError) {
         sendInternalServerError(res, "Error fetching users")
+        return
     }
 
     if (sort === "username" || sort === "") {
