@@ -130,6 +130,18 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
+    test("returns user array sorted ascending when order is an empty string", () => {
+        const output = sortUsers(users, undefined, "")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
     test("returns user array sorted descending when order is 'DESC'", () => {
         const output = sortUsers(users, undefined, "DESC")
         
