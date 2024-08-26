@@ -26,6 +26,14 @@ export const sortUsers = (users: any[], sort: any, order: any): any[] => {
             if (x > y) return 1
             return 0
         })
+    } else {
+        users.sort((a, b) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
     }
     if (order === "DESC" || order === "desc" || order === "descending") {
         users.reverse()
