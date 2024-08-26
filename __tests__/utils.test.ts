@@ -130,4 +130,40 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
+    test("returns user array sorted descending when order is 'DESC'", () => {
+        const output = sortUsers(users, undefined, "DESC")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return 1
+            if (x > y) return -1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted descending when order is 'desc'", () => {
+        const output = sortUsers(users, undefined, "desc")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return 1
+            if (x > y) return -1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
+    test("returns user array sorted descending when order is 'descending'", () => {
+        const output = sortUsers(users, undefined, "descending")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return 1
+            if (x > y) return -1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
 })
