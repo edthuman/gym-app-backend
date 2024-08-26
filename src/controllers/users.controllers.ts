@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import { Request, Response } from "express"
 import { insertUser, selectAllUsers } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
 import { generateUserErrorMessage, sortUsers } from "../utils/user.utils"
@@ -27,7 +27,6 @@ export const getUsers = async (req: Request, res: Response) => {
         sendBadRequestError(res, "Invalid order criteria")
         return
     }
-    const users = await selectAllUsers()
     const sortedUsers = sortUsers(users, sort, order)
     res.send({ users: sortedUsers })
 }
