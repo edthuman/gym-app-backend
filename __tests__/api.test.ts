@@ -4,8 +4,8 @@ import { MongoDBUser } from "../src/types";
 
 const endpoints = require("../endpoints.json")
 
-describe("/api", ()=>{
-    describe("/", ()=>{
+describe("/api", () => {
+    describe("/", () => {
         test("GET 200: returns the expected json file", () => {
             const expectedEndpoints = { endpoints }
     
@@ -357,6 +357,23 @@ describe("/api", ()=>{
                         })
                         expect(users).toEqual(orderedUsers)
                     })
+                })
+            })
+        })
+        describe("/:user_id", () => {
+            test("GET 200: returns an existing user object with a given _id", async () => {
+                const gymbroUser = await request(app).get("/api/users")
+                    .then(({body: {users}}) => {
+                            return users.find((user: MongoDBUser) => user.username === "gymbro" )
+                        })
+
+                const gymbroID = gymbroUser._id
+
+                return request(app)
+                .get(`/api/users/${gymbroID}`)
+                .expect(200)
+                .then(({body: {user}}) => {
+                    expect(user).toEqual(gymbroUser)
                 })
             })
         })
