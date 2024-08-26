@@ -1,10 +1,9 @@
-export interface UserInput {
+export interface User {
     username: String
 }
 
-export interface MongoDBUser {
-    _id: String,
-    username: String
+export interface MongoDBUser extends User {
+    _id: String
 }
 
 export interface Exercise {
