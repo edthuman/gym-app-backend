@@ -11,5 +11,5 @@ export interface MongoDBExercise {
     _id: String,
     name: String,
     description: String,
-    icon_file: String
+    icon: String
 }
