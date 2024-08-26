@@ -1,11 +1,17 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers } from "../models/users.models"
-import { sendBadRequestError, sendConflictError } from "../error-handlers"
+import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
 import { generateUserErrorMessage } from "../utils/user.utils"
 
 export const getUsers = async (req: Request, res: Response) => {
     const { sort, order } = req.query
     const users = await selectAllUsers()
+
+    const isServerError = users.length === 0
+    if (isServerError) {
+        sendInternalServerError(res, "Error fetching users")
+    }
+
     if (sort === "username" || sort === "") {
         users.sort((a, b) => {
             const x = a.username.toLowerCase()
