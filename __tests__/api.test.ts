@@ -234,7 +234,7 @@ describe("/api", () => {
                         expect(users).toEqual(orderedUsers)
                     })
                 })
-                test("GET 400: return Bad Request error message when given invalid sort criteria", () => {
+                test("GET 400: returns a Bad Request error message when given invalid sort criteria", () => {
                     return request(app)
                     .get("/api/users?sort=random")
                     .expect(400)
@@ -347,6 +347,14 @@ describe("/api", () => {
                             return 0
                         })
                         expect(users).toEqual(orderedUsers)
+                    })
+                })
+                test("GET 400: returns a Bad Request error message when given invalid order criteria", () => {
+                    return request(app)
+                    .get("/api/users")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid order criteria")
                     })
                 })
             })
