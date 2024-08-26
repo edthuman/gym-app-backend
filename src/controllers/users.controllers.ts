@@ -5,11 +5,17 @@ import { generateUserErrorMessage, sortUsers } from "../utils/user.utils"
 
 export const getUsers = async (req: Request, res: Response) => {
     const { sort, order } = req.query
+    
     const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
     const isInvalidSortCriteria = !validSortCriteria.includes(sort)
+    
+    const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
+    const isInvalidOrderCriteria = !validOrderCriteria.includes(order)
 
     if (isInvalidSortCriteria) {
         sendBadRequestError(res, "Invalid sort criteria")
+    } else if (isInvalidOrderCriteria) {
+        sendBadRequestError(res, "Invalid order criteria")
     } else {
         const users = await selectAllUsers()
         const sortedUsers = sortUsers(users, sort, order)
