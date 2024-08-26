@@ -1,8 +1,8 @@
 import express from "express"
-import { getExercises } from "../controllers/exercises.controllers"
+import { getAllExercises } from "../controllers/exercises.controllers"
 
 const exercisesRouter = express.Router()
 
-exercisesRouter.get("/", getExercises)
+exercisesRouter.get("/", getAllExercises)
 
 export default exercisesRouter
