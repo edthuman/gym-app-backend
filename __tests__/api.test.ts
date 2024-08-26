@@ -1,6 +1,6 @@
 import app from "../src";
 import request from 'supertest';
-import { MongoDBUser } from "../src/types";
+import { MongoDBExercise, MongoDBUser } from "../src/types";
 
 const endpoints = require("../endpoints.json")
 
@@ -372,6 +372,27 @@ describe("/api", () => {
                             return 0
                         })
                         expect(users).toEqual(orderedUsers)
+                    })
+                })
+            })
+        })
+    })
+    describe("/exercises", () => {
+        describe("/", () => {
+            test("GET 200: returns an array of all exercises", () => {
+                return request(app)
+                .get("/api/exercises")
+                .expect(200)
+                .then(({body: {exercises}}) => {
+                    expect(exercises).toHaveLength(6)
+
+                    exercises.forEach((exercise: MongoDBExercise[]) => {
+                        expect(exercise).toMatchObject({
+                            _id: expect.any(String),
+                            name: expect.any(String),
+                            description: expect.any(String),
+                            icon: expect.any(String)
+                        })
                     })
                 })
             })
