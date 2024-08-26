@@ -351,7 +351,7 @@ describe("/api", () => {
                 })
                 test("GET 400: returns a Bad Request error message when given invalid order criteria", () => {
                     return request(app)
-                    .get("/api/users")
+                    .get("/api/users?order=random")
                     .expect(400)
                     .then(({body: {msg}}) => {
                         expect(msg).toBe("Invalid order criteria")
