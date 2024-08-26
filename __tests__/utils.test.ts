@@ -166,4 +166,16 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
+    test("returns correctly sorted array when passed both sort and order criteria", () => {
+        const output = sortUsers(users, "username", "descending")
+        
+        const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
+            const x = a.username.toLowerCase()
+            const y = b.username.toLowerCase()
+            if (x < y) return 1
+            if (x > y) return -1
+            return 0
+        })
+        expect(output).toEqual(expectedUsers)
+    })
 })
