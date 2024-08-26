@@ -104,7 +104,6 @@ describe("sortUsers", () => {
             if (x > y) return 1
             return 0
         })
-        console.log(output)
         expect(output).toEqual(expectedUsers)
     })
     test("returns user array sorted ascending when order is 'asc'", () => {
@@ -117,7 +116,6 @@ describe("sortUsers", () => {
             if (x > y) return 1
             return 0
         })
-        console.log(output)
         expect(output).toEqual(expectedUsers)
     })
     test("returns user array sorted ascending when order is 'ascending'", () => {
