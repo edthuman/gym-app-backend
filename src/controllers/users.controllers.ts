@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { insertUser, selectAllUsers } from "../models/users.models"
 import { sendBadRequestError, sendConflictError } from "../error-handlers"
 import { generateUserErrorMessage, sortUsers } from "../utils/user.utils"
@@ -14,13 +14,15 @@ export const getUsers = async (req: Request, res: Response) => {
 
     if (isInvalidSortCriteria) {
         sendBadRequestError(res, "Invalid sort criteria")
-    } else if (isInvalidOrderCriteria) {
-        sendBadRequestError(res, "Invalid order criteria")
-    } else {
-        const users = await selectAllUsers()
-        const sortedUsers = sortUsers(users, sort, order)
-        res.send({ users: sortedUsers })
+        return
     }
+    if (isInvalidOrderCriteria) {
+        sendBadRequestError(res, "Invalid order criteria")
+        return
+    }
+    const users = await selectAllUsers()
+    const sortedUsers = sortUsers(users, sort, order)
+    res.send({ users: sortedUsers })
 }
 
 export const postUser = async (req: Request, res: Response) => {
@@ -29,13 +31,14 @@ export const postUser = async (req: Request, res: Response) => {
 
     if (userErrorMessage) {
         sendBadRequestError(res, userErrorMessage)
-    } else {
+        return
+    }
+
     const user = await insertUser(userObject)
-    
+
     if (user.isDuplicateUser) {
         sendConflictError(res, "A user already exists with given username")
-    } else {
-        res.status(201).send({ user })
-    }
-    }
+        return
+    } 
+    res.status(201).send({ user })
 }
