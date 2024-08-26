@@ -7,9 +7,12 @@ export interface MongoDBUser {
     username: String
 }
 
-export interface MongoDBExercise {
-    _id: String,
+export interface Exercise {
     name: String,
     description: String,
     icon: String
+}
+
+export interface MongoDBExercise extends Exercise {
+    _id: String
 }
