@@ -16,3 +16,19 @@ export const generateUserErrorMessage = (user: any): String => {
     }
     return ""
 }
+
+export const sortUsers = (users: any[], sort: any, order: any): any[] => {
+    if (sort === "username" || sort === "") {
+        users.sort((a, b) => {
+            const x = a.username.toLowerCase()
+            const y = b.username.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+    }
+    if (order === "DESC" || order === "desc" || order === "descending") {
+        users.reverse()
+    }
+    return users
+}
