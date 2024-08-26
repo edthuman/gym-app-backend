@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers } from "../models/users.models"
 import { sendBadRequestError, sendConflictError } from "../error-handlers"
-import { generateUserErrorMessage } from "../utils/user.utils"
+import { generateUserErrorMessage, sortUsers } from "../utils/user.utils"
 
 export const getUsers = async (req: Request, res: Response) => {
     const { sort, order } = req.query
@@ -12,19 +12,8 @@ export const getUsers = async (req: Request, res: Response) => {
         sendBadRequestError(res, "Invalid sort criteria")
     } else {
         const users = await selectAllUsers()
-    if (sort === "username" || sort === "") {
-        users.sort((a, b) => {
-            const x = a.username.toLowerCase()
-            const y = b.username.toLowerCase()
-            if (x < y) return -1
-            if (x > y) return 1
-            return 0
-        })
-    }
-    if (order === "DESC" || order === "desc" || order === "descending") {
-        users.reverse()
-    }
-    res.send({ users })
+        const sortedUsers = sortUsers(users, sort, order)
+        res.send({ users: sortedUsers })
     }
 }
 
