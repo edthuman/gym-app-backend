@@ -1,10 +1,16 @@
 import db from "../../connection"
 
 export const selectAllExercises = async () => {
-    const exercises = []
-    const exerciseCluster = (await db).collection("exercises").find({})
-    for await (const exercise of exerciseCluster) {
-        exercises.push(exercise)
+    try {
+        const exercises = []
+        const exercisesCluster = (await db).collection("exercises").find({})
+        for await (const exercise of exercisesCluster) {
+            exercises.push(exercise)
+        }
+        return exercises
     }
-    return exercises
+    catch {
+        return []
+    }
+
 }
