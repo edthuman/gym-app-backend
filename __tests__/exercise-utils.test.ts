@@ -182,8 +182,15 @@ describe("sortExercises", () => {
         })
         expect(output).toEqual(expectedOutput)
     })
-    it("does not mutate the original return", () => {
-        const exercisesCopy = require("../src/seeding/data/exercises.json")
+    it("does not mutate the original array", () => {
+        const exercises = [
+            { _id: "1", name: "exerciseA", description: "N/A", icon: "N/A"},
+            { _id: "2", name: "exerciseB", description: "N/A", icon: "N/A"}
+        ]
+        const exercisesCopy = [
+            { _id: "1", name: "exerciseA", description: "N/A", icon: "N/A"},
+            { _id: "2", name: "exerciseB", description: "N/A", icon: "N/A"} 
+        ]
 
         sortExercises(exercises, "name", "desc")
         
