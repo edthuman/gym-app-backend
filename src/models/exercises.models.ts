@@ -38,6 +38,7 @@ export const insertExercise = async (exercise: Exercise) => {
 }
 
 const findExercise = async (exercise: Exercise) => {
-    const matchingExercise = await (await db).collection("exercises").findOne({ name: exercise.name})
+    const exerciseRegex = new RegExp(`^${exercise.name}$`, "i") // case insensitive exercise name
+    const matchingExercise = await (await db).collection("exercises").findOne({ name: exerciseRegex })
     return matchingExercise
 }
