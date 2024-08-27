@@ -1,6 +1,6 @@
-import { generateExerciseErrorMessage } from "../src/utils/exercise.utils";
+import { getExerciseErrorMessage } from "../src/utils/exercise.utils";
 
-describe("generateExerciseErrorMessage", () => {
+describe("getExerciseErrorMessage", () => {
     it("returns an empty string for a valid exercise object", () => {
         const input = { 
             name: "exercise name",
@@ -8,13 +8,13 @@ describe("generateExerciseErrorMessage", () => {
             icon: "filename"
         }
 
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("")
     })
     it("returns correct error message when given an empty object", () => {
         const input = {}
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No request body given")
     })
@@ -23,7 +23,7 @@ describe("generateExerciseErrorMessage", () => {
             description: "description",
             icon: "filename"
         }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No name given")
     })
@@ -32,7 +32,7 @@ describe("generateExerciseErrorMessage", () => {
             name: "exercise name",
             icon: "filename"
         }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No description given")
     })
@@ -41,13 +41,13 @@ describe("generateExerciseErrorMessage", () => {
             name: "exercise name",
             description: "description",
         }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No icon given")
     })
     it("returns correct error message when exercise missing multiple properties", () => {
         const input = { icon: "file" }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No name given")
     })
@@ -57,7 +57,7 @@ describe("generateExerciseErrorMessage", () => {
             description: "description",
             icon: "filename"
         }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No name given")
     })
@@ -67,7 +67,7 @@ describe("generateExerciseErrorMessage", () => {
             description: "",
             icon: "filename"
         }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No description given")
     })
@@ -77,7 +77,7 @@ describe("generateExerciseErrorMessage", () => {
             description: "description",
             icon: ""
         }
-        const output = generateExerciseErrorMessage(input)
+        const output = getExerciseErrorMessage(input)
 
         expect(output).toBe("No icon given")
     })
