@@ -601,6 +601,27 @@ describe("/api", () => {
                 })
             })
         })
+        describe("?", () => {
+            describe("sort", () => {
+                test("GET 200: return exercises sorted by _id when query has no value", () => {
+                    return request(app)
+                    .get("/api/exercises?sort")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y =b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+                        
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                    
+                })
+            })
+        })
     })
 })
 
