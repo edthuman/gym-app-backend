@@ -16,13 +16,18 @@ export const selectAllExercises = async () => {
 }
 
 export const insertExercise = async (exercise: Exercise) => {
-    const { insertedId } = await (await db).collection("exercises").insertOne(exercise)
-    const { name, description, icon } = exercise
-    
-    return { 
-        _id : insertedId,
-        name,
-        description,
-        icon 
+    try {
+        const { insertedId } = await (await db).collection("exercises").insertOne(exercise)
+        const { name, description, icon } = exercise
+
+        return { 
+            _id: insertedId,
+            name,
+            description,
+            icon 
+        }
+    }
+    catch {
+        return {}
     }
 }

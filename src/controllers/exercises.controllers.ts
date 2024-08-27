@@ -14,5 +14,8 @@ export const getAllExercises = async (req: Request, res: Response) => {
 export const postExercise = async (req: Request, res: Response) => {
     const exerciseInput = req.body
     const exercise = await insertExercise(exerciseInput)
+    if (exercise._id === undefined) {
+        sendInternalServerError(res, "Error posting exercise")
+    }
     res.status(201).send({exercise})
 }
