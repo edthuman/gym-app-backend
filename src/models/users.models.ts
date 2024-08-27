@@ -1,5 +1,5 @@
 import db from "../../connection"
-import { UserInput } from "../types";
+import { User } from "../types";
 
 export const selectAllUsers = async () => {
     const usersArray = [];
@@ -10,7 +10,7 @@ export const selectAllUsers = async () => {
     return usersArray
 }
 
-export const insertUser = async (user: UserInput) => {
+export const insertUser = async (user: User) => {
     const isDuplicateUser = await findUser(user)
     if (isDuplicateUser) {
         return { isDuplicateUser: true }
@@ -28,7 +28,7 @@ export const insertUser = async (user: UserInput) => {
     return { _id, username }
 }
 
-const findUser = async (user: UserInput) => {
+const findUser = async (user: User) => {
     const matchingUser = await (await db).collection("users").findOne(user)
     return matchingUser
 }

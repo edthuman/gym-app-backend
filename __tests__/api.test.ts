@@ -1,6 +1,6 @@
 import app from "../src";
 import request from 'supertest';
-import { MongoDBUser } from "../src/types";
+import { MongoDBExercise, MongoDBUser } from "../src/types";
 
 const endpoints = require("../endpoints.json")
 
@@ -373,6 +373,231 @@ describe("/api", () => {
                         })
                         expect(users).toEqual(orderedUsers)
                     })
+                })
+            })
+        })
+    })
+    describe("/exercises", () => {
+        describe("/", () => {
+            test("GET 200: returns an array of all exercises", () => {
+                return request(app)
+                .get("/api/exercises")
+                .expect(200)
+                .then(({body: {exercises}}) => {
+                    expect(exercises).toHaveLength(6)
+
+                    exercises.forEach((exercise: MongoDBExercise[]) => {
+                        expect(exercise).toMatchObject({
+                            _id: expect.any(String),
+                            name: expect.any(String),
+                            description: expect.any(String),
+                            icon: expect.any(String)
+                        })
+                    })
+                })
+            })
+            test("POST 201: returns the posted exercise object", () => {
+                const exerciseObject = {
+                    name: "Star Jump",
+                    description: "Jump up and down quickly, opening and closing your arms and legs in synch with your jumps",
+                    icon: "star"
+                }
+                
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(201)
+                .then(({body: {exercise}}) => {
+                    expect(exercise).toEqual({
+                        _id: expect.any(String),
+                        name: "Star Jump",
+                        description: "Jump up and down quickly, opening and closing your arms and legs in synch with your jumps",
+                        icon: "star"
+                    })
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given no exercise object", () => {
+                return request(app)
+                .post("/api/exercises")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No request body given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an empty exercise object", () => {
+                return request(app)
+                .post("/api/exercises")
+                .send({})
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No request body given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with no name", () => {
+                const exerciseObject = { description: "description", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No name given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with an empty string name", () => {
+                const exerciseObject = { name: "", description: "description", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No name given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with a non-string name", () => {
+                const exerciseObject = { name: [], description: "description", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Name must be a string")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with no description", () => {
+                const exerciseObject = { name: "name", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No description given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with an empty string description", () => {
+                const exerciseObject = { name: "name", description: "", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No description given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with a non-string description", () => {
+                const exerciseObject = { name: "name", description: {}, icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Description must be a string")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with no icon", () => {
+                const exerciseObject = { name: "name", description: "description" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No icon given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with an empty string icon", () => {
+                const exerciseObject = { name: "name", description: "description", icon: "" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No icon given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with a non-string icon", () => {
+                const exerciseObject = { name: "name", description: "description", icon: 3 }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Icon must be a string")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object missing multiple properties", () => {
+                const exerciseObject = { name: "name" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No description given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object missing multiple properties", () => {
+                const exerciseObject = { name: "name", description: "description", icon: "icon", extraProperty: "value"}
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request body should only include name, description, and icon")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given a duplicate exercise name", () => {
+                const exerciseObject = { name: "Treadmill", description: "description", icon: "icon"}
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("An exercise already exists with that name")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given a duplicate exercise name with different casing", () => {
+                const exerciseObject = { name: "treadmill", description: "description", icon: "icon"}
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("An exercise already exists with that name")
+                })
+            })
+            test("PATCH 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .patch("/api/exercises")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("DELETE 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .delete("/api/exercises")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("PUT 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .put("/api/exercises")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
                 })
             })
         })
