@@ -32,3 +32,7 @@ export const getExerciseErrorMessage = (exercise: any) => {
 
     return ""
 }
+
+export const sortExercises = (exercises: any[], sort: any, order: any): any[] => {
+    return exercises
+}
