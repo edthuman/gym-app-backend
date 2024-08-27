@@ -26,5 +26,9 @@ export const getExerciseErrorMessage = (exercise: any) => {
         return "Icon must be a string"
     }
 
+    if (numberOfProperties > 3) {
+        return "Request body should only include name, description, and icon"
+    }
+
     return ""
 }
