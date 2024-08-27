@@ -63,7 +63,7 @@ describe("/api", () => {
     
                         expect(numberOfProperties).toBe(2)
                         
-                        expect(user).toMatchObject({
+                        expect(user).toEqual({
                             _id: expect.any(String),
                             username: expect.any(String)
                         })
@@ -78,7 +78,7 @@ describe("/api", () => {
                 .send(userObject)
                 .expect(201)
                 .then(({body: { user }}) => {
-                    expect(user).toMatchObject({
+                    expect(user).toEqual({
                         _id: expect.any(String),
                         username: expect.stringMatching(userObject.username)
                     })
@@ -387,7 +387,7 @@ describe("/api", () => {
                     expect(exercises).toHaveLength(6)
 
                     exercises.forEach((exercise: MongoDBExercise[]) => {
-                        expect(exercise).toMatchObject({
+                        expect(exercise).toEqual({
                             _id: expect.any(String),
                             name: expect.any(String),
                             description: expect.any(String),
