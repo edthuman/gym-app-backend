@@ -47,3 +47,28 @@ npm run app
 ```
 
 This sets up a live development server using nodemon that allows you to make requests to your API via your browser or a platform like Insomnia (https://insomnia.rest/).
+
+## Testing
+
+Testing for the API and utility functions has been carried out using Jest.
+
+To run all existing tests, use the command:
+```
+npx jest
+```
+
+Any arguments given after 'jest' are used as search queries for file names. Tests from a specific file are run by providing the file's full name, or part of its name.
+
+For instance, the tests in 'api.test.ts' will run if you use either of the following commands:
+```
+npx jest api.test.ts
+npx jest api
+```
+
+Several arguments can be passed at once (separated by spaces) to run tests from several files, for example running both 'api.test.ts' 'users-utils.test.ts' by using:
+```
+npx jest api users
+```
+
+> [!NOTE]
+> Jest run tests in all files with names that include the argument, not just the first match it finds.
