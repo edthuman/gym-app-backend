@@ -45,10 +45,40 @@ describe("generateExerciseErrorMessage", () => {
 
         expect(output).toBe("No icon given")
     })
-    it("returns correct error message when missing multiple properties", () => {
+    it("returns correct error message when exercise missing multiple properties", () => {
         const input = { icon: "file" }
         const output = generateExerciseErrorMessage(input)
 
         expect(output).toBe("No name given")
+    })
+    it("returns correct error message when exercise name is an empty string", () => {
+        const input = { 
+            name: "",
+            description: "description",
+            icon: "filename"
+        }
+        const output = generateExerciseErrorMessage(input)
+
+        expect(output).toBe("No name given")
+    })
+    it("returns correct error message when exercise description is an empty string", () => {
+        const input = {
+            name: "exercise name",
+            description: "",
+            icon: "filename"
+        }
+        const output = generateExerciseErrorMessage(input)
+
+        expect(output).toBe("No description given")
+    })
+    it("returns correct error message when exercise icon is an empty string", () => {
+        const input = { 
+            name: "exercise name",
+            description: "description",
+            icon: ""
+        }
+        const output = generateExerciseErrorMessage(input)
+
+        expect(output).toBe("No icon given")
     })
 })
