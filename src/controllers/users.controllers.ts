@@ -46,7 +46,7 @@ export const postUser = async (req: Request, res: Response) => {
         return 
     }
     if (user._id === undefined) {
-        sendInternalServerError(res, "Error uploading user")
+        sendInternalServerError(res, "Error posting user")
         return
     }
     res.status(201).send({ user })
