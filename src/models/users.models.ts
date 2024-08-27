@@ -2,30 +2,36 @@ import db from "../../connection"
 import { User } from "../types";
 
 export const selectAllUsers = async () => {
-    const usersArray = [];
-    const usersCluster = (await db).collection("users").find({});
-    for await (const user of usersCluster) {
-        usersArray.push(user)
+    try {
+        const usersArray = [];
+        const usersCluster = (await db).collection("users").find({});
+        for await (const user of usersCluster) {
+            usersArray.push(user)
+        }
+        return usersArray
     }
-    return usersArray
+    catch {
+        return []
+    }
 }
 
 export const insertUser = async (user: User) => {
-    const isDuplicateUser = await findUser(user)
-    if (isDuplicateUser) {
-        return { isDuplicateUser: true }
+    try {
+        const isDuplicateUser = await findUser(user)
+        if (isDuplicateUser) {
+            return { isDuplicateUser: true }
+        }
+        
+        const response = await (await db).collection("users").insertOne(user)
+        
+        const _id = response.insertedId
+        const { username } = user
+    
+        return { _id, username }
     }
-
-    const response = await (await db).collection("users").insertOne(user)
-
-    if (!response.insertedId) {
+    catch {
         return {}
     }
-    
-    const _id = response.insertedId
-    const { username } = user
-
-    return { _id, username }
 }
 
 const findUser = async (user: User) => {
