@@ -396,6 +396,26 @@ describe("/api", () => {
                     })
                 })
             })
+            test("POST 201: returns the posted exercise object", () => {
+                const exerciseObject = {
+                    name: "Star Jump",
+                    description: "Jump up and down quickly, opening and closing your arms and legs in synch with your jumps",
+                    icon: "star"
+                }
+                
+                return request(app)
+                .post("/api/exercises")
+                .expect(201)
+                .send(exerciseObject)
+                .then(({body: {exercise}}) => {
+                    expect(exercise).toEqual({
+                        _id: expect.any(String),
+                        name: "Star Jump",
+                        description: "Jump up and down quickly, opening and closing your arms and legs in synch with your jumps",
+                        icon: "star"
+                    })
+                })
+            })
             test("PATCH 405: returns a Method Not Allowed error message", () => {
                 return request(app)
                 .patch("/api/exercises")
