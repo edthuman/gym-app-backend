@@ -138,4 +138,16 @@ describe("getExerciseErrorMessage", () => {
         expect(arrayOutput).toBe(expectedOutput)
         expect(objectOutput).toBe(expectedOutput)
     })
+    it("returns correct error message for an object with extra properties", () => {
+        const input = { 
+            name: "exercise name",
+            description: "description",
+            icon: "filename",
+            extraProperty: "value"
+        }
+
+        const output = getExerciseErrorMessage(input)
+
+        expect(output).toBe("Request body should only include name, description, and icon")
+    })
 })
