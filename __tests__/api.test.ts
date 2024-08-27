@@ -405,8 +405,8 @@ describe("/api", () => {
                 
                 return request(app)
                 .post("/api/exercises")
-                .expect(201)
                 .send(exerciseObject)
+                .expect(201)
                 .then(({body: {exercise}}) => {
                     expect(exercise).toEqual({
                         _id: expect.any(String),
@@ -556,6 +556,17 @@ describe("/api", () => {
             })
             test("POST 400: returns a Bad Request error message when given a duplicate exercise name", () => {
                 const exerciseObject = { name: "Treadmill", description: "description", icon: "icon"}
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("An exercise already exists with that name")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given a duplicate exercise name with different casing", () => {
+                const exerciseObject = { name: "treadmill", description: "description", icon: "icon"}
 
                 return request(app)
                 .post("/api/exercises")
