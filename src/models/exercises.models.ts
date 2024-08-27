@@ -1,4 +1,5 @@
 import db from "../../connection"
+import { Exercise } from "../types"
 
 export const selectAllExercises = async () => {
     try {
@@ -12,5 +13,16 @@ export const selectAllExercises = async () => {
     catch {
         return []
     }
+}
 
+export const insertExercise = async (exercise: Exercise) => {
+    const { insertedId } = await (await db).collection("exercises").insertOne(exercise)
+    const { name, description, icon } = exercise
+    
+    return { 
+        _id : insertedId,
+        name,
+        description,
+        icon 
+    }
 }
