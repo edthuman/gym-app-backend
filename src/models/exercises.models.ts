@@ -17,6 +17,11 @@ export const selectAllExercises = async () => {
 
 export const insertExercise = async (exercise: Exercise) => {
     try {
+        const isDuplicateExercise = await findExercise(exercise)
+        if (isDuplicateExercise) {
+            return { isDuplicateExercise }
+        }
+
         const { insertedId } = await (await db).collection("exercises").insertOne(exercise)
         const { name, description, icon } = exercise
 
@@ -30,4 +35,9 @@ export const insertExercise = async (exercise: Exercise) => {
     catch {
         return {}
     }
+}
+
+const findExercise = async (exercise: Exercise) => {
+    const matchingExercise = await (await db).collection("exercises").findOne({ name: exercise.name})
+    return matchingExercise
 }
