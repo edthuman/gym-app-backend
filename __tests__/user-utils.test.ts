@@ -56,7 +56,7 @@ describe("generateUserErrorMessage", () => {
 describe("sortUsers", () => {
     const users = require("../src/seeding/data/users.json")
 
-    test("returns user array sorted by ascending _id when given undefined sort and order", () => {
+    it("returns user array sorted by ascending _id when given undefined sort and order", () => {
         const output = sortUsers(users, undefined, undefined)
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -68,7 +68,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted by username when sort is 'username'", () => {
+    it("returns user array sorted by username when sort is 'username'", () => {
         const output = sortUsers(users, "username", undefined)
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -81,7 +81,7 @@ describe("sortUsers", () => {
 
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted by username when sort is an empty string", () => {
+    it("returns user array sorted by username when sort is an empty string", () => {
         const output = sortUsers(users, "", undefined)
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -94,7 +94,7 @@ describe("sortUsers", () => {
 
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted ascending when order is 'ASC'", () => {
+    it("returns user array sorted ascending when order is 'ASC'", () => {
         const output = sortUsers(users, undefined, "ASC")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -106,7 +106,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted ascending when order is 'asc'", () => {
+    it("returns user array sorted ascending when order is 'asc'", () => {
         const output = sortUsers(users, undefined, "asc")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -118,7 +118,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted ascending when order is 'ascending'", () => {
+    it("returns user array sorted ascending when order is 'ascending'", () => {
         const output = sortUsers(users, undefined, "ascending")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -130,7 +130,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted ascending when order is an empty string", () => {
+    it("returns user array sorted ascending when order is an empty string", () => {
         const output = sortUsers(users, undefined, "")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -142,7 +142,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted descending when order is 'DESC'", () => {
+    it("returns user array sorted descending when order is 'DESC'", () => {
         const output = sortUsers(users, undefined, "DESC")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -154,7 +154,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted descending when order is 'desc'", () => {
+    it("returns user array sorted descending when order is 'desc'", () => {
         const output = sortUsers(users, undefined, "desc")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -166,7 +166,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns user array sorted descending when order is 'descending'", () => {
+    it("returns user array sorted descending when order is 'descending'", () => {
         const output = sortUsers(users, undefined, "descending")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
@@ -178,7 +178,7 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
-    test("returns correctly sorted array when passed both sort and order criteria", () => {
+    it("returns correctly sorted array when passed both sort and order criteria", () => {
         const output = sortUsers(users, "username", "descending")
         
         const expectedUsers = users.toSorted((a: MongoDBUser, b: MongoDBUser) => {
