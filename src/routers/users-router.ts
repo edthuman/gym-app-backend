@@ -1,10 +1,10 @@
 import express from "express"
-import { getUsers, postUser } from "../controllers/users.controllers"
+import { getAllUsers, postUser } from "../controllers/users.controllers"
 import { sendMethodNotAllowedError } from "../error-handlers"
 
 const usersRouter = express.Router()
 
-usersRouter.get("/", getUsers)
+usersRouter.get("/", getAllUsers)
 usersRouter.post("/", postUser)
 usersRouter.all("/", sendMethodNotAllowedError)
 

@@ -1,9 +1,9 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
-import { generateUserErrorMessage, sortUsers } from "../utils/user.utils"
+import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
 
-export const getUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response) => {
     const { sort, order } = req.query
     
     const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
@@ -33,7 +33,7 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const postUser = async (req: Request, res: Response) => {
     const userObject = req.body
-    const userErrorMessage = generateUserErrorMessage(userObject) // returns empty string if no error, else provides error message
+    const userErrorMessage = getUserErrorMessage(userObject) // returns empty string if no error, else provides error message
 
     if (userErrorMessage) {
         sendBadRequestError(res, userErrorMessage)
@@ -46,7 +46,7 @@ export const postUser = async (req: Request, res: Response) => {
         return 
     }
     if (user._id === undefined) {
-        sendInternalServerError(res, "Error uploading user")
+        sendInternalServerError(res, "Error posting user")
         return
     }
     res.status(201).send({ user })
