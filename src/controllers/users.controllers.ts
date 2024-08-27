@@ -3,7 +3,7 @@ import { insertUser, selectAllUsers } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
 import { generateUserErrorMessage, sortUsers } from "../utils/user.utils"
 
-export const getUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response) => {
     const { sort, order } = req.query
     
     const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
