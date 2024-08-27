@@ -1,4 +1,5 @@
-import { getExerciseErrorMessage } from "../src/utils/exercise.utils";
+import { MongoDBExercise } from "../src/types";
+import { getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
 
 describe("getExerciseErrorMessage", () => {
     it("returns an empty string for a valid exercise object", () => {
@@ -151,4 +152,46 @@ describe("getExerciseErrorMessage", () => {
         expect(output).toBe("Request body should only include name, description, and icon")
     })
     // no test for exercise being an object, as this will be req.body
+})
+
+describe("sortExercises", () => {
+    const exercises = require("../src/seeding/data/exercises.json")
+
+    it("returns exercise array sorted by ascending _id when sort and order are undefined", () => {
+        const output = sortExercises(exercises, undefined, undefined)
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns exercise array sorted by ascending name when sort is an empty string", () => {
+        const output = sortExercises(exercises, undefined, undefined)
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a.name.toLowerCase()
+            const y = b.name.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
+    it("does not mutate the original return", () => {
+        const exercisesCopy = require("../src/seeding/data/exercises.json")
+
+        sortExercises(exercises, "name", "desc")
+        
+        expect(exercises).toEqual(exercisesCopy)
+    })
+    it("returns a new array", () => {
+        const output = sortExercises(exercises, "name", "desc")
+        
+        expect(exercises).not.toEqual(output)
+    })
 })
