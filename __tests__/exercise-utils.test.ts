@@ -119,4 +119,23 @@ describe("getExerciseErrorMessage", () => {
         expect(arrayOutput).toBe(expectedOutput)
         expect(objectOutput).toBe(expectedOutput)
     })
+    it("returns correct error message when exercise icon is not a string", () => {
+        const name = "name"
+        const description = "description"
+
+        const numberIcon = { name, description, icon: 1}
+        const numberOutput = getExerciseErrorMessage(numberIcon)
+
+        const arrayIcon = { name, description, icon: []}
+        const arrayOutput = getExerciseErrorMessage(arrayIcon)
+        
+        const objectIcon = { name, description, icon: {}}
+        const objectOutput = getExerciseErrorMessage(objectIcon)
+
+        const expectedOutput = "Icon must be a string"
+
+        expect(numberOutput).toBe(expectedOutput)
+        expect(arrayOutput).toBe(expectedOutput)
+        expect(objectOutput).toBe(expectedOutput)
+    })
 })
