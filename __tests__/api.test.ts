@@ -70,7 +70,7 @@ describe("/api", () => {
                     })
                 })
             })
-            test("POST 200: posts and returns a given user", () => {
+            test("POST 201: posts and returns a given user", () => {
                 const userObject = { username: "givenUser"}
                 
                 return request(app)
