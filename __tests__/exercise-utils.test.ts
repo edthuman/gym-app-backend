@@ -81,4 +81,23 @@ describe("getExerciseErrorMessage", () => {
 
         expect(output).toBe("No icon given")
     })
+    it("returns correct error message when exercise name is not a string", () => {
+        const description = "description"
+        const icon = "icon"
+
+        const numberName = { name : 1, description, icon }
+        const numberOutput = getExerciseErrorMessage(numberName)
+
+        const arrayName = { name: [], description, icon }
+        const arrayOutput = getExerciseErrorMessage(arrayName)
+        
+        const objectName = { name: {}, description, icon }
+        const objectOutput = getExerciseErrorMessage(objectName)
+
+        const expectedOutput = "Name must be a string"
+
+        expect(numberOutput).toBe(expectedOutput)
+        expect(arrayOutput).toBe(expectedOutput)
+        expect(objectOutput).toBe(expectedOutput)
+    })
 })
