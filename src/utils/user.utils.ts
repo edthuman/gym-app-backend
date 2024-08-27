@@ -1,4 +1,4 @@
-export const generateUserErrorMessage = (user: any): String => {
+export const getUserErrorMessage = (user: any): String => {
     const {username} = user
     const userProperties = Object.keys(user).length
 
