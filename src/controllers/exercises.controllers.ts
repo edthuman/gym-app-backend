@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
-import { sendInternalServerError } from "../error-handlers";
+import { sendBadRequestError, sendInternalServerError } from "../error-handlers";
+import { getExerciseErrorMessage } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
     const exercises = await selectAllExercises()
@@ -13,9 +14,17 @@ export const getAllExercises = async (req: Request, res: Response) => {
 
 export const postExercise = async (req: Request, res: Response) => {
     const exerciseInput = req.body
+
+    const exerciseError = getExerciseErrorMessage(exerciseInput)
+    if (exerciseError) {
+        sendBadRequestError(res, exerciseError)
+        return
+    }
+
     const exercise = await insertExercise(exerciseInput)
     if (exercise._id === undefined) {
         sendInternalServerError(res, "Error posting exercise")
+        return
     }
     res.status(201).send({exercise})
 }
