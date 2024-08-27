@@ -424,6 +424,136 @@ describe("/api", () => {
                     expect(msg).toBe("No request body given")
                 })
             })
+            test("POST 400: returns a Bad Request error message when given an empty exercise object", () => {
+                return request(app)
+                .post("/api/exercises")
+                .send({})
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No request body given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with no name", () => {
+                const exerciseObject = { description: "description", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No name given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with an empty string name", () => {
+                const exerciseObject = { name: "", description: "description", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No name given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with a non-string name", () => {
+                const exerciseObject = { name: [], description: "description", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Name must be a string")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with no description", () => {
+                const exerciseObject = { name: "name", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No description given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with an empty string description", () => {
+                const exerciseObject = { name: "name", description: "", icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No description given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with a non-string description", () => {
+                const exerciseObject = { name: "name", description: {}, icon: "icon" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Description must be a string")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with no icon", () => {
+                const exerciseObject = { name: "name", description: "description" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No icon given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with an empty string icon", () => {
+                const exerciseObject = { name: "name", description: "description", icon: "" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No icon given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object with a non-string icon", () => {
+                const exerciseObject = { name: "name", description: "description", icon: 3 }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Icon must be a string")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object missing multiple properties", () => {
+                const exerciseObject = { name: "name" }
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No description given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an object missing multiple properties", () => {
+                const exerciseObject = { name: "name", description: "description", icon: "icon", extraProperty: "value"}
+
+                return request(app)
+                .post("/api/exercises")
+                .send(exerciseObject)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request body should only include name, description, and icon")
+                })
+            })
             test("PATCH 405: returns a Method Not Allowed error message", () => {
                 return request(app)
                 .patch("/api/exercises")
