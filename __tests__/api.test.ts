@@ -416,6 +416,14 @@ describe("/api", () => {
                     })
                 })
             })
+            test("POST 400: returns a Bad Request error message when given no exercise object", () => {
+                return request(app)
+                .post("/api/exercises")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No request body given")
+                })
+            })
             test("PATCH 405: returns a Method Not Allowed error message", () => {
                 return request(app)
                 .patch("/api/exercises")
