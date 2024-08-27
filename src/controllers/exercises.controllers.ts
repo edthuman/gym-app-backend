@@ -22,6 +22,10 @@ export const postExercise = async (req: Request, res: Response) => {
     }
 
     const exercise = await insertExercise(exerciseInput)
+    if (exercise.isDuplicateExercise) {
+        sendBadRequestError(res, "An exercise already exists with that name")
+        return
+    }
     if (exercise._id === undefined) {
         sendInternalServerError(res, "Error posting exercise")
         return
