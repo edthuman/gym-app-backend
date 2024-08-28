@@ -34,5 +34,15 @@ export const getExerciseErrorMessage = (exercise: any): String => {
 }
 
 export const sortExercises = (exercises: any[], sort: any, order: any): any[] => {
-    return exercises
+    const sortedArray = [...exercises]
+    if (sort === "" || sort === "name") {
+        sortedArray.sort((a, b) => {
+            const x = a.name.toLowerCase()
+            const y = b.name.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+    }
+    return sortedArray
 }
