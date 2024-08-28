@@ -218,6 +218,54 @@ describe("sortExercises", () => {
         })
         expect(output).toEqual(expectedOutput)
     })
+    it("returns exercise array sorted by ascending _id when order is an empty string", () => {
+        const output = sortExercises(exercises, undefined, "")
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns exercise array sorted by ascending _id when order is 'asc", () => {
+        const output = sortExercises(exercises, undefined, "asc")
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns exercise array sorted by ascending _id when order is 'ASC", () => {
+        const output = sortExercises(exercises, undefined, "ASC")
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns exercise array sorted by ascending _id when order is 'ascending", () => {
+        const output = sortExercises(exercises, undefined, "ascending")
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a._id.toString().toLowerCase()
+            const y = b._id.toString().toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
     it("does not mutate the original array", () => {
         const exercises = [
             { _id: "1", name: "exerciseA", description: "N/A", icon: "N/A"},
