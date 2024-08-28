@@ -239,7 +239,7 @@ describe("/api", () => {
                     .get("/api/users?sort=random")
                     .expect(400)
                     .then(({body: {msg}}) => {
-                        expect(msg).toBe("Invalid sort criteria")
+                        expect(msg).toBe("Invalid sort query")
                     })
                 })
             })
@@ -354,7 +354,7 @@ describe("/api", () => {
                     .get("/api/users?order=random")
                     .expect(400)
                     .then(({body: {msg}}) => {
-                        expect(msg).toBe("Invalid order criteria")
+                        expect(msg).toBe("Invalid order query")
                     })
                 })
             })
@@ -379,7 +379,7 @@ describe("/api", () => {
                     .get("/api/users?sort=random&order=random")
                     .expect(400)
                     .then(({body: {msg}}) => {
-                        expect(msg).toBe("Invalid sort criteria")
+                        expect(msg).toBe("Invalid sort query")
                     })
                 })
             })
@@ -674,12 +674,12 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
-                test("GET 200: returns a Bad Request error message when sort criteria is invalid", () => {
+                test("GET 400: returns a Bad Request error message when sort criteria is invalid", () => {
                     return request(app)
                     .get("/api/exercises?sort=random")
                     .expect(400)
                     .then(({body: {msg}}) => {
-                        expect(msg).toBe("Invalid sort criteria")
+                        expect(msg).toBe("Invalid sort query")
                     })
                 })
             })
@@ -827,7 +827,7 @@ describe("/api", () => {
                     .get("/api/exercises?sort=random&order=random")
                     .expect(400)
                     .then(({body: {msg}}) => {
-                        expect(msg).toEqual("Invalid sort criteria")
+                        expect(msg).toEqual("Invalid sort query")
                     })
                 })
             })
