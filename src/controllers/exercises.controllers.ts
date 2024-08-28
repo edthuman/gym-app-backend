@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
 import { sendBadRequestError, sendInternalServerError } from "../error-handlers";
-import { getExerciseErrorMessage } from "../utils/exercise.utils";
+import { getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
     const exercises = await selectAllExercises()
@@ -9,7 +9,10 @@ export const getAllExercises = async (req: Request, res: Response) => {
     if (isError) {
         sendInternalServerError(res, "Error fetching exercises")
     }
-    res.status(200).send({ exercises })
+
+    const { sort } = req.query
+    const sortedExercises = sortExercises(exercises, sort, null)
+    res.status(200).send({ exercises: sortedExercises })
 }
 
 export const postExercise = async (req: Request, res: Response) => {
