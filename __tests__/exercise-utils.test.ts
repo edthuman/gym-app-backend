@@ -266,7 +266,7 @@ describe("sortExercises", () => {
         })
         expect(output).toEqual(expectedOutput)
     })
-    it("returns exercise array sorted by descending _id when order is 'desc", () => {
+    it("returns exercise array sorted by descending _id when order is 'desc'", () => {
         const output = sortExercises(exercises, undefined, "desc")
         
         const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
@@ -278,7 +278,7 @@ describe("sortExercises", () => {
         })
         expect(output).toEqual(expectedOutput)
     })
-    it("returns exercise array sorted by descending _id when order is 'DESC", () => {
+    it("returns exercise array sorted by descending _id when order is 'DESC'", () => {
         const output = sortExercises(exercises, undefined, "DESC")
         
         const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
@@ -290,12 +290,24 @@ describe("sortExercises", () => {
         })
         expect(output).toEqual(expectedOutput)
     })
-    it("returns exercise array sorted by descending _id when order is 'descending", () => {
+    it("returns exercise array sorted by descending _id when order is 'descending'", () => {
         const output = sortExercises(exercises, undefined, "descending")
         
         const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
+            if (x < y) return 1
+            if (x > y) return -1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns correct array when passed both sort and order values", () => {
+        const output = sortExercises(exercises, "name", "descending")
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a.name.toLowerCase()
+            const y = b.name.toLowerCase()
             if (x < y) return 1
             if (x > y) return -1
             return 0
