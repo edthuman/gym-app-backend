@@ -18,6 +18,15 @@ export const getAllExercises = async (req: Request, res: Response) => {
         sendBadRequestError(res, "Invalid sort criteria")
         return
     }
+
+    const validOrderCriteria: any[] = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
+    const isOrderInvalid = !validOrderCriteria.includes(order)
+
+    if (isOrderInvalid) {
+        sendBadRequestError(res, "Invalid order query")
+        return
+    }
+
     const sortedExercises = sortExercises(exercises, sort, order)
     res.status(200).send({ exercises: sortedExercises })
 }
