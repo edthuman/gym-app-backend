@@ -359,7 +359,7 @@ describe("/api", () => {
                 })
             })
             describe("sort & order", () => {
-                test("returns correct response when given both sort and order queries", () => {
+                test("GET 200: returns correct response when given both sort and order queries", () => {
                     return request(app)
                     .get("/api/users?sort=username&order=desc")
                     .expect(200)
@@ -372,6 +372,14 @@ describe("/api", () => {
                             return 0
                         })
                         expect(users).toEqual(orderedUsers)
+                    })
+                })
+                test("GET 400: returns Bad Request error message when given invalid sort and order queries", () => {
+                    return request(app)
+                    .get("/api/users?sort=random&order=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid sort criteria")
                     })
                 })
             })
