@@ -44,5 +44,10 @@ export const sortExercises = (exercises: any[], sort: any, order: any): any[] =>
             return 0
         })
     }
+    
+    const isOrderDescending = ["desc", "DESC", "descending"].includes(order)
+    if (isOrderDescending) {
+        sortedArray.reverse()
+    }
     return sortedArray
 }
