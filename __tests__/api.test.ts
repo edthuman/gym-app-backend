@@ -740,7 +740,7 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
-                test("GET 200: returns exercises sorted by descending _id when query is 'desc", () => {
+                test("GET 200: returns exercises sorted by descending _id when query is 'desc'", () => {
                     return request(app)
                     .get("/api/exercises?order=desc")
                     .expect(200)
@@ -756,7 +756,7 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
-                test("GET 200: returns exercises sorted by descending _id when query is 'DESC", () => {
+                test("GET 200: returns exercises sorted by descending _id when query is 'DESC'", () => {
                     return request(app)
                     .get("/api/exercises?order=DESC")
                     .expect(200)
@@ -772,7 +772,7 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
-                test("GET 200: returns exercises sorted by descending _id when query is 'descending", () => {
+                test("GET 200: returns exercises sorted by descending _id when query is 'descending'", () => {
                     return request(app)
                     .get("/api/exercises?order=descending")
                     .expect(200)
@@ -786,6 +786,14 @@ describe("/api", () => {
                         })
 
                         expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 400: returns a Bad Request error message when query is invalid", () => {
+                    return request(app)
+                    .get("/api/exercises?order=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid order query")
                     })
                 })
             })
