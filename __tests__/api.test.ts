@@ -740,6 +740,54 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
+                test("GET 200: returns exercises sorted by descending _id when query is 'desc", () => {
+                    return request(app)
+                    .get("/api/exercises?order=desc")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return 1
+                            if (x > y) return -1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by descending _id when query is 'DESC", () => {
+                    return request(app)
+                    .get("/api/exercises?order=DESC")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return 1
+                            if (x > y) return -1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by descending _id when query is 'descending", () => {
+                    return request(app)
+                    .get("/api/exercises?order=descending")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return 1
+                            if (x > y) return -1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
             })
         })
     })
