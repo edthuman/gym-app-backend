@@ -182,6 +182,18 @@ describe("sortExercises", () => {
         })
         expect(output).toEqual(expectedOutput)
     })
+    it("returns exercise array sorted by ascending name when sort is 'name", () => {
+        const output = sortExercises(exercises, "name", undefined)
+        
+        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+            const x = a.name.toLowerCase()
+            const y = b.name.toLowerCase()
+            if (x < y) return -1
+            if (x > y) return 1
+            return 0
+        })
+        expect(output).toEqual(expectedOutput)
+    })
     it("does not mutate the original array", () => {
         const exercises = [
             { _id: "1", name: "exerciseA", description: "N/A", icon: "N/A"},
