@@ -190,4 +190,10 @@ describe("sortUsers", () => {
         })
         expect(output).toEqual(expectedUsers)
     })
+    it("returns a new array", () => {
+        const output = sortUsers(users, "id", "desc")
+
+        expect(output).not.toBe(users)
+    })
+
 })
