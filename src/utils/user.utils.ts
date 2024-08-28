@@ -1,4 +1,4 @@
-export const getUserErrorMessage = (user: any): String => {
+export const getUserErrorMessage = (user: any): string => {
     const {username} = user
     const userProperties = Object.keys(user).length
 
@@ -18,8 +18,9 @@ export const getUserErrorMessage = (user: any): String => {
 }
 
 export const sortUsers = (users: any[], sort: any, order: any): any[] => {
+    const sortedUsers = [...users]
     if (sort === "username" || sort === "") {
-        users.sort((a, b) => {
+        sortedUsers.sort((a, b) => {
             const x = a.username.toLowerCase()
             const y = b.username.toLowerCase()
             if (x < y) return -1
@@ -27,7 +28,7 @@ export const sortUsers = (users: any[], sort: any, order: any): any[] => {
             return 0
         })
     } else {
-        users.sort((a, b) => {
+        sortedUsers.sort((a, b) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -35,8 +36,10 @@ export const sortUsers = (users: any[], sort: any, order: any): any[] => {
             return 0
         })
     }
-    if (order === "DESC" || order === "desc" || order === "descending") {
-        users.reverse()
+
+    const isOrderDescending = ["desc", "DESC", "descending"].includes(order)
+    if (isOrderDescending) {
+        sortedUsers.reverse()
     }
-    return users
+    return sortedUsers
 }
