@@ -195,5 +195,17 @@ describe("sortUsers", () => {
 
         expect(output).not.toBe(users)
     })
+    it("does not mutate the original array", () => {
+        const users = [
+            { _id: "1", username: "A"},
+            { _id: "1", username: "B"}
+        ]
+        const usersCopy = [
+            { _id: "1", username: "A"},
+            { _id: "1", username: "B"}
+        ]
 
+        sortUsers(users, "username", "desc")
+        expect(users).toEqual(usersCopy)
+    })
 })
