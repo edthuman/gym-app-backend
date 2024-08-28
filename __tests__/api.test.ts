@@ -601,6 +601,229 @@ describe("/api", () => {
                 })
             })
         })
+        describe("?", () => {
+            describe("sort", () => {
+                test("GET 200: returns exercises sorted by name when query has no value", () => {
+                    return request(app)
+                    .get("/api/exercises?sort")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a.name.toLowerCase()
+                            const y =b.name.toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by _id when query is id", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=id")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y =b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by _id when query is _id", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=_id")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y =b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by name when query is name", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=name")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a.name.toLowerCase()
+                            const y =b.name.toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns a Bad Request error message when sort criteria is invalid", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid sort criteria")
+                    })
+                })
+            })
+            describe("order", () => {
+                test("GET 200: returns exercises sorted by ascending _id when query has no value", () => {
+                    return request(app)
+                    .get("/api/exercises?order")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by ascending _id when query is 'asc'", () => {
+                    return request(app)
+                    .get("/api/exercises?order=asc")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by ascending _id when query is 'ASC'", () => {
+                    return request(app)
+                    .get("/api/exercises?order=ASC")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by ascending _id when query is 'ascending", () => {
+                    return request(app)
+                    .get("/api/exercises?order=ascending")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return -1
+                            if (x > y) return 1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by descending _id when query is 'desc'", () => {
+                    return request(app)
+                    .get("/api/exercises?order=desc")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return 1
+                            if (x > y) return -1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by descending _id when query is 'DESC'", () => {
+                    return request(app)
+                    .get("/api/exercises?order=DESC")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return 1
+                            if (x > y) return -1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 200: returns exercises sorted by descending _id when query is 'descending'", () => {
+                    return request(app)
+                    .get("/api/exercises?order=descending")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                            const x = a._id.toString().toLowerCase()
+                            const y = b._id.toString().toLowerCase()
+                            if (x < y) return 1
+                            if (x > y) return -1
+                            return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 400: returns a Bad Request error message when query is invalid", () => {
+                    return request(app)
+                    .get("/api/exercises?order=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid order query")
+                    })
+                })
+            })
+            describe("sort & order", () => {
+                test("GET 200: returns correctly sorted exercises when given both sort and order queries", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=name&order=desc")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                           const x = a.name.toLowerCase()
+                           const y = b.name.toLowerCase()
+                           if (x < y) return 1
+                           if (x > y) return -1
+                           return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+                test("GET 400: returns Bad Request error message when given invalid sort and invalid order", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=random&order=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toEqual("Invalid sort criteria")
+                    })
+                })
+            })
+        })
     })
 })
 

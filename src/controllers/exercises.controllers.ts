@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
 import { sendBadRequestError, sendInternalServerError } from "../error-handlers";
-import { getExerciseErrorMessage } from "../utils/exercise.utils";
+import { getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
     const exercises = await selectAllExercises()
@@ -9,7 +9,26 @@ export const getAllExercises = async (req: Request, res: Response) => {
     if (isError) {
         sendInternalServerError(res, "Error fetching exercises")
     }
-    res.status(200).send({ exercises })
+
+    const { sort, order } = req.query
+    const validSortCriteria: any[] = ["id", "_id", "name", "", undefined]
+    const isInvalidSort = !validSortCriteria.includes(sort)
+
+    if (isInvalidSort) {
+        sendBadRequestError(res, "Invalid sort criteria")
+        return
+    }
+
+    const validOrderCriteria: any[] = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
+    const isOrderInvalid = !validOrderCriteria.includes(order)
+
+    if (isOrderInvalid) {
+        sendBadRequestError(res, "Invalid order query")
+        return
+    }
+
+    const sortedExercises = sortExercises(exercises, sort, order)
+    res.status(200).send({ exercises: sortedExercises })
 }
 
 export const postExercise = async (req: Request, res: Response) => {
