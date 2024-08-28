@@ -1,4 +1,4 @@
-export const getExerciseErrorMessage = (exercise: any): String => {
+export const getExerciseErrorMessage = (exercise: any): string => {
     const numberOfProperties = Object.keys(exercise).length
     const { name, description, icon } = exercise
     
@@ -44,7 +44,7 @@ export const sortExercises = (exercises: any[], sort: any, order: any): any[] =>
             return 0
         })
     }
-    
+
     const isOrderDescending = ["desc", "DESC", "descending"].includes(order)
     if (isOrderDescending) {
         sortedArray.reverse()
