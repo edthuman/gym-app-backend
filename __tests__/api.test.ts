@@ -374,6 +374,14 @@ describe("/api", () => {
                         expect(users).toEqual(orderedUsers)
                     })
                 })
+                test("returns correct response when given both sort and order queries", () => {
+                    return request(app)
+                    .get("/api/users?sort=random&order=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid sort criteria")
+                    })
+                })
             })
         })
     })
