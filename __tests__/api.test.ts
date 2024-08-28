@@ -797,6 +797,24 @@ describe("/api", () => {
                     })
                 })
             })
+            describe("sort & order", () => {
+                test("GET 200: returns correctly sorted exercises when given both sort and order queries", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=name&order=desc")
+                    .expect(200)
+                    .then(({body: {exercises}}) => {
+                        const orderedExercises = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+                           const x = a.name.toLowerCase()
+                           const y = b.name.toLowerCase()
+                           if (x < y) return 1
+                           if (x > y) return -1
+                           return 0
+                        })
+
+                        expect(exercises).toEqual(orderedExercises)
+                    })
+                })
+            })
         })
     })
 })
