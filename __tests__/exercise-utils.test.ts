@@ -171,7 +171,7 @@ describe("sortExercises", () => {
         expect(output).toEqual(expectedOutput)
     })
     it("returns exercise array sorted by ascending name when sort is an empty string", () => {
-        const output = sortExercises(exercises, undefined, undefined)
+        const output = sortExercises(exercises, "", undefined)
         
         const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
             const x = a.name.toLowerCase()
