@@ -814,6 +814,14 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
+                test("GET 400: returns Bad Request error message when given invalid sort and invalid order", () => {
+                    return request(app)
+                    .get("/api/exercises?sort=random&order=random")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toEqual("Invalid sort criteria")
+                    })
+                })
             })
         })
     })
