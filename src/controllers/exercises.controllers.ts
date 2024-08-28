@@ -10,7 +10,7 @@ export const getAllExercises = async (req: Request, res: Response) => {
         sendInternalServerError(res, "Error fetching exercises")
     }
 
-    const { sort } = req.query
+    const { sort, order } = req.query
     const validSortCriteria: any[] = ["id", "_id", "name", "", undefined]
     const isInvalidSort = !validSortCriteria.includes(sort)
 
@@ -18,7 +18,7 @@ export const getAllExercises = async (req: Request, res: Response) => {
         sendBadRequestError(res, "Invalid sort criteria")
         return
     }
-    const sortedExercises = sortExercises(exercises, sort, null)
+    const sortedExercises = sortExercises(exercises, sort, order)
     res.status(200).send({ exercises: sortedExercises })
 }
 
