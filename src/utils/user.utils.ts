@@ -36,7 +36,9 @@ export const sortUsers = (users: any[], sort: any, order: any): any[] => {
             return 0
         })
     }
-    if (order === "DESC" || order === "desc" || order === "descending") {
+
+    const isOrderDescending = ["desc", "DESC", "descending"].includes(order)
+    if (isOrderDescending) {
         sortedUsers.reverse()
     }
     return sortedUsers
