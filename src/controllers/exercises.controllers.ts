@@ -15,7 +15,7 @@ export const getAllExercises = async (req: Request, res: Response) => {
     const isInvalidSort = !validSortCriteria.includes(sort)
 
     if (isInvalidSort) {
-        sendBadRequestError(res, "Invalid sort criteria")
+        sendBadRequestError(res, "Invalid sort query")
         return
     }
 
