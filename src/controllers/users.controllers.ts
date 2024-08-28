@@ -20,11 +20,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
         return
     }
     if (isInvalidSortCriteria) {
-        sendBadRequestError(res, "Invalid sort criteria")
+        sendBadRequestError(res, "Invalid sort query")
         return
     }
     if (isInvalidOrderCriteria) {
-        sendBadRequestError(res, "Invalid order criteria")
+        sendBadRequestError(res, "Invalid order query")
         return
     }
     const sortedUsers = sortUsers(users, sort, order)
