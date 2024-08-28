@@ -674,7 +674,7 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
-                test("GET 200: returns a Bad Request error message when sort criteria is invalid", () => {
+                test("GET 400: returns a Bad Request error message when sort criteria is invalid", () => {
                     return request(app)
                     .get("/api/exercises?sort=random")
                     .expect(400)
