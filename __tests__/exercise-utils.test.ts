@@ -199,6 +199,6 @@ describe("sortExercises", () => {
     it("returns a new array", () => {
         const output = sortExercises(exercises, "name", "desc")
         
-        expect(exercises).not.toEqual(output)
+        expect(exercises).not.toBe(output)
     })
 })
