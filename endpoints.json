@@ -26,5 +26,36 @@
                 "username" : "new_user"
             }
         }
+    },
+    "GET /api/exercises" : {
+        "description": "serves all exercises",
+        "queries": [ "order", "sort" ],
+        "example response": {
+            "exercises": [
+                {
+                    "_id": "1",
+                    "name": "Pull Up",
+                    "description": "pull yourself up",
+                    "icon": "pull-up"
+                },
+                {
+                    "_id": "2",
+                    "name": "Chin Up",
+                    "description": "chin yourself up",
+                    "icon": "chin-up"
+                }
+            ]
+        }
+    },
+    "POST /api/exercises" : {
+        "description": "adds a given exercise object, returns the added exercise object",
+        "example response": {
+            "exercise": {
+                    "_id": "3",
+                    "name": "New Exercise",
+                    "description": "description of exercise",
+                    "icon": "new-exercise"
+            }
+        }
     }
 }
