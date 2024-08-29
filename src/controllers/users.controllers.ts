@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { insertUser, selectAllUsers } from "../models/users.models"
+import { insertUser, selectAllUsers, selectUserById } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
 import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
 
@@ -50,4 +50,12 @@ export const postUser = async (req: Request, res: Response) => {
         return
     }
     res.status(201).send({ user })
+}
+
+export const getUserById = async (req: Request, res: Response) => {
+    const { user_id } = req.params
+    const user: any = await selectUserById(user_id)
+    delete user._id
+
+    res.send({ user })
 }
