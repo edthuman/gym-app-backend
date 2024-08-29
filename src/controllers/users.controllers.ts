@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById } from "../models/users.models"
-import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendNotFoundError } from "../error-handlers"
 import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
@@ -66,11 +66,15 @@ export const getUserById = async (req: Request, res: Response) => {
     }
     
     const user: any = await selectUserById(id)
+    if (user === null) {
+        sendNotFoundError(res, "User not found")
+        return
+    }
     if (user.error) {
         sendInternalServerError(res, "Error fetching user")
         return
     }
+    
     delete user._id
-
     res.send({ user })
 }
