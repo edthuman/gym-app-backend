@@ -20,3 +20,11 @@ export interface Log {
     date: string,
     log: number
 }
+
+export interface LogsDocument {
+    username: string,
+    exercise: string,
+    pb?: number,
+    goal?: number,
+    logs: Log[]
+}
