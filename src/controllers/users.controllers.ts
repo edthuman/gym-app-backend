@@ -66,6 +66,9 @@ export const getUserById = async (req: Request, res: Response) => {
     }
     
     const user: any = await selectUserById(id)
+    if (user.error) {
+        sendInternalServerError(res, "Error fetching user")
+    }
     delete user._id
 
     res.send({ user })
