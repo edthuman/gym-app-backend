@@ -1,14 +1,28 @@
 [
     { 
-        "username" : "HumptyDumpty" 
+        "username" : "HumptyDumpty",
+        "exercises": [
+            "Leg Press"
+        ]
     },
     { 
-        "username": "gymbro"
+        "username": "gymbro",
+        "exercises": [
+            "Pull Up",
+            "Treadmill"
+        ]
     },
     { 
-        "username": "liftqueen"
+        "username": "liftqueen",
+        "exercises": [
+            "Rowing",
+            "Stair Machine"
+        ]
     },
     { 
-        "username": "legituser"
+        "username": "legituser",
+        "exercises": [
+            "Chin Up"
+        ]
     }
 ]
