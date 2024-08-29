@@ -1,5 +1,16 @@
+import { Document, WithId } from "mongodb";
+import db from "../connection";
 import { MongoDBUser } from "../src/types";
 import { getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
+
+const users: WithId<Document>[] = []
+
+beforeAll(async () => {
+    const usersCluster = (await db).collection("users").find({})
+    for await (const user of usersCluster) {
+        users.push(user)
+    }
+})
 
 describe("getUserErrorMessage", () => {
     it("returns an empty string if provided a valid user object", () => {
