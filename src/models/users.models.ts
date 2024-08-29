@@ -42,6 +42,11 @@ const findUser = async (user: User) => {
 }
 
 export const selectUserById = async (id: ObjectId) => {
-    const user = await (await db).collection("users").findOne({ _id: id })
-    return user
+    try {
+        const user = await (await db).collection("users").findOne({ _id: id })
+        return user
+    }
+    catch {
+        return { error: true }
+    }
 }
