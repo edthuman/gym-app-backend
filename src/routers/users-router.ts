@@ -8,5 +8,6 @@ usersRouter.get("/", getAllUsers)
 usersRouter.post("/", postUser)
 usersRouter.all("/", sendMethodNotAllowedError)
 usersRouter.get("/:user_id", getUserById)
+usersRouter.use("/*", sendMethodNotAllowedError)
 
 export default usersRouter
