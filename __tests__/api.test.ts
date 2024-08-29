@@ -1,6 +1,7 @@
 import app from "../src";
 import request from 'supertest';
 import { MongoDBExercise, MongoDBUser } from "../src/types";
+import db from "../connection";
 
 const endpoints = require("../endpoints.json")
 
@@ -377,6 +378,80 @@ describe("/api", () => {
                     .then(({body: {msg}}) => {
                         expect(msg).toBe("Invalid sort query")
                     })
+                })
+            })
+        })
+        describe("/users/:user_id", () => {
+            test("GET 200: returns the correct user when given a valid username", async () => {
+                const gymbro = await (await db).collection("users").findOne({username: "gymbro"}) || { _id: "" }
+
+                return request(app)
+                .get(`/api/users/${gymbro._id.toString()}`)
+                .expect(200)
+                .then(({body: {user}}) => {
+                    expect(user).toEqual({
+                        username: "gymbro",
+                        exercises: [
+                            "Pull Up",
+                            "Treadmill"
+                        ]
+                    })
+                })
+            })
+            test("GET 400: returns a Bad Request error message when the given user_id is too short", () => {
+                return request(app)
+                .get("/api/users/aaaaa11111bbbbb22222ccc")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid user id")
+                })
+            })
+            test("GET 400: returns a Bad Request error message when the given user_id is too long", () => {
+                return request(app)
+                .get("/api/users/aaaaa11111bbbbb22222ccccc")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid user id")
+                })
+            })
+            test("GET 404: returns a Not Found error message when no user exists for the given id", () => {
+                return request(app)
+                .get("/api/users/111111111111111111111111")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("User not found")
+                })
+            })
+            test("POST 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .post("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("PATCH 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .patch("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("DELETE 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .delete("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("PUT 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .put("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
                 })
             })
         })
