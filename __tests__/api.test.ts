@@ -414,6 +414,14 @@ describe("/api", () => {
                     expect(msg).toBe("Invalid user id")
                 })
             })
+            test("GET 404: returns a Not Found error message when no user exists for the given id", () => {
+                return request(app)
+                .get("/api/users/111111111111111111111111")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("User not found")
+                })
+            })
         })
     })
     describe("/exercises", () => {
