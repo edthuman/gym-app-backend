@@ -6,7 +6,8 @@ export const selectAllUsers = async () => {
         const usersArray = [];
         const usersCluster = (await db).collection("users").find({});
         for await (const user of usersCluster) {
-            usersArray.push(user)
+            const { _id, username } = user
+            usersArray.push({ _id, username })
         }
         return usersArray
     }
