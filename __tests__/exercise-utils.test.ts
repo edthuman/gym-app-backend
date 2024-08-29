@@ -6,8 +6,8 @@ const exercises: WithId<Document>[] = []
 
 beforeAll( async () => {
     const exercisesCluster = (await db).collection("exercises").find({})
-    for await (const exe of exercisesCluster){
-        exercises.push(exe)
+    for await (const exercise of exercisesCluster){
+        exercises.push(exercise)
     }
 })
 
