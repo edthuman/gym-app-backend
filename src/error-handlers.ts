@@ -19,3 +19,7 @@ export const sendConflictError = (res: Response, msg: String) => {
 export const sendInternalServerError = (res: Response, msg: String) => {
     res.status(500).send({msg})
 }
+
+export const sendNotFoundError = (res: Response, msg: string) => {
+    res.status(404).send({msg})
+}
