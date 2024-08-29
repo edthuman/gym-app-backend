@@ -18,6 +18,18 @@
             ]
         }
     },
+    "GET /api/users/:user-id": {
+        "description": "serves the user with the given id",
+        "example response": { 
+            "user": {
+                    "username": "goodUsername",
+                    "exercises": [
+                        "Pull Up",
+                        "Leg Press"
+                    ]
+            }
+        }
+    },
     "POST /api/users" : {
         "description": "adds a given user object, returns the added user object",
         "example response": {
