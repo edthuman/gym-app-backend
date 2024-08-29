@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers"
 import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
+import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
     const { sort, order } = req.query
@@ -54,7 +55,17 @@ export const postUser = async (req: Request, res: Response) => {
 
 export const getUserById = async (req: Request, res: Response) => {
     const { user_id } = req.params
-    const user: any = await selectUserById(user_id)
+
+    let id: ObjectId
+    try {
+        id = new ObjectId(user_id)
+    }
+    catch {
+        sendBadRequestError(res, "Invalid user id")
+        return
+    }
+    
+    const user: any = await selectUserById(id)
     delete user._id
 
     res.send({ user })
