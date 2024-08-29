@@ -1,5 +1,15 @@
-import { MongoDBExercise } from "../src/types";
+import { Document, WithId } from "mongodb";
+import db from "../connection";
 import { getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
+
+const exercises: WithId<Document>[] = []
+
+beforeAll( async () => {
+    const exercisesCluster = (await db).collection("exercises").find({})
+    for await (const exercise of exercisesCluster){
+        exercises.push(exercise)
+    }
+})
 
 describe("getExerciseErrorMessage", () => {
     it("returns an empty string for a valid exercise object", () => {
@@ -155,12 +165,10 @@ describe("getExerciseErrorMessage", () => {
 })
 
 describe("sortExercises", () => {
-    const exercises = require("../src/seeding/data/exercises.json")
-
     it("returns exercise array sorted by ascending _id when sort and order are undefined", () => {
         const output = sortExercises(exercises, undefined, undefined)
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -173,7 +181,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending name when sort is an empty string", () => {
         const output = sortExercises(exercises, "", undefined)
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a.name.toLowerCase()
             const y = b.name.toLowerCase()
             if (x < y) return -1
@@ -185,7 +193,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending name when sort is 'name", () => {
         const output = sortExercises(exercises, "name", undefined)
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a.name.toLowerCase()
             const y = b.name.toLowerCase()
             if (x < y) return -1
@@ -197,7 +205,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending id when sort is 'id", () => {
         const output = sortExercises(exercises, "id", undefined)
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -209,7 +217,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending id when sort is '_id", () => {
         const output = sortExercises(exercises, "_id", undefined)
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -221,7 +229,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending _id when order is an empty string", () => {
         const output = sortExercises(exercises, undefined, "")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -233,7 +241,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending _id when order is 'asc", () => {
         const output = sortExercises(exercises, undefined, "asc")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -245,7 +253,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending _id when order is 'ASC", () => {
         const output = sortExercises(exercises, undefined, "ASC")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -257,7 +265,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by ascending _id when order is 'ascending", () => {
         const output = sortExercises(exercises, undefined, "ascending")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return -1
@@ -269,7 +277,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by descending _id when order is 'desc'", () => {
         const output = sortExercises(exercises, undefined, "desc")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return 1
@@ -281,7 +289,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by descending _id when order is 'DESC'", () => {
         const output = sortExercises(exercises, undefined, "DESC")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return 1
@@ -293,7 +301,7 @@ describe("sortExercises", () => {
     it("returns exercise array sorted by descending _id when order is 'descending'", () => {
         const output = sortExercises(exercises, undefined, "descending")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a._id.toString().toLowerCase()
             const y = b._id.toString().toLowerCase()
             if (x < y) return 1
@@ -305,7 +313,7 @@ describe("sortExercises", () => {
     it("returns correct array when passed both sort and order values", () => {
         const output = sortExercises(exercises, "name", "descending")
         
-        const expectedOutput = exercises.toSorted((a: MongoDBExercise, b: MongoDBExercise) => {
+        const expectedOutput = exercises.toSorted((a: WithId<Document>, b: WithId<Document>) => {
             const x = a.name.toLowerCase()
             const y = b.name.toLowerCase()
             if (x < y) return 1
