@@ -8,15 +8,15 @@ export const sendMethodNotAllowedError = (req: Request, res: Response) => {
     res.status(405).send({msg: "Request method not allowed on this endpoint"})
 }
 
-export const sendBadRequestError = (res: Response, msg: String) => {
+export const sendBadRequestError = (res: Response, msg: string) => {
     res.status(400).send({ msg })
 }
 
-export const sendConflictError = (res: Response, msg: String) => {
+export const sendConflictError = (res: Response, msg: string) => {
     res.status(409).send({msg})
 }
 
-export const sendInternalServerError = (res: Response, msg: String) => {
+export const sendInternalServerError = (res: Response, msg: string) => {
     res.status(500).send({msg})
 }
 
