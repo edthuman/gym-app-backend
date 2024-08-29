@@ -15,3 +15,8 @@ export interface Exercise {
 export interface MongoDBExercise extends Exercise {
     _id: string
 }
+
+export interface Log {
+    date: string,
+    log: number
+}
