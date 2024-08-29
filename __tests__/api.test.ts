@@ -381,7 +381,7 @@ describe("/api", () => {
                 })
             })
         })
-        describe.only("/users/:user_id", () => {
+        describe("/users/:user_id", () => {
             test("GET 200: returns the correct user when given a valid username", async () => {
                 const gymbro = await (await db).collection("users").findOne({username: "gymbro"}) || { _id: "" }
 
