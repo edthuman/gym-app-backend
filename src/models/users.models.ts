@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import db from "../../connection"
 import { User } from "../types";
 
@@ -38,4 +39,10 @@ export const insertUser = async (user: User) => {
 const findUser = async (user: User) => {
     const matchingUser = await (await db).collection("users").findOne(user)
     return matchingUser
+}
+
+export const selectUserById = async (idString: string) => {
+    const userId = new ObjectId(idString)
+    const user = await (await db).collection("users").findOne({ _id : userId })
+    return user
 }
