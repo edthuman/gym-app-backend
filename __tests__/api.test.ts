@@ -59,7 +59,7 @@ describe("/api", () => {
                     expect(users).toHaveLength(4)
     
                     users.forEach((user: MongoDBUser) => {                        
-                        expect(user).toMatchObject({
+                        expect(user).toEqual({
                             _id: expect.any(String),
                             username: expect.any(String)
                         })
