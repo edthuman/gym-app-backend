@@ -41,8 +41,7 @@ const findUser = async (user: User) => {
     return matchingUser
 }
 
-export const selectUserById = async (idString: string) => {
-    const userId = new ObjectId(idString)
-    const user = await (await db).collection("users").findOne({ _id : userId })
+export const selectUserById = async (id: ObjectId) => {
+    const user = await (await db).collection("users").findOne({ _id: id })
     return user
 }
