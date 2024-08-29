@@ -422,6 +422,38 @@ describe("/api", () => {
                     expect(msg).toBe("User not found")
                 })
             })
+            test("POST 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .post("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("PATCH 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .patch("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("DELETE 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .delete("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
+            test("PUT 405: returns a Method Not Allowed error message", () => {
+                return request(app)
+                .put("/api/users/abcde12345abcde12345abc")
+                .expect(405)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Request method not allowed on this endpoint")
+                })
+            })
         })
     })
     describe("/exercises", () => {
