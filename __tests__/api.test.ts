@@ -1,6 +1,7 @@
 import app from "../src";
 import request from 'supertest';
 import { MongoDBExercise, MongoDBUser } from "../src/types";
+import db from "../connection";
 
 const endpoints = require("../endpoints.json")
 
@@ -376,6 +377,24 @@ describe("/api", () => {
                     .expect(400)
                     .then(({body: {msg}}) => {
                         expect(msg).toBe("Invalid sort query")
+                    })
+                })
+            })
+        })
+        describe.only("/users/:user_id", () => {
+            test("GET 200: returns the correct user when given a valid username", async () => {
+                const gymbro = await (await db).collection("users").findOne({username: "gymbro"}) || { _id: "" }
+
+                return request(app)
+                .get(`/api/users/${gymbro._id.toString()}`)
+                .expect(200)
+                .then(({body: {user}}) => {
+                    expect(user).toEqual({
+                        username: "gymbro",
+                        exercises: [
+                            "Pull Up",
+                            "Treadmill"
+                        ]
                     })
                 })
             })
