@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 
-export const sendNotFoundError = (res: Response) => {
+export const sendEndpointNotFoundError = (res: Response) => {
     res.status(404).send({msg: "Requested endpoint does not exist"})
 }
 
