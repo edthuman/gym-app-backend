@@ -398,6 +398,14 @@ describe("/api", () => {
                     })
                 })
             })
+            test("GET 400: returns a Bad Request error message when the given user_id is too short", () => {
+                return request(app)
+                .get("/api/users/_1_character_too_short_X")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid user id")
+                })
+            })
         })
     })
     describe("/exercises", () => {
