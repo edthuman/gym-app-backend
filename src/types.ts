@@ -1,17 +1,17 @@
 export interface User {
-    username: String
+    username: string
 }
 
 export interface MongoDBUser extends User {
-    _id: String
+    _id: string
 }
 
 export interface Exercise {
-    name: String,
-    description: String,
-    icon: String
+    name: string,
+    description: string,
+    icon: string
 }
 
 export interface MongoDBExercise extends Exercise {
-    _id: String
+    _id: string
 }
