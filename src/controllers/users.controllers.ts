@@ -5,6 +5,14 @@ import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
+    const validQueries = ["sort", "order", "username"]
+    const queries = Object.keys(req.query)
+    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    if (isInvalidQuery) {
+        sendBadRequestError(res, "Invalid query")
+        return
+    }
+
     const { sort, order, username } = req.query
     
     const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
