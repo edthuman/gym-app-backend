@@ -1107,6 +1107,17 @@ describe("/api", () => {
                         expect(msg).toEqual("Invalid sort query")
                     })
                 })
+                test("POST 400: returns a Bad Request error message when passed both order and sort queries", () => {
+                    const exercise = { name: "Skipping", description: "skipping with a rope", icon: "skip-rope"}
+                    
+                    return request(app)
+                    .post("/api/exercises?sort=id&order=desc")
+                    .send(exercise)
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
         })
     })
