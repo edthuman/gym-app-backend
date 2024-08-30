@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { selectEndpoints } from "../models/api.models";
-import { sendBadRequestError, sendInternalServerError } from "../error-handlers";
+import { sendInternalServerError, sendInvalidQueryError } from "../error-handlers";
 
 export const getEndpoints = async (req: Request, res: Response) => {
     const isQuery = Object.keys(req.query).length !== 0
 
     if (isQuery) {
-        sendBadRequestError(res, "Invalid query")
+        sendInvalidQueryError(res)
         return
     }
 
