@@ -488,7 +488,7 @@ describe("/api", () => {
                     })
                 })
             })
-            describe("invalid queries", () => {
+            describe("non-existent queries", () => {
                 test("GET 400: returns a Bad Request error message if given an invalid query", () => {
                     return request(app)
                     .get("/api/users?query=invalid")
