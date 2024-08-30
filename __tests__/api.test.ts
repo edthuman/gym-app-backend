@@ -915,6 +915,28 @@ describe("/api", () => {
                         expect(msg).toBe("Invalid sort query")
                     })
                 })
+                test("POST 400: returns a Bad Request error message when passed a sort query", () => {
+                    const exercise = { name: "Skipping", description: "skipping with a rope", icon: "skip-rope"}
+                    
+                    return request(app)
+                    .post("/api/exercises?sort=id")
+                    .send(exercise)
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+                test("POST 400: returns a Bad Request error message when passed an empty sort query", () => {
+                    const exercise = { name: "Skipping", description: "skipping with a rope", icon: "skip-rope"}
+                    
+                    return request(app)
+                    .post("/api/exercises?sort")
+                    .send(exercise)
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
             describe("order", () => {
                 test("GET 200: returns exercises sorted by ascending _id when query has no value", () => {
