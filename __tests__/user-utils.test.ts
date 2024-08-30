@@ -1,7 +1,7 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
 import { MongoDBUser } from "../src/types";
-import { checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
+import { checkUserOrder, checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
 
 const users: WithId<Document>[] = []
 
@@ -288,5 +288,40 @@ describe("checkUserSort", () => {
     test("returns true when passed an object", () => {
         const output = checkUserSort({username: "username"})
         expect(output).toBe(true)
+    })
+})
+
+describe("checkUserOrder", () => {
+    test("returns false when passed desc", () => {
+        const output = checkUserOrder("desc")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed DESC", () => {
+        const output = checkUserOrder("DESC")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed descending", () => {
+        const output = checkUserOrder("descending")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed asc", () => {
+        const output = checkUserOrder("asc")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed ASC", () => {
+        const output = checkUserOrder("ASC")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed ascending", () => {
+        const output = checkUserOrder("ascending")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed an empty string", () => {
+        const output = checkUserOrder("")
+        expect(output).toBe(false)
+    })
+    test("returns false when passed undefined", () => {
+        const output = checkUserOrder(undefined)
+        expect(output).toBe(false)
     })
 })
