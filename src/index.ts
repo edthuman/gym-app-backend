@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from 'express'
 import { sendEndpointNotFoundError } from './error-handlers';
-import apiRouter from './api-router';
+import apiRouter from './routers/api-router';
 
 const app: Express = express();
 
