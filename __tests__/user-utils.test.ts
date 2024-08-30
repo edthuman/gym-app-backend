@@ -324,4 +324,24 @@ describe("checkUserOrder", () => {
         const output = checkUserOrder(undefined)
         expect(output).toBe(false)
     })
+    test("returns true when passed an invalid order string", () => {
+        const output = checkUserOrder("invalid order")
+        expect(output).toBe(true)
+    })
+    test("returns true when passed undefined as a string", () => {
+        const output = checkUserOrder("undefined")
+        expect(output).toBe(true)
+    })
+    test("returns true when passed a number", () => {
+        const output = checkUserOrder(3)
+        expect(output).toBe(true)
+    })
+    test("returns true when passed an array", () => {
+        const output = checkUserOrder(["desc"])
+        expect(output).toBe(true)
+    })
+    test("returns true when passed an object", () => {
+        const output = checkUserOrder({ order: "asc"})
+        expect(output).toBe(true)
+    })
 })
