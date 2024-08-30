@@ -31,18 +31,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
         return
     }
     if (username) {
-        const user = await selectUserByUsername(username)
-        if (user === null) {
-            sendNotFoundError(res, "No users found")
-            return
-        }
-        if (user.error) {
-            sendInternalServerError(res, "Error fetching users")
-            return
-        }
-
-        delete user.exercises
-        res.send({users: [user]})
+        getUserByUsername(res, username)
         return
     }
 
@@ -114,4 +103,20 @@ export const getUserById = async (req: Request, res: Response) => {
     
     delete user._id
     res.send({ user })
+}
+
+const getUserByUsername = async (res: Response, username: any) => {
+    const user = await selectUserByUsername(username)
+    if (user === null) {
+        sendNotFoundError(res, "No users found")
+        return
+    }
+    if (user.error) {
+        sendInternalServerError(res, "Error fetching users")
+        return
+    }
+
+    delete user.exercises
+    res.send({users: [user]})
+    return
 }
