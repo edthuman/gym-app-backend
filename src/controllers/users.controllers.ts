@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendNotFoundError } from "../error-handlers"
-import { findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../utils/user.utils"
+import { checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -14,8 +14,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
     const { sort, order, username } = req.query
     
-    const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
-    const isInvalidSortCriteria = !validSortCriteria.includes(sort)
+    const isInvalidSort = checkUserSort(sort)
     
     const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
     const isInvalidOrderCriteria = !validOrderCriteria.includes(order)
@@ -47,7 +46,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
         sendInternalServerError(res, "Error fetching users")
         return
     }
-    if (isInvalidSortCriteria) {
+    if (isInvalidSort) {
         sendBadRequestError(res, "Invalid sort query")
         return
     }
