@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError } from "../error-handlers";
-import { checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
+import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
     const queries = Object.keys(req.query)
@@ -19,18 +19,16 @@ export const getAllExercises = async (req: Request, res: Response) => {
         return
     }
 
+    const isOrderInvalid = checkExerciseOrder(order)
+    if (isOrderInvalid) {
+        sendBadRequestError(res, "Invalid order query")
+        return
+    }
+
     const exercises = await selectAllExercises()
     const isError = exercises.length === 0
     if (isError) {
         sendInternalServerError(res, "Error fetching exercises")
-    }
-
-    const validOrderCriteria: any[] = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
-    const isOrderInvalid = !validOrderCriteria.includes(order)
-
-    if (isOrderInvalid) {
-        sendBadRequestError(res, "Invalid order query")
-        return
     }
 
     const sortedExercises = sortExercises(exercises, sort, order)
