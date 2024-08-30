@@ -408,6 +408,15 @@ describe("/api", () => {
                         expect(msg).toBe("No users found")
                     })
                 })
+                test("POST 400: returns a Bad Request error message when using a username query on a post", () => {
+                    return request(app)
+                    .post("/api/users?username=name")
+                    .send({username: "validUser"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
         })
         describe("/users/:user_id", () => {
