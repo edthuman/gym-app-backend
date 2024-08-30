@@ -2,7 +2,7 @@ import app from "../src";
 import request from 'supertest';
 import { MongoDBExercise } from "../src/types";
 
-describe("/exercises", () => {
+describe("api/exercises", () => {
     describe("/", () => {
         test("GET 200: returns an array of all exercises", () => {
             return request(app)

@@ -3,7 +3,7 @@ import request from 'supertest';
 import { MongoDBUser } from "../src/types";
 import db from "../connection";
 
-describe("/users", () => {
+describe("/api/users", () => {
     describe("/", () => {
         test("GET 200: returns a list of all users", () => {
             return request(app)
