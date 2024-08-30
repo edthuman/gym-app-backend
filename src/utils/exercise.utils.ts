@@ -57,3 +57,9 @@ export const findInvalidExerciseQueries = (queries: any[]): boolean => {
     const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
     return isInvalidQuery
 }
+
+export const checkExerciseSort = (sort: any): boolean => {
+    const validSortCriteria: any[] = ["id", "_id", "name", "", undefined]
+    const isInvalid = !validSortCriteria.includes(sort)
+    return isInvalid
+}
