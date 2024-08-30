@@ -446,4 +446,24 @@ describe("checkExerciseOrder", () => {
         const output = checkExerciseOrder(undefined)
         expect(output).toBe(false)
     })
+    test("returns true when order is an invalid order", () => {
+        const output = checkExerciseOrder("random")
+        expect(output).toBe(true)
+    })
+    test("returns true when order is undefined as a string", () => {
+        const output = checkExerciseOrder("undefined")
+        expect(output).toBe(true)
+    })
+    test("returns true when order is a number", () => {
+        const output = checkExerciseOrder(1)
+        expect(output).toBe(true)
+    })
+    test("returns true when order is an array", () => {
+        const output = checkExerciseOrder(["asc"])
+        expect(output).toBe(true)
+    })
+    test("returns true when order is an object", () => {
+        const output = checkExerciseOrder({ asc: "asc" })
+        expect(output).toBe(true)
+    })
 })
