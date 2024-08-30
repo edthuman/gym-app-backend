@@ -248,6 +248,15 @@ describe("/api", () => {
                         expect(msg).toBe("Invalid query")
                     })
                 })
+                test("POST 400: returns a Bad Request error message when given an empty sort query", () => {
+                    return request(app)
+                    .post("/api/users?sort")
+                    .send({username: "valid-username"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
             describe("order", () => {
                 test("GET 200: returns users ordered by ascending _id when given no input", () => {
