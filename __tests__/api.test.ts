@@ -505,10 +505,28 @@ describe("/api", () => {
                         expect(msg).toBe("Invalid query")
                     })
                 })
+                test("POST 400: returns a Bad Request error message if given an invalid query", () => {
+                    return request(app)
+                    .post("/api/users?query=invalid")
+                    .send({ username: "valid-username"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+                test("POST 400: returns a Bad Request error message if given an empty invalid query", () => {
+                    return request(app)
+                    .post("/api/users?query")
+                    .send({ username: "valid-username"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
         })
         describe("/users/:user_id", () => {
-            test("GET 200: returns the correct user when given a valid username", async () => {
+            test("GET 200: returns the correct user when given a valid id", async () => {
                 const gymbro = await (await db).collection("users").findOne({username: "gymbro"}) || { _id: "" }
 
                 return request(app)
