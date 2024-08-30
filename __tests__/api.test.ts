@@ -488,6 +488,24 @@ describe("/api", () => {
                     })
                 })
             })
+            describe("invalid queries", () => {
+                test("GET 400: returns a Bad Request error message if given an invalid query", () => {
+                    return request(app)
+                    .get("/api/users?query=invalid")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+                test("GET 400: returns a Bad Request error message if given an empty invalid query", () => {
+                    return request(app)
+                    .get("/api/users?query")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+            })
         })
         describe("/users/:user_id", () => {
             test("GET 200: returns the correct user when given a valid username", async () => {
