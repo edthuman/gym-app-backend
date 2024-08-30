@@ -1,13 +1,12 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendNotFoundError } from "../error-handlers"
-import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
+import { findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
-    const validQueries = ["sort", "order", "username"]
     const queries = Object.keys(req.query)
-    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    const isInvalidQuery = findInvalidUserQueries(queries)
     if (isInvalidQuery) {
         sendInvalidQueryError(res)
         return
