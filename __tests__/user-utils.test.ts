@@ -249,24 +249,44 @@ describe("findInvalidUserQueries", () => {
 })
 
 describe("checkUserSort", () => {
-    test("return false when passed username", () => {
+    test("returns false when passed username", () => {
         const output = checkUserSort("username")
         expect(output).toBe(false)
     })
-    test("return false when passed id", () => {
+    test("returns false when passed id", () => {
         const output = checkUserSort("id")
         expect(output).toBe(false)
     })
-    test("return false when passed _id", () => {
+    test("returns false when passed _id", () => {
         const output = checkUserSort("_id")
         expect(output).toBe(false)
     })
-    test("return false when passed an empty string", () => {
+    test("returns false when passed an empty string", () => {
         const output = checkUserSort("")
         expect(output).toBe(false)
     })
-    test("return false when passed undefined", () => {
+    test("returns false when passed undefined", () => {
         const output = checkUserSort(undefined)
         expect(output).toBe(false)
+    })
+    test("returns true when passed an invalid sort string", () => {
+        const output = checkUserSort("invalid sort")
+        expect(output).toBe(true)
+    })
+    test("returns true when passed undefined as a string", () => {
+        const output = checkUserSort("undefined")
+        expect(output).toBe(true)
+    })
+    test("returns true when passed a number", () => {
+        const output = checkUserSort(3)
+        expect(output).toBe(true)
+    })
+    test("returns true when passed an array", () => {
+        const output = checkUserSort(["username"])
+        expect(output).toBe(true)
+    })
+    test("returns true when passed an object", () => {
+        const output = checkUserSort({username: "username"})
+        expect(output).toBe(true)
     })
 })
