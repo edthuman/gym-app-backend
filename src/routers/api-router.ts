@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express"
+import express from "express"
 import { getEndpoints } from "../controllers/api.controllers";
 import { sendMethodNotAllowedError } from "../error-handlers"
 import usersRouter from "../routers/users-router";
