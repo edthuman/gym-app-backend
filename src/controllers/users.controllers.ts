@@ -53,8 +53,8 @@ export const getAllUsers = async (req: Request, res: Response) => {
 }
 
 export const postUser = async (req: Request, res: Response) => {
-    const {username} = req.query
-    if (typeof username === "string") {
+    const {sort, username} = req.query
+    if (typeof username === "string" || typeof sort === "string") {
         sendBadRequestError(res, "Invalid query")
         return
     }
