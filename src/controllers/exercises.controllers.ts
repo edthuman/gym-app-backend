@@ -4,6 +4,14 @@ import { sendBadRequestError, sendConflictError, sendInternalServerError, sendIn
 import { getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
+    const validQueries = ["sort", "order"]
+    const queries = Object.keys(req.query)
+    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    if (isInvalidQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+
     const exercises = await selectAllExercises()
     const isError = exercises.length === 0
     if (isError) {
