@@ -1,7 +1,7 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
 import { MongoDBUser } from "../src/types";
-import { findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
+import { checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
 
 const users: WithId<Document>[] = []
 
@@ -245,5 +245,28 @@ describe("findInvalidUserQueries", () => {
     test("returns true when given a mixture of valid and invalid queries", () => {
         const output = findInvalidUserQueries(["sort", "order", "random"])
         expect(output).toBe(true)
+    })
+})
+
+describe("checkUserSort", () => {
+    test("return false when passed username", () => {
+        const output = checkUserSort("username")
+        expect(output).toBe(false)
+    })
+    test("return false when passed id", () => {
+        const output = checkUserSort("id")
+        expect(output).toBe(false)
+    })
+    test("return false when passed _id", () => {
+        const output = checkUserSort("_id")
+        expect(output).toBe(false)
+    })
+    test("return false when passed an empty string", () => {
+        const output = checkUserSort("")
+        expect(output).toBe(false)
+    })
+    test("return false when passed undefined", () => {
+        const output = checkUserSort(undefined)
+        expect(output).toBe(false)
     })
 })
