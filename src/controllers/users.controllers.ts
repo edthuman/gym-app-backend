@@ -23,6 +23,10 @@ export const getAllUsers = async (req: Request, res: Response) => {
             sendNotFoundError(res, "No users found")
             return
         }
+        if (user.error) {
+            sendInternalServerError(res, "Error fetching users")
+            return
+        }
 
         delete user.exercises
         res.send({users: [user]})
