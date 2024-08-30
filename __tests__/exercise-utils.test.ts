@@ -391,4 +391,24 @@ describe("checkExerciseSort", () => {
         const output = checkExerciseSort(undefined)
         expect(output).toBe(false)
     })
+    test("returns true when sort is invalid", () => {
+        const output = checkExerciseSort("invalid")
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is undefined as a string", () => {
+        const output = checkExerciseSort("undefined")
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is an array", () => {
+        const output = checkExerciseSort(["id"])
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is a number", () => {
+        const output = checkExerciseSort(3)
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is an object", () => {
+        const output = checkExerciseSort({id: "id"})
+        expect(output).toBe(true)
+    })
 })
