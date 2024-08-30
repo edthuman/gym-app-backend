@@ -633,24 +633,24 @@ describe("/api", () => {
                     expect(msg).toBe("Request body should only include name, description, and icon")
                 })
             })
-            test("POST 400: returns a Bad Request error message when given a duplicate exercise name", () => {
+            test("POST 409: returns a Conflict error message when given a duplicate exercise name", () => {
                 const exerciseObject = { name: "Treadmill", description: "description", icon: "icon"}
 
                 return request(app)
                 .post("/api/exercises")
                 .send(exerciseObject)
-                .expect(400)
+                .expect(409)
                 .then(({body: {msg}}) => {
                     expect(msg).toBe("An exercise already exists with that name")
                 })
             })
-            test("POST 400: returns a Bad Request error message when given a duplicate exercise name with different casing", () => {
+            test("POST 409: returns a Conflict error message when given a duplicate exercise name with different casing", () => {
                 const exerciseObject = { name: "treadmill", description: "description", icon: "icon"}
 
                 return request(app)
                 .post("/api/exercises")
                 .send(exerciseObject)
-                .expect(400)
+                .expect(409)
                 .then(({body: {msg}}) => {
                     expect(msg).toBe("An exercise already exists with that name")
                 })
