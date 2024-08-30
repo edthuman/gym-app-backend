@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express"
-import { getEndpoints } from "./controllers/api.controllers";
-import { sendMethodNotAllowedError } from "./error-handlers"
-import usersRouter from "./routers/users-router";
-import exercisesRouter from "./routers/exercises-router";
+import { getEndpoints } from "../controllers/api.controllers";
+import { sendMethodNotAllowedError } from "../error-handlers"
+import usersRouter from "../routers/users-router";
+import exercisesRouter from "../routers/exercises-router";
 
 const apiRouter = express.Router()
 
