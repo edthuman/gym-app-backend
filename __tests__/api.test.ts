@@ -372,6 +372,24 @@ describe("/api", () => {
                         expect(msg).toBe("Invalid order query")
                     })
                 })
+                test("POST 400: returns a Bad Request error message when given an order query", () => {
+                    return request(app)
+                    .post("/api/users?order=asc")
+                    .send({username: "valid-username"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+                test("POST 400: returns a Bad Request error message when given an empty order query", () => {
+                    return request(app)
+                    .post("/api/users?order")
+                    .send({username: "valid-username"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
             describe("sort & order", () => {
                 test("GET 200: returns correct response when given both sort and order queries", () => {
