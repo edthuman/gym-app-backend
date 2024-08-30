@@ -81,7 +81,7 @@ describe("/api", () => {
                     })
                 })
             })
-            test("POST 400: returns an error message if provided no body", () => {
+            test("POST 400: returns a Bad Request error message if provided no body", () => {
                 return request(app)
                 .post("/api/users")
                 .expect(400)
@@ -89,7 +89,7 @@ describe("/api", () => {
                     expect(msg).toBe("No request body given")
                 })
             })
-            test("POST 400: returns an error message if no username property on body", () => {
+            test("POST 400: returns a Bad Request error message if no username property on body", () => {
                 const noUsernameObject = {"key": "value"}
                 
                 return request(app)
@@ -100,7 +100,7 @@ describe("/api", () => {
                     expect(msg).toBe("No username given")
                 })
             })
-            test("POST 400: returns an error message if given username is an empty string", () => {
+            test("POST 400: returns a Bad Request error message if given username is an empty string", () => {
                 const emptyStringUsername = { username: "" }
                 
                 return request(app)
@@ -111,7 +111,7 @@ describe("/api", () => {
                     expect(msg).toBe("No username given")
                 })
             })
-            test("POST 400: returns an error message if given username is not a string", () => {
+            test("POST 400: returns a Bad Request error message if given username is not a string", () => {
                 const nonStringUsername = { username: [ "username" ] }
                 
                 return request(app)
@@ -122,7 +122,7 @@ describe("/api", () => {
                     expect(msg).toBe("Username must be a string")
                 })
             })
-            test("POST 400: returns an error message if body has extra properties", () => {
+            test("POST 400: returns a Bad Request error message if body has extra properties", () => {
                 const user = { username : "valid-name", extraProp: "not needed"}
                 
                 return request(app)
@@ -133,7 +133,7 @@ describe("/api", () => {
                     expect(msg).toBe("Request body should only provide a username")
                 })
             })
-            test("POST 409: returns an error message if username already exists", () => {
+            test("POST 409: returns a Conflict error message if username already exists", () => {
                 const duplicateUser = { username: "gymbro" } // exists in seed data
                 
                 return request(app)
@@ -893,7 +893,7 @@ describe("/api", () => {
                         expect(exercises).toEqual(orderedExercises)
                     })
                 })
-                test("GET 400: returns Bad Request error message when given invalid sort and invalid order", () => {
+                test("GET 400: returns a Bad Request error message when given invalid sort and invalid order", () => {
                     return request(app)
                     .get("/api/exercises?sort=random&order=random")
                     .expect(400)
