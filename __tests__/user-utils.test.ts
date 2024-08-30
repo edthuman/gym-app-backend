@@ -1,7 +1,7 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
 import { MongoDBUser } from "../src/types";
-import { getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
+import { findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../src/utils/user.utils";
 
 const users: WithId<Document>[] = []
 
@@ -218,5 +218,32 @@ describe("sortUsers", () => {
 
         sortUsers(users, "username", "desc")
         expect(users).toEqual(usersCopy)
+    })
+})
+
+describe("findInvalidUserQueries", () => {
+    test("returns false when given one valid query", () => {
+        const output = findInvalidUserQueries(["sort"])
+        expect(output).toBe(false)
+    })
+    test("returns false when given two valid queries", () => {
+        const output = findInvalidUserQueries(["order", "username"])
+        expect(output).toBe(false)
+    })
+    test("returns false when given three valid queries", () => {
+        const output = findInvalidUserQueries(["order", "sort", "username"])
+        expect(output).toBe(false)
+    })
+    test("returns true when given an invalid query", () => {
+        const output = findInvalidUserQueries(["random"])
+        expect(output).toBe(true)
+    })
+    test("returns true when given multiple invalid queries", () => {
+        const output = findInvalidUserQueries(["random", "yes", "no"])
+        expect(output).toBe(true)
+    })
+    test("returns true when given a mixture of valid and invalid queries", () => {
+        const output = findInvalidUserQueries(["sort", "order", "random"])
+        expect(output).toBe(true)
     })
 })
