@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
-import { sendBadRequestError, sendInternalServerError } from "../error-handlers";
+import { sendBadRequestError, sendConflictError, sendInternalServerError } from "../error-handlers";
 import { getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
@@ -42,7 +42,7 @@ export const postExercise = async (req: Request, res: Response) => {
 
     const exercise = await insertExercise(exerciseInput)
     if (exercise.isDuplicateExercise) {
-        sendBadRequestError(res, "An exercise already exists with that name")
+        sendConflictError(res, "An exercise already exists with that name")
         return
     }
     if (exercise._id === undefined) {
