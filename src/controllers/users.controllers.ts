@@ -88,6 +88,12 @@ export const postUser = async (req: Request, res: Response) => {
 }
 
 export const getUserById = async (req: Request, res: Response) => {
+    const isQuery = Object.keys(req.query).length !== 0
+    if (isQuery) {
+        sendBadRequestError(res, "Invalid query")
+        return
+    }
+
     const { user_id } = req.params
 
     let id: ObjectId
