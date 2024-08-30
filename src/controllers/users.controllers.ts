@@ -1,13 +1,12 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendNotFoundError } from "../error-handlers"
-import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
+import { checkUserOrder, checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
-    const validQueries = ["sort", "order", "username"]
     const queries = Object.keys(req.query)
-    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    const isInvalidQuery = findInvalidUserQueries(queries)
     if (isInvalidQuery) {
         sendInvalidQueryError(res)
         return
@@ -15,29 +14,24 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
     const { sort, order, username } = req.query
     
-    const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
-    const isInvalidSortCriteria = !validSortCriteria.includes(sort)
-    
-    const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
-    const isInvalidOrderCriteria = !validOrderCriteria.includes(order)
+    const isInvalidSort = checkUserSort(sort)
+    if (isInvalidSort) {
+        sendBadRequestError(res, "Invalid sort query")
+        return
+    }
+
+    const isInvalidOrder = checkUserOrder(order)
+    if (isInvalidOrder) {
+        sendBadRequestError(res, "Invalid order query")
+        return
+    }
     
     if (username === "") {
         sendBadRequestError(res, "No username given")
         return
     }
     if (username) {
-        const user = await selectUserByUsername(username)
-        if (user === null) {
-            sendNotFoundError(res, "No users found")
-            return
-        }
-        if (user.error) {
-            sendInternalServerError(res, "Error fetching users")
-            return
-        }
-
-        delete user.exercises
-        res.send({users: [user]})
+        getUserByUsername(res, username)
         return
     }
 
@@ -46,14 +40,6 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const isServerError = users.length === 0
     if (isServerError) {
         sendInternalServerError(res, "Error fetching users")
-        return
-    }
-    if (isInvalidSortCriteria) {
-        sendBadRequestError(res, "Invalid sort query")
-        return
-    }
-    if (isInvalidOrderCriteria) {
-        sendBadRequestError(res, "Invalid order query")
         return
     }
     const sortedUsers = sortUsers(users, sort, order)
@@ -117,4 +103,20 @@ export const getUserById = async (req: Request, res: Response) => {
     
     delete user._id
     res.send({ user })
+}
+
+const getUserByUsername = async (res: Response, username: any) => {
+    const user = await selectUserByUsername(username)
+    if (user === null) {
+        sendNotFoundError(res, "No users found")
+        return
+    }
+    if (user.error) {
+        sendInternalServerError(res, "Error fetching users")
+        return
+    }
+
+    delete user.exercises
+    res.send({users: [user]})
+    return
 }

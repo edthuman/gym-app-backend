@@ -1,14 +1,27 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError } from "../error-handlers";
-import { getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
+import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
-    const validQueries = ["sort", "order"]
     const queries = Object.keys(req.query)
-    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    const isInvalidQuery = findInvalidExerciseQueries(queries)
     if (isInvalidQuery) {
         sendInvalidQueryError(res)
+        return
+    }
+
+    const { sort, order } = req.query
+    
+    const isInvalidSort = checkExerciseSort(sort)
+    if (isInvalidSort) {
+        sendBadRequestError(res, "Invalid sort query")
+        return
+    }
+
+    const isOrderInvalid = checkExerciseOrder(order)
+    if (isOrderInvalid) {
+        sendBadRequestError(res, "Invalid order query")
         return
     }
 
@@ -16,23 +29,6 @@ export const getAllExercises = async (req: Request, res: Response) => {
     const isError = exercises.length === 0
     if (isError) {
         sendInternalServerError(res, "Error fetching exercises")
-    }
-
-    const { sort, order } = req.query
-    const validSortCriteria: any[] = ["id", "_id", "name", "", undefined]
-    const isInvalidSort = !validSortCriteria.includes(sort)
-
-    if (isInvalidSort) {
-        sendBadRequestError(res, "Invalid sort query")
-        return
-    }
-
-    const validOrderCriteria: any[] = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
-    const isOrderInvalid = !validOrderCriteria.includes(order)
-
-    if (isOrderInvalid) {
-        sendBadRequestError(res, "Invalid order query")
-        return
     }
 
     const sortedExercises = sortExercises(exercises, sort, order)

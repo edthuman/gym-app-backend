@@ -1,6 +1,6 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
-import { getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
+import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
 
 const exercises: WithId<Document>[] = []
 
@@ -340,5 +340,130 @@ describe("sortExercises", () => {
         const output = sortExercises(exercises, "name", "desc")
         
         expect(exercises).not.toBe(output)
+    })
+})
+
+describe("findInvalidExerciseQueries", () => {
+    test("returns false when passed a valid query", () => {
+        const output = findInvalidExerciseQueries(["sort"])
+        expect(output).toBe(false)
+    })
+    test("returns false when passed two valid queries", () => {
+        const output = findInvalidExerciseQueries(["sort", "order"])
+        expect(output).toBe(false)
+    })
+    test("returns false when passed an empty array", () => {
+        const output = findInvalidExerciseQueries([])
+        expect(output).toBe(false)
+    })
+    test("returns true when passed a single invalid query", () => {
+        const output = findInvalidExerciseQueries(["invalid"])
+        expect(output).toBe(true)
+    })
+    test("returns true when passed two invalid queries", () => {
+        const output = findInvalidExerciseQueries(["invalid", "query"])
+        expect(output).toBe(true)
+    })
+    test("returns true when passed a mix of invalid and valid queries", () => {
+        const output = findInvalidExerciseQueries(["invalid", "sort", "query", "order"])
+        expect(output).toBe(true)
+    })
+})
+
+describe("checkExerciseSort", () => {
+    test("returns false when sort is id", () => {
+        const output = checkExerciseSort("id")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is _id", () => {
+        const output = checkExerciseSort("_id")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is name", () => {
+        const output = checkExerciseSort("name")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is an empty string", () => {
+        const output = checkExerciseSort("name")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is undefined", () => {
+        const output = checkExerciseSort(undefined)
+        expect(output).toBe(false)
+    })
+    test("returns true when sort is invalid", () => {
+        const output = checkExerciseSort("invalid")
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is undefined as a string", () => {
+        const output = checkExerciseSort("undefined")
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is an array", () => {
+        const output = checkExerciseSort(["id"])
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is a number", () => {
+        const output = checkExerciseSort(3)
+        expect(output).toBe(true)
+    })
+    test("returns true when sort is an object", () => {
+        const output = checkExerciseSort({id: "id"})
+        expect(output).toBe(true)
+    })
+})
+
+describe("checkExerciseOrder", () => {
+    test("returns false when order is asc", () => {
+        const output = checkExerciseOrder("asc")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is ASC", () => {
+        const output = checkExerciseOrder("ASC")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is ascending", () => {
+        const output = checkExerciseOrder("ascending")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is desc", () => {
+        const output = checkExerciseOrder("desc")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is DESC", () => {
+        const output = checkExerciseOrder("DESC")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is descending", () => {
+        const output = checkExerciseOrder("descending")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is an empty string", () => {
+        const output = checkExerciseOrder("")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is undefined", () => {
+        const output = checkExerciseOrder(undefined)
+        expect(output).toBe(false)
+    })
+    test("returns true when order is an invalid order", () => {
+        const output = checkExerciseOrder("random")
+        expect(output).toBe(true)
+    })
+    test("returns true when order is undefined as a string", () => {
+        const output = checkExerciseOrder("undefined")
+        expect(output).toBe(true)
+    })
+    test("returns true when order is a number", () => {
+        const output = checkExerciseOrder(1)
+        expect(output).toBe(true)
+    })
+    test("returns true when order is an array", () => {
+        const output = checkExerciseOrder(["asc"])
+        expect(output).toBe(true)
+    })
+    test("returns true when order is an object", () => {
+        const output = checkExerciseOrder({ asc: "asc" })
+        expect(output).toBe(true)
     })
 })

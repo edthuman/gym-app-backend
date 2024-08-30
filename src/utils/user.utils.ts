@@ -43,3 +43,21 @@ export const sortUsers = (users: any[], sort: any, order: any): any[] => {
     }
     return sortedUsers
 }
+
+export const findInvalidUserQueries = (queries: string[]): boolean => {
+    const validQueries = ["sort", "order", "username"]
+    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    return isInvalidQuery
+}
+
+export const checkUserSort = (sort: any): boolean => {
+    const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
+    const isInvalidSort = !validSortCriteria.includes(sort)
+    return isInvalidSort
+}
+
+export const checkUserOrder = (order: any): boolean => {
+    const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
+    const isInvalidOrder = !validOrderCriteria.includes(order)
+    return isInvalidOrder
+}

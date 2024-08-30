@@ -51,3 +51,21 @@ export const sortExercises = (exercises: any[], sort: any, order: any): any[] =>
     }
     return sortedArray
 }
+
+export const findInvalidExerciseQueries = (queries: string[]): boolean => {
+    const validQueries = ["sort", "order"]
+    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    return isInvalidQuery
+}
+
+export const checkExerciseSort = (sort: any): boolean => {
+    const validSortCriteria: any[] = ["id", "_id", "name", "", undefined]
+    const isInvalid = !validSortCriteria.includes(sort)
+    return isInvalid
+}
+
+export const checkExerciseOrder = (order: any): boolean => {
+    const validOrderCriteria: any[] = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
+    const isInvalid = !validOrderCriteria.includes(order)
+    return isInvalid
+}
