@@ -417,6 +417,15 @@ describe("/api", () => {
                         expect(msg).toBe("Invalid query")
                     })
                 })
+                test("POST 400: returns a Bad Request error message when using an empty username query on a post", () => {
+                    return request(app)
+                    .post("/api/users?username")
+                    .send({username: "validUser"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
             })
         })
         describe("/users/:user_id", () => {
