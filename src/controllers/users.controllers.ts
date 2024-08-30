@@ -19,6 +19,12 @@ export const getAllUsers = async (req: Request, res: Response) => {
     }
     if (username) {
         const user = await selectUserByUsername(username)
+        if (user === null) {
+            sendNotFoundError(res, "No users found")
+            return
+        }
+
+        delete user.exercises
         res.send({users: [user]})
         return
     }
