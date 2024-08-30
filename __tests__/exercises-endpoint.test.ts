@@ -520,6 +520,28 @@ describe("api/exercises", () => {
                     expect(msg).toBe("Invalid query")
                 })
             })
+            test("POST 400: returns a Bad Request error message when given invalid query", () => {
+                const exercise = { name: "Skipping", description: "skipping with a rope", icon: "skip-rope"}
+
+                return request(app)
+                .post("/api/exercises?query=this")
+                .send(exercise)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given empty invalid query", () => {
+                const exercise = { name: "Skipping", description: "skipping with a rope", icon: "skip-rope"}
+
+                return request(app)
+                .post("/api/exercises?query")
+                .send(exercise)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
         })
     })
 })
