@@ -380,6 +380,53 @@ describe("/api", () => {
                     })
                 })
             })
+            describe("username", () => {
+                test("GET 200: returns the correct user in an array if given existing username", () => {
+                    return request(app)
+                    .get("/api/users?username=HumptyDumpty")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        expect(users).toEqual([{
+                            _id: expect.any(String),
+                            username: "HumptyDumpty"
+                        }])
+                    })
+                })
+                test("GET 400: returns a Bad Request error message if passed no value for username", () => {
+                    return request(app)
+                    .get("/api/users?username")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("No username given")
+                    })
+                })
+                test("GET 404: returns a Not Found error message for a non-existent username", () => {
+                    return request(app)
+                    .get("/api/users?username=not-real-user")
+                    .expect(404)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("No users found")
+                    })
+                })
+                test("POST 400: returns a Bad Request error message when using a username query on a post", () => {
+                    return request(app)
+                    .post("/api/users?username=name")
+                    .send({username: "validUser"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+                test("POST 400: returns a Bad Request error message when using an empty username query on a post", () => {
+                    return request(app)
+                    .post("/api/users?username")
+                    .send({username: "validUser"})
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("Invalid query")
+                    })
+                })
+            })
         })
         describe("/users/:user_id", () => {
             test("GET 200: returns the correct user when given a valid username", async () => {

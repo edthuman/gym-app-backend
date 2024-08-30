@@ -50,3 +50,13 @@ export const selectUserById = async (id: ObjectId) => {
         return { error: true }
     }
 }
+
+export const selectUserByUsername = async (username: any) => {
+    try {
+        const user: any = await (await db).collection("users").findOne({ username })
+        return user
+    }
+    catch {
+        return { error: true }
+    }
+}

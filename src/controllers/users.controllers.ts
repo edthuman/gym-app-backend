@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
-import { insertUser, selectAllUsers, selectUserById } from "../models/users.models"
+import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendNotFoundError } from "../error-handlers"
 import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
-    const { sort, order } = req.query
+    const { sort, order, username } = req.query
     
     const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
     const isInvalidSortCriteria = !validSortCriteria.includes(sort)
@@ -13,6 +13,26 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
     const isInvalidOrderCriteria = !validOrderCriteria.includes(order)
     
+    if (username === "") {
+        sendBadRequestError(res, "No username given")
+        return
+    }
+    if (username) {
+        const user = await selectUserByUsername(username)
+        if (user === null) {
+            sendNotFoundError(res, "No users found")
+            return
+        }
+        if (user.error) {
+            sendInternalServerError(res, "Error fetching users")
+            return
+        }
+
+        delete user.exercises
+        res.send({users: [user]})
+        return
+    }
+
     const users = await selectAllUsers()
 
     const isServerError = users.length === 0
@@ -33,6 +53,12 @@ export const getAllUsers = async (req: Request, res: Response) => {
 }
 
 export const postUser = async (req: Request, res: Response) => {
+    const {username} = req.query
+    if (typeof username === "string") {
+        sendBadRequestError(res, "Invalid query")
+        return
+    }
+
     const userObject = req.body
     const userErrorMessage = getUserErrorMessage(userObject) // returns empty string if no error, else provides error message
 
