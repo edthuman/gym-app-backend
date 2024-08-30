@@ -392,6 +392,14 @@ describe("/api", () => {
                         }])
                     })
                 })
+                test("GET 400: returns a Bad Request error message if passed no value for username", () => {
+                    return request(app)
+                    .get("/api/users?username")
+                    .expect(400)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("No username given")
+                    })
+                })
             })
         })
         describe("/users/:user_id", () => {
