@@ -17,6 +17,22 @@ describe("/api", () => {
                 expect(body).toEqual(expectedEndpoints)
             })
         })
+        test("GET 400: returns a Bad Request error message if query given", () => {
+            return request(app)
+            .get("/api?query=this")
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("GET 400: returns a Bad Request error message if empty query given", () => {
+            return request(app)
+            .get("/api?query")
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
         test("POST 405: returns a Method Not Allowed error message", () => {
             return request(app)
             .post("/api")
