@@ -53,6 +53,12 @@ export const getAllUsers = async (req: Request, res: Response) => {
 }
 
 export const postUser = async (req: Request, res: Response) => {
+    const {username} = req.query
+    if (typeof username === "string") {
+        sendBadRequestError(res, "Invalid query")
+        return
+    }
+
     const userObject = req.body
     const userErrorMessage = getUserErrorMessage(userObject) // returns empty string if no error, else provides error message
 
