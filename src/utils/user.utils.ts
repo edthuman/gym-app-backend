@@ -43,3 +43,9 @@ export const sortUsers = (users: any[], sort: any, order: any): any[] => {
     }
     return sortedUsers
 }
+
+export const findInvalidUserQueries = (queries: string[]): boolean => {
+    const validQueries = ["sort", "order", "username"]
+    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    return isInvalidQuery
+}
