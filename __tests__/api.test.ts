@@ -400,6 +400,14 @@ describe("/api", () => {
                         expect(msg).toBe("No username given")
                     })
                 })
+                test("GET 404: returns a Not Found error message for a non-existent username", () => {
+                    return request(app)
+                    .get("/api/users?username=not-real-user")
+                    .expect(404)
+                    .then(({body: {msg}}) => {
+                        expect(msg).toBe("No users found")
+                    })
+                })
             })
         })
         describe("/users/:user_id", () => {
