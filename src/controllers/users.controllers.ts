@@ -53,8 +53,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 }
 
 export const postUser = async (req: Request, res: Response) => {
-    const {sort, order, username} = req.query
-    const isQuery = ![sort, order, username].every((element) => element === undefined)
+    const isQuery = Object.keys(req.query).length !== 0
     if (isQuery) {
         sendBadRequestError(res, "Invalid query")
         return
