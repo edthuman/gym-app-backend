@@ -1,10 +1,18 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
-import { sendBadRequestError, sendConflictError, sendInternalServerError, sendNotFoundError } from "../error-handlers"
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendNotFoundError } from "../error-handlers"
 import { getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
+    const validQueries = ["sort", "order", "username"]
+    const queries = Object.keys(req.query)
+    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    if (isInvalidQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+
     const { sort, order, username } = req.query
     
     const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
@@ -53,9 +61,9 @@ export const getAllUsers = async (req: Request, res: Response) => {
 }
 
 export const postUser = async (req: Request, res: Response) => {
-    const {username} = req.query
-    if (typeof username === "string") {
-        sendBadRequestError(res, "Invalid query")
+    const isQuery = Object.keys(req.query).length !== 0
+    if (isQuery) {
+        sendInvalidQueryError(res)
         return
     }
 
@@ -80,6 +88,12 @@ export const postUser = async (req: Request, res: Response) => {
 }
 
 export const getUserById = async (req: Request, res: Response) => {
+    const isQuery = Object.keys(req.query).length !== 0
+    if (isQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+
     const { user_id } = req.params
 
     let id: ObjectId
