@@ -55,3 +55,9 @@ export const checkUserSort = (sort: any): boolean => {
     const isInvalidSort = !validSortCriteria.includes(sort)
     return isInvalidSort
 }
+
+export const checkUserOrder = (order: any): boolean => {
+    const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
+    const isInvalidOrder = !validOrderCriteria.includes(order)
+    return isInvalidOrder
+}
