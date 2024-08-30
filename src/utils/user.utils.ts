@@ -49,3 +49,9 @@ export const findInvalidUserQueries = (queries: string[]): boolean => {
     const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
     return isInvalidQuery
 }
+
+export const checkUserSort = (sort: any): boolean => {
+    const validSortCriteria: any[] = ["username", "id", "_id", "", undefined]
+    const isInvalidSort = !validSortCriteria.includes(sort)
+    return isInvalidSort
+}
