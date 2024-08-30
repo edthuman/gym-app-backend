@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises } from "../models/exercises.models";
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError } from "../error-handlers";
-import { getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
+import { findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
-    const validQueries = ["sort", "order"]
     const queries = Object.keys(req.query)
-    const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
+    const isInvalidQuery = findInvalidExerciseQueries(queries)
     if (isInvalidQuery) {
         sendInvalidQueryError(res)
         return
