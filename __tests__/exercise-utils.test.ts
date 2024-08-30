@@ -1,6 +1,6 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
-import { checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
+import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
 
 const exercises: WithId<Document>[] = []
 
@@ -410,5 +410,40 @@ describe("checkExerciseSort", () => {
     test("returns true when sort is an object", () => {
         const output = checkExerciseSort({id: "id"})
         expect(output).toBe(true)
+    })
+})
+
+describe("checkExerciseOrder", () => {
+    test("returns false when order is asc", () => {
+        const output = checkExerciseOrder("asc")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is ASC", () => {
+        const output = checkExerciseOrder("ASC")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is ascending", () => {
+        const output = checkExerciseOrder("ascending")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is desc", () => {
+        const output = checkExerciseOrder("desc")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is DESC", () => {
+        const output = checkExerciseOrder("DESC")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is descending", () => {
+        const output = checkExerciseOrder("descending")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is an empty string", () => {
+        const output = checkExerciseOrder("")
+        expect(output).toBe(false)
+    })
+    test("returns false when order is undefined", () => {
+        const output = checkExerciseOrder(undefined)
+        expect(output).toBe(false)
     })
 })
