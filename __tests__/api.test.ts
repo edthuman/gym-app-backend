@@ -380,6 +380,19 @@ describe("/api", () => {
                     })
                 })
             })
+            describe("username", () => {
+                test("GET 200: returns the correct user in an array if given existing username", () => {
+                    return request(app)
+                    .get("/api/users?username=HumptyDumpty")
+                    .expect(200)
+                    .then(({body: {users}}) => {
+                        expect(users).toEqual([{
+                            _id: expect.any(String),
+                            username: "HumptyDumpty"
+                        }])
+                    })
+                })
+            })
         })
         describe("/users/:user_id", () => {
             test("GET 200: returns the correct user when given a valid username", async () => {
