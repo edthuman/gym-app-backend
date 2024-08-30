@@ -53,6 +53,5 @@ export const selectUserById = async (id: ObjectId) => {
 
 export const selectUserByUsername = async (username: any) => {
     const user: any = await (await db).collection("users").findOne({ username })
-    delete user.exercises
     return user
 }
