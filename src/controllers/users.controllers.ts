@@ -13,6 +13,10 @@ export const getAllUsers = async (req: Request, res: Response) => {
     const validOrderCriteria: any[] = ["DESC", "desc", "descending", "ASC", "asc", "ascending", "", undefined]
     const isInvalidOrderCriteria = !validOrderCriteria.includes(order)
     
+    if (username === "") {
+        sendBadRequestError(res, "No username given")
+        return
+    }
     if (username) {
         const user = await selectUserByUsername(username)
         res.send({users: [user]})
