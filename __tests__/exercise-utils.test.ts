@@ -1,6 +1,6 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
-import { findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
+import { checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
 
 const exercises: WithId<Document>[] = []
 
@@ -367,5 +367,28 @@ describe("findInvalidExerciseQueries", () => {
     test("returns true when passed a mix of invalid and valid queries", () => {
         const output = findInvalidExerciseQueries(["invalid", "sort", "query", "order"])
         expect(output).toBe(true)
+    })
+})
+
+describe("checkExerciseSort", () => {
+    test("returns false when sort is id", () => {
+        const output = checkExerciseSort("id")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is _id", () => {
+        const output = checkExerciseSort("_id")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is name", () => {
+        const output = checkExerciseSort("name")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is an empty string", () => {
+        const output = checkExerciseSort("name")
+        expect(output).toBe(false)
+    })
+    test("returns false when sort is undefined", () => {
+        const output = checkExerciseSort(undefined)
+        expect(output).toBe(false)
     })
 })
