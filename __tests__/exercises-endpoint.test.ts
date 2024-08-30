@@ -503,5 +503,23 @@ describe("api/exercises", () => {
                 })
             })
         })
+        describe("non-existent queries", () => {
+            test("GET 400: returns a Bad Request error message when given invalid query", () => {
+                return request(app)
+                .get("/api/exercises?query=this")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("GET 400: returns a Bad Request error message when given empty invalid query", () => {
+                return request(app)
+                .get("/api/exercises?query")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
     })
 })
