@@ -356,4 +356,16 @@ describe("findInvalidExerciseQueries", () => {
         const output = findInvalidExerciseQueries([])
         expect(output).toBe(false)
     })
+    test("returns true when passed a single invalid query", () => {
+        const output = findInvalidExerciseQueries(["invalid"])
+        expect(output).toBe(true)
+    })
+    test("returns true when passed two invalid queries", () => {
+        const output = findInvalidExerciseQueries(["invalid", "query"])
+        expect(output).toBe(true)
+    })
+    test("returns true when passed a mix of invalid and valid queries", () => {
+        const output = findInvalidExerciseQueries(["invalid", "sort", "query", "order"])
+        expect(output).toBe(true)
+    })
 })
