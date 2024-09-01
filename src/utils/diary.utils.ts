@@ -4,6 +4,9 @@ export const generateDiaryErrorMessage = (diary: any): string => {
     if (username === "" || username === undefined) {
         return "No username given"
     }
+    if (typeof username !== "string") {
+        return "Username must be a string"
+    }
     if (exercise === "" || exercise === undefined) {
         return "No exercise given"
     }
