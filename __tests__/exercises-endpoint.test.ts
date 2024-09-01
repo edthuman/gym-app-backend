@@ -542,6 +542,14 @@ describe("api/exercises", () => {
                     expect(msg).toBe("No exercises found")
                 })
             })
+            test("GET 400: returns a Bad Request error message when name has no value", () => {
+                return request(app)
+                .get("/api/exercises?name")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No name given")
+                })
+            })
         })
         describe("non-existent queries", () => {
             test("GET 400: returns a Bad Request error message when given invalid query", () => {
