@@ -18,11 +18,16 @@ export const selectAllDiaries = async () => {
 }
 
 export const insertDiary = async (diary: Diary) => {
-    const response = await (await db).collection("diaries").insertOne(diary)
-    const id = response.insertedId
-
-    return {
-        _id: id,
-        ...diary
+    try {
+        const response = await (await db).collection("diaries").insertOne(diary)
+        const id = response.insertedId
+    
+        return {
+            _id: id,
+            ...diary
+        }
+    }
+    catch {
+        return {isError: true}
     }
 }
