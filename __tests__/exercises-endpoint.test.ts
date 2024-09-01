@@ -519,6 +519,21 @@ describe("api/exercises", () => {
                     ])
                 })
             })
+            test("GET 200: returns an array with only the exercise with given name when name includes a space", () => {
+                return request(app)
+                .get("/api/exercises?name=Stair Machine")
+                .expect(200)
+                .then(({body: {exercises}}) => {
+                    expect(exercises).toEqual([
+                        {
+                        _id: expect.any(String),
+                        name: "Stair Machine",
+                        description: "Climb stairs continuously",
+                        icon: "stairs"
+                        }
+                    ])
+                })
+            })
         })
         describe("non-existent queries", () => {
             test("GET 400: returns a Bad Request error message when given invalid query", () => {
