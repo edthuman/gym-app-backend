@@ -96,5 +96,27 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        test("POST 201: returns the posted diary object when given no personalBest", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(201)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: expect.any(String),
+                    username: "gymbro",
+                    exercise: "Leg Press",
+                    goal: 40,
+                    logs: []
+                })
+            })
+        })
     })
 })
