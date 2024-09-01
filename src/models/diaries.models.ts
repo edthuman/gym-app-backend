@@ -24,7 +24,8 @@ export const insertDiary = async (diary: Diary) => {
     
         return {
             _id: id,
-            ...diary
+            ...diary,
+            logs: []
         }
     }
     catch {
