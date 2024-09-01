@@ -1,5 +1,5 @@
 export const generateDiaryErrorMessage = (diary: any): string => {
-    const {username, exercise, personalBest, goal } = diary
+    const {username, exercise, personalBest, goal, logs } = diary
     
     if (username === "" || username === undefined) {
         return "No username given"
@@ -18,6 +18,19 @@ export const generateDiaryErrorMessage = (diary: any): string => {
     }
     if (typeof goal !== "number" && goal !== undefined) {
         return "Goal must be a number"
+    }
+    if (logs === undefined) {
+        return ""
+    }
+    if (!Array.isArray(logs)) {
+        return "Logs must be an array of log objects"
+    }
+
+    for (let i = 0; i < logs.length; i++) {
+        const isElementObject = Object.prototype.toString.apply(logs[i]) === "[object Object]"
+        if (!isElementObject) {
+            return "Logs must be an array of log objects"
+        }
     }
     return ""
 }
