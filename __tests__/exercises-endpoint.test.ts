@@ -550,6 +550,26 @@ describe("api/exercises", () => {
                     expect(msg).toBe("No name given")
                 })
             })
+            test("POST 400: returns a Bad Request error message when given a name query on a post request", () => {
+                const exercise = {name: "Dancing", description: "moving your body in time to music", icon: "dance"}
+                return request(app)
+                .post("/api/exercises?name=Dancing")
+                .send(exercise)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an empty name query on a post request", () => {
+                const exercise = {name: "Dancing", description: "moving your body in time to music", icon: "dance"}
+                return request(app)
+                .post("/api/exercises?name")
+                .send(exercise)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
         })
         describe("non-existent queries", () => {
             test("GET 400: returns a Bad Request error message when given invalid query", () => {
