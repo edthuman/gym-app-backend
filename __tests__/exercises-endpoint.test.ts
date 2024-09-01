@@ -534,6 +534,14 @@ describe("api/exercises", () => {
                     ])
                 })
             })
+            test("GET 404: returns a Not Found error message when no exercise exists with given name", () => {
+                return request(app)
+                .get("/api/exercises?name=Rugby")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No exercises found")
+                })
+            })
         })
         describe("non-existent queries", () => {
             test("GET 400: returns a Bad Request error message when given invalid query", () => {
