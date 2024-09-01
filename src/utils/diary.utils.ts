@@ -27,8 +27,14 @@ export const generateDiaryErrorMessage = (diary: any): string => {
     }
 
     for (let i = 0; i < logs.length; i++) {
-        const isElementObject = Object.prototype.toString.apply(logs[i]) === "[object Object]"
+        const element = logs[i]
+        const isElementObject = Object.prototype.toString.apply(element) === "[object Object]"
         if (!isElementObject) {
+            return "Logs must be an array of log objects"
+        }
+        const isDateValid = /\d\d-\d\d-\d\d\d\d/.test(element)
+        const isLogValid = typeof element.log === "number"
+        if (!isDateValid || !isLogValid){
             return "Logs must be an array of log objects"
         }
     }
