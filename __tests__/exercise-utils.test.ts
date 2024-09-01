@@ -352,6 +352,10 @@ describe("findInvalidExerciseQueries", () => {
         const output = findInvalidExerciseQueries(["sort", "order"])
         expect(output).toBe(false)
     })
+    test("returns false when passed name query in an array", () => {
+        const output = findInvalidExerciseQueries(["name"])
+        expect(output).toBe(false)
+    })
     test("returns false when passed an empty array", () => {
         const output = findInvalidExerciseQueries([])
         expect(output).toBe(false)

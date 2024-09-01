@@ -53,7 +53,7 @@ export const sortExercises = (exercises: any[], sort: any, order: any): any[] =>
 }
 
 export const findInvalidExerciseQueries = (queries: string[]): boolean => {
-    const validQueries = ["sort", "order"]
+    const validQueries = ["sort", "order", "name"]
     const isInvalidQuery = queries.some((query) => !validQueries.includes(query))
     return isInvalidQuery
 }

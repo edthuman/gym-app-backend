@@ -503,6 +503,82 @@ describe("api/exercises", () => {
                 })
             })
         })
+        describe("name", () => {
+            test("GET 200: returns an array with only the exercise with given name", () => {
+                return request(app)
+                .get("/api/exercises?name=Treadmill")
+                .expect(200)
+                .then(({body: {exercises}}) => {
+                    expect(exercises).toEqual([
+                        {
+                        _id: expect.any(String),
+                        name: "Treadmill",
+                        description: "Walk or run on the machine",
+                        icon: "treadmill"
+                        }
+                    ])
+                })
+            })
+            test("GET 200: returns an array with only the exercise with given name when name includes a space", () => {
+                return request(app)
+                .get("/api/exercises?name=Stair Machine")
+                .expect(200)
+                .then(({body: {exercises}}) => {
+                    expect(exercises).toEqual([
+                        {
+                        _id: expect.any(String),
+                        name: "Stair Machine",
+                        description: "Climb stairs continuously",
+                        icon: "stairs"
+                        }
+                    ])
+                })
+            })
+            test("GET 404: returns a Not Found error message when no exercise exists with given name", () => {
+                return request(app)
+                .get("/api/exercises?name=Rugby")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No exercises found")
+                })
+            })
+            test("POST 404: returns a Not Found error message when name matches part of an existing exercise name", () => {
+                return request(app)
+                .get("/api/exercises?name=Rowing")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No exercises found")
+                })
+            })
+            test("GET 400: returns a Bad Request error message when name has no value", () => {
+                return request(app)
+                .get("/api/exercises?name")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No name given")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given a name query on a post request", () => {
+                const exercise = {name: "Dancing", description: "moving your body in time to music", icon: "dance"}
+                return request(app)
+                .post("/api/exercises?name=Dancing")
+                .send(exercise)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when given an empty name query on a post request", () => {
+                const exercise = {name: "Dancing", description: "moving your body in time to music", icon: "dance"}
+                return request(app)
+                .post("/api/exercises?name")
+                .send(exercise)
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
         describe("non-existent queries", () => {
             test("GET 400: returns a Bad Request error message when given invalid query", () => {
                 return request(app)
