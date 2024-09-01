@@ -1,4 +1,5 @@
 import db from "../../connection"
+import { Diary } from "../types"
 
 export const selectAllDiaries = async () => {
     try {
@@ -13,5 +14,15 @@ export const selectAllDiaries = async () => {
     }
     catch {
         return {isError: true}
+    }
+}
+
+export const insertDiary = async (diary: Diary) => {
+    const response = await (await db).collection("diaries").insertOne(diary)
+    const id = response.insertedId
+
+    return {
+        _id: id,
+        ...diary
     }
 }
