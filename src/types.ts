@@ -24,7 +24,7 @@ export interface Log {
 export interface Diary {
     username: string,
     exercise: string,
-    pb?: number,
+    personalBest?: number,
     goal?: number,
     logs: Log[]
 }
