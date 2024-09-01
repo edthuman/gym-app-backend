@@ -10,5 +10,8 @@ export const generateDiaryErrorMessage = (diary: any): string => {
     if (exercise === "" || exercise === undefined) {
         return "No exercise given"
     }
+    if (typeof exercise !== "string") {
+        return "Exercise must be a string"
+    }
     return ""
 }
