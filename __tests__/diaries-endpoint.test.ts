@@ -168,5 +168,21 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("No user exists with given username")
             })
         })
+        test("POST 400: returns a Bad Request error message when given no exercise", () => {
+            const diary = {
+                username: "fakename",
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("No exercise given")
+            })
+        })
     })
 })
