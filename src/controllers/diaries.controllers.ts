@@ -15,5 +15,10 @@ export const postDiary = async (req: Request, res: Response) => {
     const diaryObject = req.body
     const diary = await insertDiary(diaryObject)
 
+    if (diary.isError) {
+        sendInternalServerError(res, "Error posting Diary")
+        return
+    }
+
     res.status(201).send({diary})
 }
