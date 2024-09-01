@@ -1,5 +1,5 @@
 export const generateDiaryErrorMessage = (diary: any): string => {
-    const {username, exercise, personalBest } = diary
+    const {username, exercise, personalBest, goal } = diary
     
     if (username === "" || username === undefined) {
         return "No username given"
@@ -15,6 +15,9 @@ export const generateDiaryErrorMessage = (diary: any): string => {
     }
     if (typeof personalBest !== "number" && personalBest !== undefined) {
         return "PersonalBest must be a number"
+    }
+    if (typeof goal !== "number" && goal !== undefined) {
+        return "Goal must be a number"
     }
     return ""
 }
