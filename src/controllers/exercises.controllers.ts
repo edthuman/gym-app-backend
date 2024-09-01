@@ -13,6 +13,10 @@ export const getAllExercises = async (req: Request, res: Response) => {
 
     const { name, sort, order } = req.query
     
+    if (name === "") {
+        sendBadRequestError(res, "No name given")
+        return
+    }
     if (typeof name === "string") {
         getExerciseByName(res, name)
         return
