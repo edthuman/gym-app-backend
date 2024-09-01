@@ -51,7 +51,7 @@ describe("generateDiaryErrorMessage", () => {
 
         expect(output).toBe("No exercise given")
     })
-    it("returns correct error string for a diary with no exercise", () => {
+    it("returns correct error string for a diary with an empty string exercise", () => {
         const input = {
             username: "gymbro",
             exercise: "",
