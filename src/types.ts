@@ -21,7 +21,7 @@ export interface Log {
     log: number
 }
 
-export interface LogsDocument {
+export interface Diary {
     username: string,
     exercise: string,
     pb?: number,
