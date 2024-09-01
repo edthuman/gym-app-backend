@@ -181,4 +181,43 @@ describe("generateDiaryErrorMessage", () => {
 
         expect(output).toBe("PersonalBest must be a number")
     })
+    it("returns correct error string for a diary with a string for goal", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: "two",
+            logs: []
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Goal must be a number")
+    })
+    it("returns correct error string for a diary with an array for goal", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: [4],
+            logs: []
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Goal must be a number")
+    })
+    it("returns correct error string for a diary with an object for goal", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: {goal: 4},
+            logs: []
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Goal must be a number")
+    })
 })
