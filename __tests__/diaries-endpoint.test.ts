@@ -20,7 +20,7 @@ describe("/api/diaries", () => {
 
                     diary.logs.forEach((element: any) => {
                         expect(element).toEqual({
-                            date: expect.stringMatching(/\d\d-\d\d-\d\d/),
+                            date: expect.stringMatching(/\d\d-\d\d-\d\d\d\d/),
                             log: expect.any(Number)
                         })
                     })
