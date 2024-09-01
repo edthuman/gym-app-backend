@@ -26,12 +26,12 @@ export const postDiary = async (req: Request, res: Response) => {
     const { username } = diaryObject
     const isValidUsername = await selectUserByUsername(username)
 
-    if (isValidUsername.error) {
-        sendInternalServerError(res, "Error posting diary")
-    }
     if (!isValidUsername) {
         sendBadRequestError(res, "No user exists with given username")
         return
+    }
+    if (isValidUsername.error) {
+        sendInternalServerError(res, "Error posting diary")
     }
 
     const diary = await insertDiary(diaryObject)
