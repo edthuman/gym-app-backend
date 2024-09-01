@@ -53,7 +53,7 @@ describe("/api/diaries", () => {
         })
         test("POST 201: returns the posted diary object when given no log array", () => {
             const diary = {
-                username: "gymbro",
+                username: "liftqueen",
                 exercise: "Leg Press",
                 personalBest: 22.5,
                 goal: 40
@@ -66,7 +66,7 @@ describe("/api/diaries", () => {
             .then(({body: {diary}}) => {
                 expect(diary).toEqual({
                     _id: expect.any(String),
-                    username: "gymbro",
+                    username: "liftqueen",
                     exercise: "Leg Press",
                     personalBest: 22.5,
                     goal: 40,
@@ -76,7 +76,7 @@ describe("/api/diaries", () => {
         })
         test("POST 201: returns the posted diary object when given no goal", () => {
             const diary = {
-                username: "gymbro",
+                username: "legituser",
                 exercise: "Leg Press",
                 personalBest: 22.5,
                 logs: []
@@ -89,7 +89,7 @@ describe("/api/diaries", () => {
             .then(({body: {diary}}) => {
                 expect(diary).toEqual({
                     _id: expect.any(String),
-                    username: "gymbro",
+                    username: "legituser",
                     exercise: "Leg Press",
                     personalBest: 22.5,
                     logs: []
@@ -98,8 +98,8 @@ describe("/api/diaries", () => {
         })
         test("POST 201: returns the posted diary object when given no personalBest", () => {
             const diary = {
-                username: "gymbro",
-                exercise: "Leg Press",
+                username: "HumptyDumpty",
+                exercise: "Pull Up",
                 goal: 40,
                 logs: []
             }
@@ -111,8 +111,8 @@ describe("/api/diaries", () => {
             .then(({body: {diary}}) => {
                 expect(diary).toEqual({
                     _id: expect.any(String),
-                    username: "gymbro",
-                    exercise: "Leg Press",
+                    username: "HumptyDumpty",
+                    exercise: "Pull Up",
                     goal: 40,
                     logs: []
                 })
