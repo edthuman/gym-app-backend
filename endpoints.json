@@ -41,7 +41,7 @@
     },
     "GET /api/exercises" : {
         "description": "serves all exercises",
-        "queries": [ "order", "sort" ],
+        "queries": [ "order", "sort", "name" ],
         "example response": {
             "exercises": [
                 {
