@@ -39,6 +39,10 @@ export const postDiary = async (req: Request, res: Response) => {
         sendBadRequestError(res, "Exercise does not exist")
         return
     }
+    if (isValidExercise.isError) {
+        sendInternalServerError(res, "Error posting diary")
+        return
+    }
 
     const diary = await insertDiary(diaryObject)
 
