@@ -17,6 +17,11 @@ export const selectAllDiaries = async () => {
     }
 }
 
+export const selectDiary = async (username: string, exercise: string) => {
+    const diary = await (await db).collection("diaries").findOne({ username, exercise })
+    return diary
+}
+
 export const insertDiary = async (diary: Diary) => {
     try {
         const response = await (await db).collection("diaries").insertOne(diary)
