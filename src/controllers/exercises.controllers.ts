@@ -78,6 +78,7 @@ const getExerciseByName = async (res: Response, name: string) => {
     }
     if (exercise.isError) {
         sendInternalServerError(res, "Error fetching exercises")
+        return
     }
     res.send({exercises: [exercise]})
 }
