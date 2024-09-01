@@ -151,6 +151,57 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("No username given")
             })
         })
+        test("POST 400: returns a Bad Request error message when username is a number", () => {
+            const diary = {
+                username: 20,
+                exercise: "Leg Press",
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Username must be a string")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when username is an array", () => {
+            const diary = {
+                username: ["user", "name"],
+                exercise: "Leg Press",
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Username must be a string")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when username is an object", () => {
+            const diary = {
+                username: { name: "gymbro"},
+                exercise: "Leg Press",
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Username must be a string")
+            })
+        })
         test("POST 400: returns a Bad Request error message when no user exists with given username", () => {
             const diary = {
                 username: "fakename",
