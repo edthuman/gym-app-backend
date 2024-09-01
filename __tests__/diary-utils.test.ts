@@ -246,7 +246,7 @@ describe("generateDiaryErrorMessage", () => {
 
         expect(output).toBe("Logs must be an array of log objects")
     })
-    it("returns correct error string for a diary with an array for logs", () => {
+    it("returns correct error string for a diary with an object for logs", () => {
         const input = {
             username: "gymbro",
             exercise: "Leg Press",
