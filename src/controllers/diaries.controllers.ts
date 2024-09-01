@@ -2,6 +2,7 @@ import { Response, Request } from "express"
 import { insertDiary, selectAllDiaries } from "../models/diaries.models"
 import { sendBadRequestError, sendInternalServerError } from "../error-handlers"
 import { checkDiaryInvalid } from "../utils/diary.utils"
+import { selectUserByUsername } from "../models/users.models"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
     const diaries: any = await selectAllDiaries()
@@ -22,10 +23,21 @@ export const postDiary = async (req: Request, res: Response) => {
         return
     }
 
+    const { username } = diaryObject
+    const isValidUsername = await selectUserByUsername(username)
+
+    if (isValidUsername.error) {
+        sendInternalServerError(res, "Error posting diary")
+    }
+    if (!isValidUsername) {
+        sendBadRequestError(res, "No user exists with given username")
+        return
+    }
+
     const diary = await insertDiary(diaryObject)
 
     if (diary.isError) {
-        sendInternalServerError(res, "Error posting Diary")
+        sendInternalServerError(res, "Error posting diary")
         return
     }
 
