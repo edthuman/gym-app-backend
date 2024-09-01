@@ -34,7 +34,7 @@ export const generateDiaryErrorMessage = (diary: any): string => {
         }
         const isDateValid = /\d\d-\d\d-\d\d\d\d/.test(element)
         const isLogValid = typeof element.log === "number"
-        if (!isDateValid || !isLogValid){
+        if (!isDateValid || !isLogValid) {
             return "Logs must be an array of log objects"
         }
     }
