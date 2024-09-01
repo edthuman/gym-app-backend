@@ -1,16 +1,16 @@
-import { checkDiaryInvalid } from "../src/utils/diary.utils"
+import { generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
-describe("checkDiaryInvalid", () => {
+describe("generateDiaryErrorMessage", () => {
     it("returns false for a valid diary object", () => {
         const input = {
-            username: "gymbro",
+            name: "gymbro",
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
             logs: []
         }
 
-        const output = checkDiaryInvalid(input)
+        const output = generateDiaryErrorMessage(input)
 
         expect(output).toBe(false)
     })
@@ -22,7 +22,7 @@ describe("checkDiaryInvalid", () => {
             logs: []
         }
 
-        const output = checkDiaryInvalid(input)
+        const output = generateDiaryErrorMessage(input)
 
         expect(output).toBe(true)
     })
@@ -35,7 +35,7 @@ describe("checkDiaryInvalid", () => {
             logs: []
         }
 
-        const output = checkDiaryInvalid(input)
+        const output = generateDiaryErrorMessage(input)
 
         expect(output).toBe(true)
     })

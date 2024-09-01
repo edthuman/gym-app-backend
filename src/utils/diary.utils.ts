@@ -1,4 +1,4 @@
-export const checkDiaryInvalid = (diary: any): boolean => {
+export const generateDiaryErrorMessage = (diary: any): string => {
     const {username} = diary
     
     if (username === "" || username === undefined) {
