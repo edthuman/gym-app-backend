@@ -252,6 +252,57 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("No exercise given")
             })
         })
+        test("POST 400: returns a Bad Request error message when given a number for exercise", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: 1,
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Exercise must be a string")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an array for exercise", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: ["Leg Press"],
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Exercise must be a string")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object for exercise", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: { name: "Leg Press" },
+                personalBest: 22.5,
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Exercise must be a string")
+            })
+        })
         test("POST 400: returns a Bad Request error message when given a non-existent exercise", () => {
             const diary = {
                 username: "gymbro",
