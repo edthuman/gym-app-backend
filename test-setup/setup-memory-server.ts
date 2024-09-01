@@ -5,10 +5,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 
 const users = require("../src/seeding/data/users.json");
 const exercises = require("../src/seeding/data/exercises.json");
-const logs = require("../src/seeding/data/logs.json")
+const diaries = require("../src/seeding/data/diaries.json")
 
 beforeAll(async () => {
-    await seed(await db, users, exercises, logs);
+    await seed(await db, users, exercises, diaries);
 })
 
 afterAll(async () => {
