@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises, selectExerciseByName } from "../models/exercises.models";
-import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError } from "../error-handlers";
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendNotFoundError } from "../error-handlers";
 import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
@@ -68,6 +68,10 @@ export const postExercise = async (req: Request, res: Response) => {
 
 const getExerciseByName = async (res: Response, name: string) => {
     const exercise: any = await selectExerciseByName(name)
+    if (exercise === null) {
+        sendNotFoundError(res, "No exercises found")
+        return
+    }
     if (exercise.isError) {
         sendInternalServerError(res, "Error fetching exercises")
     }
