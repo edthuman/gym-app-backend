@@ -542,6 +542,14 @@ describe("api/exercises", () => {
                     expect(msg).toBe("No exercises found")
                 })
             })
+            test("POST 404: returns a Not Found error message when name matches part of an existing exercise name", () => {
+                return request(app)
+                .get("/api/exercises?name=Rowing")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No exercises found")
+                })
+            })
             test("GET 400: returns a Bad Request error message when name has no value", () => {
                 return request(app)
                 .get("/api/exercises?name")
