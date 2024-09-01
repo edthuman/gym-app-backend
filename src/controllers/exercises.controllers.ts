@@ -38,6 +38,7 @@ export const getAllExercises = async (req: Request, res: Response) => {
     const isError = exercises.length === 0
     if (isError) {
         sendInternalServerError(res, "Error fetching exercises")
+        return
     }
 
     const sortedExercises = sortExercises(exercises, sort, order)
@@ -78,6 +79,7 @@ const getExerciseByName = async (res: Response, name: string) => {
     }
     if (exercise.isError) {
         sendInternalServerError(res, "Error fetching exercises")
+        return
     }
     res.send({exercises: [exercise]})
 }
