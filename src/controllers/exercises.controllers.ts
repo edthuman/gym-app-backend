@@ -67,6 +67,9 @@ export const postExercise = async (req: Request, res: Response) => {
 }
 
 const getExerciseByName = async (res: Response, name: string) => {
-    const exercise = await selectExerciseByName(name)
+    const exercise: any = await selectExerciseByName(name)
+    if (exercise.isError) {
+        sendInternalServerError(res, "Error fetching exercises")
+    }
     res.send({exercises: [exercise]})
 }
