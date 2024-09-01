@@ -298,4 +298,134 @@ describe("generateDiaryErrorMessage", () => {
 
         expect(output).toBe("Logs must be an array of log objects")
     })
+    it("returns correct error string for a diary if an element in logs has no date", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{log: 20}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has a number for date", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: 1, log: 20}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has an array for date", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: ["20-01-2024"], log: 20}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has an object for date", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: {day: "20-01-2024"}, log: 20}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has an empty string for date", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: "", log: 20}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has an incorrect string for date", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: "XX-XX-XXXX", log: 20}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has no log property", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: "20-01-2024"}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has a string log property", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: "20-01-2024", log: "two"}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has an array log property", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: "20-01-2024", log: [2, 2]}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
+    it("returns correct error string for a diary if an element in logs has an object log property", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{date: "20-01-2024", log: {value: 2}}]
+        }
+
+        const output = generateDiaryErrorMessage(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
 })
