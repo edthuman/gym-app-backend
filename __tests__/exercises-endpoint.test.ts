@@ -503,6 +503,23 @@ describe("api/exercises", () => {
                 })
             })
         })
+        describe("name", () => {
+            test("GET 200: returns an array with only the exercise with given name", () => {
+                return request(app)
+                .get("/api/exercises?name=Treadmill")
+                .expect(200)
+                .then(({body: {exercises}}) => {
+                    expect(exercises).toEqual([
+                        {
+                        _id: expect.any(String),
+                        name: "Treadmill",
+                        description: "Walk or run on the machine",
+                        icon: "treadmill"
+                        }
+                    ])
+                })
+            })
+        })
         describe("non-existent queries", () => {
             test("GET 400: returns a Bad Request error message when given invalid query", () => {
                 return request(app)
