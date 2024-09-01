@@ -694,5 +694,31 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("Logs must be an array of log objects")
             })
         })
+        test("POST 409: returns a Conflict error message when existing diary exists for username and exercise", () => {
+            const diary = {
+                username: "liftqueen",
+                exercise: "Stair Machine",
+                personalBest: 15,
+                goal: 20,
+                logs: [
+                    {
+                        date: "26-08-2024",
+                        log: 10
+                    },
+                    {
+                        date: "28-08-2024",
+                        log: 15
+                    }
+                ]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(409)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Diary already exists")
+            })
+        })
     })
 })
