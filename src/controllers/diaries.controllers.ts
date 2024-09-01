@@ -1,6 +1,7 @@
 import { Response, Request } from "express"
 import { insertDiary, selectAllDiaries } from "../models/diaries.models"
 import { sendBadRequestError, sendInternalServerError } from "../error-handlers"
+import { checkDiaryInvalid } from "../utils/diary.utils"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
     const diaries: any = await selectAllDiaries()
@@ -14,8 +15,11 @@ export const getAllDiaries = async (req: Request, res: Response) => {
 export const postDiary = async (req: Request, res: Response) => {
     const diaryObject = req.body
 
-    if (diaryObject.username === undefined) {
+    const isInvalidDiary = checkDiaryInvalid(diaryObject)
+
+    if (isInvalidDiary) {
         sendBadRequestError(res, "No username given")
+        return
     }
 
     const diary = await insertDiary(diaryObject)
