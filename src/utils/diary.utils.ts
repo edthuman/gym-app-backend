@@ -1,8 +1,11 @@
 export const generateDiaryErrorMessage = (diary: any): string => {
-    const {username} = diary
+    const {username, exercise } = diary
     
     if (username === "" || username === undefined) {
         return "No username given"
+    }
+    if (exercise === undefined) {
+        return "No exercise given"
     }
     return ""
 }
