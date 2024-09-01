@@ -3,6 +3,7 @@ import { insertDiary, selectAllDiaries } from "../models/diaries.models"
 import { sendBadRequestError, sendInternalServerError } from "../error-handlers"
 import { generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
+import { selectExerciseByName } from "../models/exercises.models"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
     const diaries: any = await selectAllDiaries()
@@ -22,7 +23,7 @@ export const postDiary = async (req: Request, res: Response) => {
         return
     }
 
-    const { username } = diaryObject
+    const { username, exercise } = diaryObject
     const isValidUsername = await selectUserByUsername(username)
 
     if (!isValidUsername) {
@@ -31,6 +32,12 @@ export const postDiary = async (req: Request, res: Response) => {
     }
     if (isValidUsername.error) {
         sendInternalServerError(res, "Error posting diary")
+    }
+
+    const isValidExercise = await selectExerciseByName(exercise)
+    if (!isValidExercise) {
+        sendBadRequestError(res, "Exercise does not exist")
+        return
     }
 
     const diary = await insertDiary(diaryObject)
