@@ -422,5 +422,107 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("Goal must be a number")
             })
         })
+        test("POST 400: returns a Bad Request error message when given a string for logs", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: "a string"
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given a number for logs", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: 2
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object for logs", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: { date: "20-01-2024", log: 20 }
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given a logs array with a number element", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [1]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given a logs array with a string element", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: ["log", "logs"]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given a logs array with an array element", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [[{ date: "20-01-2024", log: 20 }]]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
     })
 })
