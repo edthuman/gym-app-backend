@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { selectAllDiaries } from "../models/diaries.models"
+import { insertDiary, selectAllDiaries } from "../models/diaries.models"
 import { sendInternalServerError } from "../error-handlers"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
@@ -9,4 +9,11 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         return
     }
     res.send({ diaries })
+}
+
+export const postDiary = async (req: Request, res: Response) => {
+    const diaryObject = req.body
+    const diary = await insertDiary(diaryObject)
+
+    res.status(201).send({diary})
 }
