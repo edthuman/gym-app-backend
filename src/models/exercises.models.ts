@@ -44,6 +44,11 @@ const findExercise = async (exercise: Exercise) => {
 }
 
 export const selectExerciseByName = async (name: string) => {
-    const exercise = await (await db).collection("exercises").findOne({ name })
-    return exercise
+    try {
+        const exercise = await (await db).collection("exercises").findOne({ name })
+        return exercise
+    }
+    catch {
+        return {isError: true}
+    }
 }
