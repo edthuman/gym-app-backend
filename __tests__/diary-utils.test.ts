@@ -1,9 +1,9 @@
 import { generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
-    it("returns false for a valid diary object", () => {
+    it("returns an empty string for a valid diary object", () => {
         const input = {
-            name: "gymbro",
+            username: "gymbro",
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
@@ -12,9 +12,9 @@ describe("generateDiaryErrorMessage", () => {
 
         const output = generateDiaryErrorMessage(input)
 
-        expect(output).toBe(false)
+        expect(output).toBe("")
     })
-    it("returns true for a diary with no username", () => {
+    it("returns correct error string for a diary with no username", () => {
         const input = {
             exercise: "Leg Press",
             personalBest: 2,
@@ -24,9 +24,9 @@ describe("generateDiaryErrorMessage", () => {
 
         const output = generateDiaryErrorMessage(input)
 
-        expect(output).toBe(true)
+        expect(output).toBe("No username given")
     })
-    it("returns true for a diary with an empty string username", () => {
+    it("returns correct error string for a diary with an empty string username", () => {
         const input = {
             username: "",
             exercise: "Leg Press",
@@ -37,6 +37,6 @@ describe("generateDiaryErrorMessage", () => {
 
         const output = generateDiaryErrorMessage(input)
 
-        expect(output).toBe(true)
+        expect(output).toBe("No username given")
     })
 })
