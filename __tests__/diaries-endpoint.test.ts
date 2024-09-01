@@ -320,5 +320,56 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("Exercise does not exist")
             })
         })
+        test("POST 400: returns a Bad Request error message when given a string for personalBest", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: "a string",
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("PersonalBest must be a number")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an array for personalBest", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: [20],
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("PersonalBest must be a number")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object for personalBest", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: { pb: 20},
+                goal: 40,
+                logs: []
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("PersonalBest must be a number")
+            })
+        })
     })
 })
