@@ -406,6 +406,14 @@ describe("/api/users", () => {
                     expect(msg).toBe("No users found")
                 })
             })
+            test("GET 404: returns a Not Found error message when queried with part of an existing username", () => {
+                return request(app)
+                .get("/api/users?username=gym")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No users found")
+                })
+            })
             test("POST 400: returns a Bad Request error message when using a username query on a post", () => {
                 return request(app)
                 .post("/api/users?username=name")
@@ -535,22 +543,22 @@ describe("/api/users", () => {
                 expect(msg).toBe("Request method not allowed on this endpoint")
             })
         })
-        describe("?", () => {
-            test("GET 400: returns a Bad Request error message if passed a query", () => {
-                return request(app)
-                .get("/api/users/aaaaa11111bbbbb22222cccc?query=this")
-                .expect(400)
-                .then(({body: {msg}}) => {
-                    expect(msg).toBe("Invalid query")
-                })
+    })
+    describe("/users/:user_id?", () => {
+        test("GET 400: returns a Bad Request error message if passed a query", () => {
+            return request(app)
+            .get("/api/users/aaaaa11111bbbbb22222cccc?query=this")
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
             })
-            test("GET 400: returns a Bad Request error message if passed an empty query", () => {
-                return request(app)
-                .get("/api/users/aaaaa11111bbbbb22222cccc?query")
-                .expect(400)
-                .then(({body: {msg}}) => {
-                    expect(msg).toBe("Invalid query")
-                })
+        })
+        test("GET 400: returns a Bad Request error message if passed an empty query", () => {
+            return request(app)
+            .get("/api/users/aaaaa11111bbbbb22222cccc?query")
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
             })
         })
     })
