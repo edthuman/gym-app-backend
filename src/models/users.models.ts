@@ -47,7 +47,7 @@ export const selectUserById = async (id: ObjectId) => {
         return user
     }
     catch {
-        return { error: true }
+        return { isError: true }
     }
 }
 
@@ -57,6 +57,6 @@ export const selectUserByUsername = async (username: any) => {
         return user
     }
     catch {
-        return { error: true }
+        return { isError: true }
     }
 }
