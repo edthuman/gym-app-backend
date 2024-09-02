@@ -11,7 +11,7 @@ describe("api/exercises", () => {
             .then(({body: {exercises}}) => {
                 expect(exercises).toHaveLength(6)
 
-                exercises.forEach((exercise: MongoDBExercise[]) => {
+                exercises.forEach((exercise: any) => {
                     expect(exercise).toEqual({
                         _id: expect.any(String),
                         name: expect.any(String),
