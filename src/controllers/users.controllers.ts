@@ -96,7 +96,7 @@ export const getUserById = async (req: Request, res: Response) => {
         sendNotFoundError(res, "User not found")
         return
     }
-    if (user.error) {
+    if (user.isError) {
         sendInternalServerError(res, "Error fetching user")
         return
     }
@@ -111,7 +111,7 @@ const getUserByUsername = async (res: Response, username: any) => {
         sendNotFoundError(res, "No users found")
         return
     }
-    if (user.error) {
+    if (user.isError) {
         sendInternalServerError(res, "Error fetching users")
         return
     }
