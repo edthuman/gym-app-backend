@@ -30,7 +30,7 @@ export const postDiary = async (req: Request, res: Response) => {
         sendBadRequestError(res, "No user exists with given username")
         return
     }
-    if (isValidUsername.error) {
+    if (isValidUsername.isError) {
         sendInternalServerError(res, "Error posting diary")
     }
 
