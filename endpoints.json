@@ -1,5 +1,5 @@
 {
-    "GET /api" : {
+    "GET /api": {
         "description": "serves a json representation of available endpoints"
     },
     "GET /api/users": {
@@ -30,16 +30,16 @@
             }
         }
     },
-    "POST /api/users" : {
+    "POST /api/users": {
         "description": "adds a given user object, returns the added user object",
         "example response": {
             "user": {
                 "_id": "3",
-                "username" : "new_user"
+                "username": "new_user"
             }
         }
     },
-    "GET /api/exercises" : {
+    "GET /api/exercises": {
         "description": "serves all exercises",
         "queries": [ "order", "sort", "name" ],
         "example response": {
@@ -59,7 +59,7 @@
             ]
         }
     },
-    "POST /api/exercises" : {
+    "POST /api/exercises": {
         "description": "adds a given exercise object, returns the added exercise object",
         "example response": {
             "exercise": {
@@ -67,6 +67,60 @@
                     "name": "New Exercise",
                     "description": "description of exercise",
                     "icon": "new-exercise"
+            }
+        }
+    },
+    "GET /api/diaries": {
+        "description": "serves all diary objects",
+        "example response": {
+            "diaries": [
+                {
+                    "_id": "1",
+                    "username": "goodUsername",
+                    "exercise": "Pull up",
+                    "personalBest": 4,
+                    "goal": 10,
+                    "logs": [
+                        {
+                            "date": "20-08-2024",
+                            "log": 10
+                        }
+                    ]
+
+
+                },
+                {
+                    "_id": "2",
+                    "username": "badUsername",
+                    "exercise": "Chin Up",
+                    "personalBest": 4,
+                    "goal": 10,
+                    "logs": [
+                        {
+                            "date": "20-08-2024",
+                            "log": 40
+                        }
+                    ]
+                }
+            ]
+        }
+
+    },
+    "POST /api/diaries": {
+        "description": "adds a given diary, returns the added object",
+        "example response": {
+            "diary": {
+                "_id": "3",
+                "username": "goodUsername",
+                "exercise": "Chin up",
+                "personalBest": 8,
+                "goal": 10,
+                "logs": [
+                    {
+                        "date": "20-08-2024",
+                        "log": 10
+                    }
+                ]
             }
         }
     }

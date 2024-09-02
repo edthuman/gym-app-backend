@@ -720,5 +720,29 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("Diary already exists")
             })
         })
+        test("PATCH 405: returns a Method Not Allowed error message", () => {
+            return request(app)
+            .patch("/api/diaries")
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+        test("DELETE 405: returns a Method Not Allowed error message", () => {
+            return request(app)
+            .delete("/api/diaries")
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+        test("PUT 405: returns a Method Not Allowed error message", () => {
+            return request(app)
+            .put("/api/diaries")
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
     })
 })
