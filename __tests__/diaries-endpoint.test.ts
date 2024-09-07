@@ -1,5 +1,6 @@
 import request from "supertest"
 import app from "../src"
+import { MongoDBDiary } from "../src/types"
 
 describe("/api/diaries", () => {
     describe("/", () => {
@@ -742,6 +743,58 @@ describe("/api/diaries", () => {
             .expect(405)
             .then(({body: {msg}}) => {
                 expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+    })
+    describe("?", () => {
+        describe("sort", () => {
+            test("GET 200: returns diaries ordered by _id when given no value", () => {
+                return request(app)
+                .get("/api/diaries?sort")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 200: returns diaries ordered by _id when passed 'id'", () => {
+                return request(app)
+                .get("/api/diaries?sort=id")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 200: returns diaries ordered by _id when passed '_id'", () => {
+                return request(app)
+                .get("/api/diaries?sort=_id")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
             })
         })
     })
