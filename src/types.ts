@@ -28,3 +28,7 @@ export interface Diary {
     goal?: number,
     logs: Log[]
 }
+
+export interface MongoDBDiary extends Diary {
+    _id: String
+}
