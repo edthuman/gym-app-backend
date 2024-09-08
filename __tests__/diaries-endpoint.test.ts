@@ -974,6 +974,22 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("Invalid order query")
                 })
             })
+            test("POST 400: returns a Bad Request error message when queried", () => {
+                return request(app)
+                .post("/api/diaries?order=asc")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed an empty query", () => {
+                return request(app)
+                .post("/api/diaries?order")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
         })
     })
 })
