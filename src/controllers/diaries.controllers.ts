@@ -1,6 +1,6 @@
 import { Response, Request } from "express"
 import { insertDiary, selectAllDiaries, selectDiary } from "../models/diaries.models"
-import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError } from "../error-handlers"
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
 import { checkDiaryOrder, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
@@ -74,6 +74,14 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     }
 
     if (exercise) {
+        const isExercise = await selectExerciseByName(exercise)
+        if (!isExercise) {
+            sendNotFoundError(res, "Exercise not found")
+            return
+        }
+        if (isExercise.isError) {
+            sendInternalServerError(res, "Error fetching diaries")
+        }
         const exerciseQueries = diaries.filter((diary: MongoDBDiary) => diary.exercise === exercise)
         res.send({diaries: exerciseQueries})
         return
