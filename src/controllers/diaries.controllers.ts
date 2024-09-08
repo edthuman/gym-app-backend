@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { insertDiary, selectAllDiaries, selectDiary } from "../models/diaries.models"
-import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendInvalidSortError } from "../error-handlers"
-import { checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError } from "../error-handlers"
+import { checkDiaryOrder, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
@@ -18,6 +18,12 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     const isInvalidSort = checkDiarySort(sort)
     if (isInvalidSort) {
         sendInvalidSortError(res)
+        return
+    }
+
+    const isInvalidOrder = checkDiaryOrder(order)
+    if (isInvalidOrder) {
+        sendInvalidOrderError(res)
         return
     }
     
