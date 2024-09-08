@@ -15,8 +15,8 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         return
     }
 
-    const isSortValid = checkDiarySort(sort)
-    if (!isSortValid) {
+    const isInvalidSort = checkDiarySort(sort)
+    if (isInvalidSort) {
         sendInvalidSortError(res)
         return
     }
