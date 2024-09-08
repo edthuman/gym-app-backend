@@ -1052,6 +1052,14 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("Username not found")
                 })
             })
+            test("GET 404: returns a Not Found error message if given part of an existing username", () => {
+                return request(app)
+                .get("/api/diaries?username=gym")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username not found")
+                })
+            })
         })
     })
 })
