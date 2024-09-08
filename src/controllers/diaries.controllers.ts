@@ -58,7 +58,7 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         }
     }
 
-    const diaries: any = await selectAllDiaries()
+    let diaries: any = await selectAllDiaries()
     if (diaries.isError) {
         sendInternalServerError(res, "Error fetching diaries")
         return
@@ -82,14 +82,12 @@ export const getAllDiaries = async (req: Request, res: Response) => {
 
     if (username) {
         const userQueries = diaries.filter((diary: MongoDBDiary) => diary.username === username)
-        res.send({diaries: userQueries})
-        return
+        diaries = userQueries
     }
 
     if (exercise) {
         const exerciseQueries = diaries.filter((diary: MongoDBDiary) => diary.exercise === exercise)
-        res.send({diaries: exerciseQueries})
-        return
+        diaries = exerciseQueries
     }
 
     res.send({ diaries })
