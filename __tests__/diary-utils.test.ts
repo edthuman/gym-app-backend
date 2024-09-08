@@ -1,4 +1,4 @@
-import { checkDiaryOrder, checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -533,5 +533,28 @@ describe("checkDiaryOrder", () => {
     it("returns true when passed an array", () => {
         const output = checkDiaryOrder({order: "asc"})
         expect(output).toBe(true)
+    })
+})
+
+describe("checkDiaryQueries", () => {
+    it("returns false when passed sort", () => {
+        const output = checkDiaryQueries(["sort"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed order", () => {
+        const output = checkDiaryQueries(["order"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed username", () => {
+        const output = checkDiaryQueries(["username"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed exercise", () => {
+        const output = checkDiaryQueries(["exercise"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed multiple valid queries", () => {
+        const output = checkDiaryQueries(["sort", "order", "username", "exercise"])
+        expect(output).toBe(false)
     })
 })
