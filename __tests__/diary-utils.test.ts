@@ -455,6 +455,10 @@ describe("checkDiarySort", () => {
         const output = checkDiarySort("exercise")
         expect(output).toBe(false)
     })
+    it("returns true when passed an invalid sort", () => {
+        const output = checkDiarySort("random")
+        expect(output).toBe(true)
+    })
     it("returns true when passed a string of 'undefined'", () => {
         const output = checkDiarySort("undefined")
         expect(output).toBe(true)
