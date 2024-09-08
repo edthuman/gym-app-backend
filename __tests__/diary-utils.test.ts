@@ -557,4 +557,8 @@ describe("checkDiaryQueries", () => {
         const output = checkDiaryQueries(["sort", "order", "username", "exercise"])
         expect(output).toBe(false)
     })
+    it("returns false when passed an empty array", () => {
+        const output = checkDiaryQueries([])
+        expect(output).toBe(false)
+    })
 })
