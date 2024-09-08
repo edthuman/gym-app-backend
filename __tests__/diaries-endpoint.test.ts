@@ -1036,6 +1036,14 @@ describe("/api/diaries", () => {
                     })
                 })
             })
+            test("GET 400: returns a Bad Request error message if query is empty", () => {
+                return request(app)
+                .get("/api/diaries?username")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No username given")
+                })
+            })
         })
     })
 })
