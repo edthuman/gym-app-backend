@@ -16,6 +16,10 @@ export const sendInvalidQueryError = (res: Response) => {
     res.status(400).send({ msg: "Invalid query"})
 }
 
+export const sendInvalidSortError = (res: Response) => {
+    res.status(400).send({msg: "Invalid sort query"})
+}
+
 export const sendConflictError = (res: Response, msg: string) => {
     res.status(409).send({msg})
 }
