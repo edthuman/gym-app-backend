@@ -1044,6 +1044,14 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("No username given")
                 })
             })
+            test("GET 404: returns a Not Found error message if username does not exists", () => {
+                return request(app)
+                .get("/api/diaries?username=fakeuser")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username not found")
+                })
+            })
         })
     })
 })
