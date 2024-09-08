@@ -7,7 +7,7 @@ import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
-    const { sort } = req.query
+    const { sort, order } = req.query
 
     const diaries: any = await selectAllDiaries()
     if (diaries.isError) {
@@ -31,6 +31,10 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         })
     }
     
+    if (order === "desc" || order === "DESC" || order === "descending") {
+        diaries.reverse()
+    }
+
     res.send({ diaries })
 }
 
