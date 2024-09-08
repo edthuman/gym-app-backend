@@ -37,7 +37,9 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         })
     }
     
-    if (order === "desc" || order === "DESC" || order === "descending") {
+    const descendingOrder: any[] = ["desc", "DESC", "descending"] // declared as any so non-string values for order don't cause a type error
+    const isDescending = descendingOrder.includes(order)
+    if (isDescending) {
         diaries.reverse()
     }
 
