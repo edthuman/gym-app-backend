@@ -7,7 +7,7 @@ import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
-    const { sort, order, username } = req.query
+    const { sort, order, username, exercise } = req.query
 
     const diaries: any = await selectAllDiaries()
     if (diaries.isError) {
@@ -65,6 +65,12 @@ export const getAllDiaries = async (req: Request, res: Response) => {
 
         const userQueries = diaries.filter((diary: MongoDBDiary) => diary.username === username)
         res.send({diaries: userQueries})
+        return
+    }
+
+    if (exercise) {
+        const exerciseQueries = diaries.filter((diary: MongoDBDiary) => diary.exercise === exercise)
+        res.send({diaries: exerciseQueries})
         return
     }
 
