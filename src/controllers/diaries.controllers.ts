@@ -49,6 +49,10 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     }
 
     if (username) {
+        if (Array.isArray(username)) {
+            sendBadRequestError(res, "Multiple username queries given")
+            return
+        } 
         const user = await selectUserByUsername(username)
         if (!user) {
             sendBadRequestError(res, "Username not found")
