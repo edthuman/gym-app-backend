@@ -1165,6 +1165,14 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("No username given")
                 })
             })
+            test("GET 404: returns a Not Found error message when queried with valid username and exercise but no diaries exist", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro&exercise=Chin Up")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No diaries found")
+                })
+            })
             test("GET 404: returns a Not Found error message when queried with non-existent username and exercise", () => {
                 return request(app)
                 .get("/api/diaries?username=random&exercise=random")
