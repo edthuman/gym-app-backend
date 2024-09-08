@@ -1104,6 +1104,14 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("No exercise given")
                 })
             })
+            test("GET 400: returns a Bad Request error message when passed multiple exercise queries", () => {
+                return request(app)
+                .get("/api/diaries?exercise=Leg Press&exercise=Chin Up")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Multiple exercise queries given")
+                })
+            })
             test("GET 404: returns a Not Found error message when queried with non-existent exercise", () => {
                 return request(app)
                 .get("/api/diaries?exercise=Judo")
