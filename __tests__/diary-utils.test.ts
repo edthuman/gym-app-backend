@@ -1,4 +1,4 @@
-import { checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -474,5 +474,40 @@ describe("checkDiarySort", () => {
     it("returns true when passed null", () => {
         const output = checkDiarySort(null)
         expect(output).toBe(true)
+    })
+})
+
+describe("checkDiaryOrder", () => {
+    it("returns false when passed undefined", () => {
+        const output = checkDiaryOrder(undefined)
+        expect(output).toBe(false)
+    })
+    it("returns false when passed an empty string", () => {
+        const output = checkDiaryOrder("")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'asc'", () => {
+        const output = checkDiaryOrder("asc")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'ASC'", () => {
+        const output = checkDiaryOrder("ASC")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'ascending'", () => {
+        const output = checkDiaryOrder("ascending")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'desc'", () => {
+        const output = checkDiaryOrder("desc")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'DESC'", () => {
+        const output = checkDiaryOrder("DESC")
+        expect(output).toBe(false)
+    })
+        it("returns false when passed 'descending'", () => {
+        const output = checkDiaryOrder("descending")
+        expect(output).toBe(false)
     })
 })
