@@ -1104,6 +1104,14 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("No exercise given")
                 })
             })
+            test("GET 404: returns a Not Found error message when queried with non-existent exercise", () => {
+                return request(app)
+                .get("/api/diaries?exercise=Judo")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Exercise not found")
+                })
+            })
         })
     })
 })
