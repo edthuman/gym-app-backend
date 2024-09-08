@@ -1157,6 +1157,22 @@ describe("/api/diaries", () => {
                     })
                 })
             })
+            test("GET 400: returns a Bad Request error message when queried with empty username and exercise", () => {
+                return request(app)
+                .get("/api/diaries?username&exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No username given")
+                })
+            })
+            test("GET 404: returns a Not Found error message when queried with non-existent username and exercise", () => {
+                return request(app)
+                .get("/api/diaries?username=random&exercise=random")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username not found")
+                })
+            })
         })
     })
 })
