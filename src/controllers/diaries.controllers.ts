@@ -26,6 +26,11 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         sendInvalidOrderError(res)
         return
     }
+
+    if (username === "") {
+        sendBadRequestError(res, "No username given")
+        return
+    }
     
     if (sort === "username" || sort === "exercise") {
         diaries.sort((a: MongoDBDiary, b: MongoDBDiary)=>{
