@@ -796,6 +796,22 @@ describe("/api/diaries", () => {
                     expect(diaries).toEqual(orderedDiaries)
                 })
             })
+            test("GET 200: returns diaries ordered by username when passed 'username'", () => {
+                return request(app)
+                .get("/api/diaries?sort=username")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a.username.toLowerCase()
+                        const y = b.username.toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
         })
     })
 })
