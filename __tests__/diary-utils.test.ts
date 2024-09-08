@@ -431,48 +431,48 @@ describe("generateDiaryErrorMessage", () => {
 })
 
 describe("checkDiarySort", () => {
-    it("returns true when passed undefined", () => {
+    it("returns false when passed undefined", () => {
         const output = checkDiarySort(undefined)
-        expect(output).toBe(true)
+        expect(output).toBe(false)
     })
-    it("returns true when passed an empty string", () => {
+    it("returns false when passed an empty string", () => {
         const output = checkDiarySort("")
-        expect(output).toBe(true)
+        expect(output).toBe(false)
     })
-    it("returns true when passed 'id'", () => {
+    it("returns false when passed 'id'", () => {
         const output = checkDiarySort("id")
-        expect(output).toBe(true)
+        expect(output).toBe(false)
     })
-    it("returns true when passed '_id'", () => {
+    it("returns false when passed '_id'", () => {
         const output = checkDiarySort("_id")
-        expect(output).toBe(true)
+        expect(output).toBe(false)
     })
-    it("returns true when passed 'username'", () => {
+    it("returns false when passed 'username'", () => {
         const output = checkDiarySort("username")
-        expect(output).toBe(true)
+        expect(output).toBe(false)
     })
-    it("returns true when passed 'exercise'", () => {
+    it("returns false when passed 'exercise'", () => {
         const output = checkDiarySort("exercise")
+        expect(output).toBe(false)
+    })
+    it("returns true when passed a string of 'undefined'", () => {
+        const output = checkDiarySort("undefined")
         expect(output).toBe(true)
     })
-    it("returns false when passed a string of 'undefined'", () => {
-        const output = checkDiarySort("undefined")
-        expect(output).toBe(false)
-    })
-    it("returns false when passed a number", () => {
+    it("returns true when passed a number", () => {
         const output = checkDiarySort(10)
-        expect(output).toBe(false)
+        expect(output).toBe(true)
     })
-    it("returns false when passed an array", () => {
+    it("returns true when passed an array", () => {
         const output = checkDiarySort(["id", "username", "exercise"])
-        expect(output).toBe(false)
+        expect(output).toBe(true)
     })
-    it("returns false when passed an object", () => {
+    it("returns true when passed an object", () => {
         const output = checkDiarySort({sort: "id"})
-        expect(output).toBe(false)
+        expect(output).toBe(true)
     })
-    it("returns false when passed null", () => {
+    it("returns true when passed null", () => {
         const output = checkDiarySort(null)
-        expect(output).toBe(false)
+        expect(output).toBe(true)
     })
 })
