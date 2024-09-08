@@ -49,6 +49,16 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     }
 
     if (username) {
+        const user = await selectUserByUsername(username)
+        if (!user) {
+            sendBadRequestError(res, "Username not found")
+            return
+        }
+        if (user.isError) {
+            sendInternalServerError(res, "Error fetching diaries")
+            return
+        }
+
         const userQueries = diaries.filter((diary: MongoDBDiary) => diary.username === username)
         res.send({diaries: userQueries})
         return
