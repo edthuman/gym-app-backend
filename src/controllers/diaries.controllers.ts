@@ -32,6 +32,11 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         return
     }
     
+    if (exercise === "") {
+        sendBadRequestError(res, "No exercise given")
+        return
+    }
+
     if (sort === "username" || sort === "exercise") {
         diaries.sort((a: MongoDBDiary, b: MongoDBDiary)=>{
             const x = a[sort].toLowerCase()
