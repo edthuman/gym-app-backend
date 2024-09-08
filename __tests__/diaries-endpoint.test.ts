@@ -918,6 +918,22 @@ describe("/api/diaries", () => {
                     expect(orderedDiaries).toEqual(diaries)
                 })
             })
+            test("GET 200: returns diaries ordered ascending when passed 'desc'", () => {
+                return request(app)
+                .get("/api/diaries?order=desc")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return 1
+                        if (x > y) return -1
+                        return 0
+                    })
+                    
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
         })
     })
 })
