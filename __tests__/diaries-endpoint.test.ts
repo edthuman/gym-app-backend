@@ -1137,5 +1137,18 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        describe("username & exercise", () => {
+            test("GET 200: returns the correct items when queried with both username and exercise", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro&exercise=Treadmill")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    diaries.forEach((diary:MongoDBDiary) => {
+                        expect(diary.username).toBe("gymbro")
+                        expect(diary.exercise).toBe("Treadmill")
+                    })
+                })
+            })
+        })
     })
 })
