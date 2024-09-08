@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
-import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendNotFoundError } from "../error-handlers"
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
 import { checkUserOrder, checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
@@ -16,7 +16,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     
     const isInvalidSort = checkUserSort(sort)
     if (isInvalidSort) {
-        sendBadRequestError(res, "Invalid sort query")
+        sendInvalidSortError(res)
         return
     }
 

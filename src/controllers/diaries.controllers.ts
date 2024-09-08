@@ -1,6 +1,6 @@
 import { Response, Request } from "express"
 import { insertDiary, selectAllDiaries, selectDiary } from "../models/diaries.models"
-import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError } from "../error-handlers"
+import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidSortError } from "../error-handlers"
 import { checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
@@ -17,7 +17,7 @@ export const getAllDiaries = async (req: Request, res: Response) => {
 
     const isSortValid = checkDiarySort(sort)
     if (!isSortValid) {
-        sendBadRequestError(res, "Invalid sort query")
+        sendInvalidSortError(res)
         return
     }
     
