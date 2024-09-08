@@ -1120,6 +1120,22 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("Exercise not found")
                 })
             })
+            test("POST 400: returns a Bad Request error message when passed an exercise query", () => {
+                return request(app)
+                .post("/api/diaries?exercise=Leg Press")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed an empty exercise query", () => {
+                return request(app)
+                .post("/api/diaries?exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
         })
     })
 })
