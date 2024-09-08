@@ -991,5 +991,39 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        describe("sort & order", () => {
+            test("GET 200: returns correct response when queried with both sort and order", () => {
+                return request(app)
+                .get("/api/diaries?sort=username&order=desc")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a.username.toLowerCase()
+                        const y = b.username.toLowerCase()
+                        if (x < y) return 1
+                        if (x > y) return -1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 400: returns a Bad Request error message when queried with invalid sort and order queries", () => {
+                return request(app)
+                .get("/api/diaries?sort=random&order=random")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid sort query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when queried with sort and order queries", () => {
+                return request(app)
+                .post("/api/diaries?sort=username&order=desc")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
     })
 })
