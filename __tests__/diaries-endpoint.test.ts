@@ -1096,6 +1096,14 @@ describe("/api/diaries", () => {
                     })
                 })
             })
+            test("GET 400: returns a Bad Request error message when query has no value", () => {
+                return request(app)
+                .get("/api/diaries?exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No exercise given")
+                })
+            })
         })
     })
 })
