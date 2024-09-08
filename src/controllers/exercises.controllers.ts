@@ -28,8 +28,8 @@ export const getAllExercises = async (req: Request, res: Response) => {
         return
     }
 
-    const isOrderInvalid = checkExerciseOrder(order)
-    if (isOrderInvalid) {
+    const isInvalidOrder = checkExerciseOrder(order)
+    if (isInvalidOrder) {
         sendBadRequestError(res, "Invalid order query")
         return
     }
