@@ -48,6 +48,10 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     }
 
     if (exercise) {
+        if (Array.isArray(exercise)) {
+            sendBadRequestError(res, "Multiple exercise queries given")
+            return
+        }
         const isExercise = await selectExerciseByName(exercise)
         if (!isExercise) {
             sendNotFoundError(res, "Exercise not found")
@@ -55,6 +59,7 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         }
         if (isExercise.isError) {
             sendInternalServerError(res, "Error fetching diaries")
+            return
         }
     }
 
