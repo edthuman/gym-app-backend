@@ -1055,7 +1055,7 @@ describe("/api/diaries", () => {
             test("GET 404: returns a Not Found error message if username does not exists", () => {
                 return request(app)
                 .get("/api/diaries?username=fakeuser")
-                .expect(400)
+                .expect(404)
                 .then(({body: {msg}}) => {
                     expect(msg).toBe("Username not found")
                 })
@@ -1063,7 +1063,7 @@ describe("/api/diaries", () => {
             test("GET 404: returns a Not Found error message if given part of an existing username", () => {
                 return request(app)
                 .get("/api/diaries?username=gym")
-                .expect(400)
+                .expect(404)
                 .then(({body: {msg}}) => {
                     expect(msg).toBe("Username not found")
                 })
