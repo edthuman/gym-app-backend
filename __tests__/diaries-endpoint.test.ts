@@ -1044,6 +1044,14 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("No username given")
                 })
             })
+            test("GET 400: returns a Bad Request error message if passed multiple username queries", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro&username=HumptyDumpty")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Multiple username queries given")
+                })
+            })
             test("GET 404: returns a Not Found error message if username does not exists", () => {
                 return request(app)
                 .get("/api/diaries?username=fakeuser")
