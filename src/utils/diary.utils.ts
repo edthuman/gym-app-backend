@@ -52,6 +52,15 @@ export const checkDiaryOrder = (order: any): boolean => {
     return !validOrder.includes(order)
 }
 
-export const checkDiaryQueries = (queries: any): boolean => {
-    return true
+export const checkDiaryQueries = (queries: any[]) => {
+    const validQueries = ["sort", "order", "username", "exercise"]
+    let isInvalidQuery = false
+
+    queries.forEach((query) => {
+        if (!validQueries.includes(query)) {
+            isInvalidQuery = true
+        }
+    })
+    
+    return isInvalidQuery
 }
