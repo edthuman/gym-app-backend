@@ -15,10 +15,10 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         return
     }
     
-    if (sort === "username") {
+    if (sort === "username" || sort === "exercise") {
         diaries.sort((a: MongoDBDiary, b: MongoDBDiary)=>{
-            const x = a.username.toLowerCase()
-            const y = b.username.toLowerCase()
+            const x = a[sort].toLowerCase()
+            const y = b[sort].toLowerCase()
             if (x < y) return -1
             if (x > y) return 1
             return 0
