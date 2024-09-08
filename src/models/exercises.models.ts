@@ -43,7 +43,7 @@ const findExercise = async (exercise: Exercise) => {
     return matchingExercise
 }
 
-export const selectExerciseByName = async (name: string) => {
+export const selectExerciseByName = async (name: any) => {
     try {
         const exercise = await (await db).collection("exercises").findOne({ name })
         return exercise

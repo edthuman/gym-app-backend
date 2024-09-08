@@ -368,7 +368,7 @@ describe("/api/users", () => {
                     expect(msg).toBe("Invalid sort query")
                 })
             })
-            test("POST 400: returns a Bad Request error message when given an empty order query", () => {
+            test("POST 400: returns a Bad Request error message when queried with both order and sort", () => {
                 return request(app)
                 .post("/api/users?sort=id&order=asc")
                 .send({username: "valid-username"})

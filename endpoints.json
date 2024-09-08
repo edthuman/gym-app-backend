@@ -72,6 +72,7 @@
     },
     "GET /api/diaries": {
         "description": "serves all diary objects",
+        "queries": [ "sort", "order", "username", "exercise" ],
         "example response": {
             "diaries": [
                 {

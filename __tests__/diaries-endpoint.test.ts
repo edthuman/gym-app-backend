@@ -1,5 +1,6 @@
 import request from "supertest"
 import app from "../src"
+import { MongoDBDiary } from "../src/types"
 
 describe("/api/diaries", () => {
     describe("/", () => {
@@ -742,6 +743,477 @@ describe("/api/diaries", () => {
             .expect(405)
             .then(({body: {msg}}) => {
                 expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+    })
+    describe("?", () => {
+        describe("sort", () => {
+            test("GET 200: returns diaries ordered by _id when given no value", () => {
+                return request(app)
+                .get("/api/diaries?sort")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 200: returns diaries ordered by _id when passed 'id'", () => {
+                return request(app)
+                .get("/api/diaries?sort=id")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 200: returns diaries ordered by _id when passed '_id'", () => {
+                return request(app)
+                .get("/api/diaries?sort=_id")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 200: returns diaries ordered by username when passed 'username'", () => {
+                return request(app)
+                .get("/api/diaries?sort=username")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a.username.toLowerCase()
+                        const y = b.username.toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 200: returns diaries ordered by exercise name when passed 'exercise'", () => {
+                return request(app)
+                .get("/api/diaries?sort=exercise")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a.exercise.toLowerCase()
+                        const y = b.exercise.toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 400: returns a Bad Request error message when passed an invalid query", () => {
+                return request(app)
+                .get("/api/diaries?sort=random")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid sort query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed a query", () => {
+                return request(app)
+                .post("/api/diaries?sort=id")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed an empty query", () => {
+                return request(app)
+                .post("/api/diaries?sort")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+        describe("order", () => {
+            test("GET 200: returns diaries ordered ascending when passed no value", () => {
+                return request(app)
+                .get("/api/diaries?order")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'asc'", () => {
+                return request(app)
+                .get("/api/diaries?order=asc")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'ASC'", () => {
+                return request(app)
+                .get("/api/diaries?order=ASC")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'ascending'", () => {
+                return request(app)
+                .get("/api/diaries?order=ascending")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+                    
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'desc'", () => {
+                return request(app)
+                .get("/api/diaries?order=desc")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return 1
+                        if (x > y) return -1
+                        return 0
+                    })
+                    
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'DESC'", () => {
+                return request(app)
+                .get("/api/diaries?order=DESC")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return 1
+                        if (x > y) return -1
+                        return 0
+                    })
+                    
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'descending'", () => {
+                return request(app)
+                .get("/api/diaries?order=descending")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return 1
+                        if (x > y) return -1
+                        return 0
+                    })
+                    
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 400: returns a Bad Request error message when passed invalid order", () => {
+                return request(app)
+                .get("/api/diaries?order=random")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid order query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when queried", () => {
+                return request(app)
+                .post("/api/diaries?order=asc")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed an empty query", () => {
+                return request(app)
+                .post("/api/diaries?order")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+        describe("sort & order", () => {
+            test("GET 200: returns correct response when queried with both sort and order", () => {
+                return request(app)
+                .get("/api/diaries?sort=username&order=desc")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a.username.toLowerCase()
+                        const y = b.username.toLowerCase()
+                        if (x < y) return 1
+                        if (x > y) return -1
+                        return 0
+                    })
+
+                    expect(diaries).toEqual(orderedDiaries)
+                })
+            })
+            test("GET 400: returns a Bad Request error message when queried with invalid sort and order queries", () => {
+                return request(app)
+                .get("/api/diaries?sort=random&order=random")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid sort query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when queried with sort and order queries", () => {
+                return request(app)
+                .post("/api/diaries?sort=username&order=desc")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+        describe("username", () => {
+            test("GET 200: returns diaries for queried username", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    diaries.forEach((diary: MongoDBDiary) => {
+                        expect(diary.username).toBe("gymbro")
+                    })
+                })
+            })
+            test("GET 400: returns a Bad Request error message if query is empty", () => {
+                return request(app)
+                .get("/api/diaries?username")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No username given")
+                })
+            })
+            test("GET 400: returns a Bad Request error message if passed multiple username queries", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro&username=HumptyDumpty")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Multiple username queries given")
+                })
+            })
+            test("GET 404: returns a Not Found error message if username does not exists", () => {
+                return request(app)
+                .get("/api/diaries?username=fakeuser")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username not found")
+                })
+            })
+            test("GET 404: returns a Not Found error message if given part of an existing username", () => {
+                return request(app)
+                .get("/api/diaries?username=gym")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username not found")
+                })
+            })
+            test("POST 400: returns a Bad Request error message if post request queried", () => {
+                return request(app)
+                .post("/api/diaries?username=gymbro")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message if post request passed an empty query", () => {
+                return request(app)
+                .post("/api/diaries?username=gymbro")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+        describe("exercise", () => {
+            test("GET 200: returns diaries for queried exercise" , () => {
+                return request(app)
+                .get("/api/diaries?exercise=Leg Press")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    diaries.forEach((diary: MongoDBDiary) => {
+                        expect(diary.exercise).toBe("Leg Press")
+                    })
+                })
+            })
+            test("GET 400: returns a Bad Request error message when query has no value", () => {
+                return request(app)
+                .get("/api/diaries?exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No exercise given")
+                })
+            })
+            test("GET 400: returns a Bad Request error message when passed multiple exercise queries", () => {
+                return request(app)
+                .get("/api/diaries?exercise=Leg Press&exercise=Chin Up")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Multiple exercise queries given")
+                })
+            })
+            test("GET 404: returns a Not Found error message when queried with non-existent exercise", () => {
+                return request(app)
+                .get("/api/diaries?exercise=Judo")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Exercise not found")
+                })
+            })
+            test("GET 404: returns a Not Found error message when queried with part of an exercise name", () => {
+                return request(app)
+                .get("/api/diaries?exercise=Leg")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Exercise not found")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed an exercise query", () => {
+                return request(app)
+                .post("/api/diaries?exercise=Leg Press")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when passed an empty exercise query", () => {
+                return request(app)
+                .post("/api/diaries?exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+        describe("username & exercise", () => {
+            test("GET 200: returns the correct items when queried with both username and exercise", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro&exercise=Treadmill")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    diaries.forEach((diary:MongoDBDiary) => {
+                        expect(diary.username).toBe("gymbro")
+                        expect(diary.exercise).toBe("Treadmill")
+                    })
+                })
+            })
+            test("GET 400: returns a Bad Request error message when queried with empty username and exercise", () => {
+                return request(app)
+                .get("/api/diaries?username&exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No username given")
+                })
+            })
+            test("GET 404: returns a Not Found error message when queried with valid username and exercise but no diaries exist", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro&exercise=Chin Up")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("No diaries found")
+                })
+            })
+            test("GET 404: returns a Not Found error message when queried with non-existent username and exercise", () => {
+                return request(app)
+                .get("/api/diaries?username=random&exercise=random")
+                .expect(404)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Username not found")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when queried with username and exercise", () => {
+                return request(app)
+                .post("/api/diaries?username=gymbro&exercise=Leg Press")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when queried with empty username and exercise", () => {
+                return request(app)
+                .post("/api/diaries?username&exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+        describe("non-existent queries", () => {
+            test("GET 200: returns a Bad Request error message when passed an invalid query", () => {
+                return request(app)
+                .get("/api/diaries?query=invalid")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("GET 200: returns a Bad Request error message when passed an invalid empty query", () => {
+                return request(app)
+                .get("/api/diaries?query")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
             })
         })
     })

@@ -41,3 +41,26 @@ export const generateDiaryErrorMessage = (diary: any): string => {
     }
     return ""
 }
+
+export const checkDiarySort = (sort: any): boolean => {
+    const validSorts = ["id", "_id", "username", "exercise", "", undefined]
+    return !validSorts.includes(sort)
+}
+
+export const checkDiaryOrder = (order: any): boolean => {
+    const validOrder = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
+    return !validOrder.includes(order)
+}
+
+export const checkDiaryQueries = (queries: any[]) => {
+    const validQueries = ["sort", "order", "username", "exercise"]
+    let isInvalidQuery = false
+
+    queries.forEach((query) => {
+        if (!validQueries.includes(query)) {
+            isInvalidQuery = true
+        }
+    })
+    
+    return isInvalidQuery
+}

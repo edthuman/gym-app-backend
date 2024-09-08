@@ -1,4 +1,4 @@
-import { generateDiaryErrorMessage } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -427,5 +427,146 @@ describe("generateDiaryErrorMessage", () => {
         const output = generateDiaryErrorMessage(input)
 
         expect(output).toBe("Logs must be an array of log objects")
+    })
+})
+
+describe("checkDiarySort", () => {
+    it("returns false when passed undefined", () => {
+        const output = checkDiarySort(undefined)
+        expect(output).toBe(false)
+    })
+    it("returns false when passed an empty string", () => {
+        const output = checkDiarySort("")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'id'", () => {
+        const output = checkDiarySort("id")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed '_id'", () => {
+        const output = checkDiarySort("_id")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'username'", () => {
+        const output = checkDiarySort("username")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'exercise'", () => {
+        const output = checkDiarySort("exercise")
+        expect(output).toBe(false)
+    })
+    it("returns true when passed an invalid sort", () => {
+        const output = checkDiarySort("random")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed a string of 'undefined'", () => {
+        const output = checkDiarySort("undefined")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed a number", () => {
+        const output = checkDiarySort(10)
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an array", () => {
+        const output = checkDiarySort(["id", "username", "exercise"])
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an object", () => {
+        const output = checkDiarySort({sort: "id"})
+        expect(output).toBe(true)
+    })
+    it("returns true when passed null", () => {
+        const output = checkDiarySort(null)
+        expect(output).toBe(true)
+    })
+})
+
+describe("checkDiaryOrder", () => {
+    it("returns false when passed undefined", () => {
+        const output = checkDiaryOrder(undefined)
+        expect(output).toBe(false)
+    })
+    it("returns false when passed an empty string", () => {
+        const output = checkDiaryOrder("")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'asc'", () => {
+        const output = checkDiaryOrder("asc")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'ASC'", () => {
+        const output = checkDiaryOrder("ASC")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'ascending'", () => {
+        const output = checkDiaryOrder("ascending")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'desc'", () => {
+        const output = checkDiaryOrder("desc")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'DESC'", () => {
+        const output = checkDiaryOrder("DESC")
+        expect(output).toBe(false)
+    })
+    it("returns false when passed 'descending'", () => {
+        const output = checkDiaryOrder("descending")
+        expect(output).toBe(false)
+    })
+    it("returns true when passed an invalid order", () => {
+        const output = checkDiaryOrder("random")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed 'undefined' as a string", () => {
+        const output = checkDiaryOrder("undefined")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed a number", () => {
+        const output = checkDiaryOrder(5)
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an array", () => {
+        const output = checkDiaryOrder(["asc"])
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an array", () => {
+        const output = checkDiaryOrder({order: "asc"})
+        expect(output).toBe(true)
+    })
+})
+
+describe("checkDiaryQueries", () => {
+    it("returns false when passed sort", () => {
+        const output = checkDiaryQueries(["sort"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed order", () => {
+        const output = checkDiaryQueries(["order"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed username", () => {
+        const output = checkDiaryQueries(["username"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed exercise", () => {
+        const output = checkDiaryQueries(["exercise"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed multiple valid queries", () => {
+        const output = checkDiaryQueries(["sort", "order", "username", "exercise"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed an empty array", () => {
+        const output = checkDiaryQueries([])
+        expect(output).toBe(false)
+    })
+    it("returns true when passed an invalid query", () => {
+        const output = checkDiaryQueries(["invalid"])
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an invalid query alongside other ", () => {
+        const output = checkDiaryQueries(["sort", "invalid"])
+        expect(output).toBe(true)
     })
 })
