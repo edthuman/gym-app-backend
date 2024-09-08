@@ -828,6 +828,14 @@ describe("/api/diaries", () => {
                     expect(diaries).toEqual(orderedDiaries)
                 })
             })
+            test("GET 400: returns a Bad Request error message when passed an invalid query", () => {
+                return request(app)
+                .get("/api/diaries?sort=random")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid sort query")
+                })
+            })
         })
     })
 })
