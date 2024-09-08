@@ -95,6 +95,11 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         diaries = exerciseQueries
     }
 
+    if (diaries.length === 0) {
+        sendNotFoundError(res, "No diaries found")
+        return
+    }
+
     res.send({ diaries })
 }
 
