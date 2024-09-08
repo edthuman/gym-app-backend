@@ -561,4 +561,8 @@ describe("checkDiaryQueries", () => {
         const output = checkDiaryQueries([])
         expect(output).toBe(false)
     })
+    it("returns true when passed an invalid query", () => {
+        const output = checkDiaryQueries(["invalid"])
+        expect(output).toBe(true)
+    })
 })
