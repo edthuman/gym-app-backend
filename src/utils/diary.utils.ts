@@ -47,6 +47,7 @@ export const checkDiarySort = (sort: any): boolean => {
     return !validSorts.includes(sort)
 }
 
-export const checkDiaryOrder = (order: any) => {
-
+export const checkDiaryOrder = (order: any): boolean => {
+    const validOrder = ["asc", "ASC", "ascending", "desc", "DESC", "descending", "", undefined]
+    return !validOrder.includes(order)
 }
