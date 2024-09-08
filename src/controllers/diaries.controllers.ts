@@ -60,7 +60,7 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         } 
         const user = await selectUserByUsername(username)
         if (!user) {
-            sendBadRequestError(res, "Username not found")
+            sendNotFoundError(res, "Username not found")
             return
         }
         if (user.isError) {
