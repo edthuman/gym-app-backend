@@ -1085,5 +1085,17 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        describe("exercise", () => {
+            test("GET 200: returns diaries for queried exercise" , () => {
+                return request(app)
+                .get("/api/diaries?exercise=Leg Press")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    diaries.forEach((diary: MongoDBDiary) => {
+                        expect(diary.exercise).toBe("Leg Press")
+                    })
+                })
+            })
+        })
     })
 })
