@@ -1025,5 +1025,17 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        describe("username", () => {
+            test("GET 200: returns diaries for queried username", () => {
+                return request(app)
+                .get("/api/diaries?username=gymbro")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    diaries.forEach((diary: MongoDBDiary) => {
+                        expect(diary.username).toBe("gymbro")
+                    })
+                })
+            })
+        })
     })
 })
