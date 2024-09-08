@@ -1,4 +1,4 @@
-import { generateDiaryErrorMessage } from "../src/utils/diary.utils"
+import { checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -427,5 +427,12 @@ describe("generateDiaryErrorMessage", () => {
         const output = generateDiaryErrorMessage(input)
 
         expect(output).toBe("Logs must be an array of log objects")
+    })
+})
+
+describe("checkDiarySort", () => {
+    it("returns true when passed undefined", () => {
+        const output = checkDiarySort(undefined)
+        expect(output).toBe(true)
     })
 })
