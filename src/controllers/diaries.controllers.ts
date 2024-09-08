@@ -9,12 +9,6 @@ import { MongoDBDiary } from "../types"
 export const getAllDiaries = async (req: Request, res: Response) => {
     const { sort, order, username, exercise } = req.query
 
-    const diaries: any = await selectAllDiaries()
-    if (diaries.isError) {
-        sendInternalServerError(res, "Error fetching diaries")
-        return
-    }
-
     const isInvalidSort = checkDiarySort(sort)
     if (isInvalidSort) {
         sendInvalidSortError(res)
@@ -31,9 +25,42 @@ export const getAllDiaries = async (req: Request, res: Response) => {
         sendBadRequestError(res, "No username given")
         return
     }
+
+    if (username) {
+        if (Array.isArray(username)) {
+            sendBadRequestError(res, "Multiple username queries given")
+            return
+        } 
+        const user = await selectUserByUsername(username)
+        if (!user) {
+            sendNotFoundError(res, "Username not found")
+            return
+        }
+        if (user.isError) {
+            sendInternalServerError(res, "Error fetching diaries")
+            return
+        }
+    }
     
     if (exercise === "") {
         sendBadRequestError(res, "No exercise given")
+        return
+    }
+
+    if (exercise) {
+        const isExercise = await selectExerciseByName(exercise)
+        if (!isExercise) {
+            sendNotFoundError(res, "Exercise not found")
+            return
+        }
+        if (isExercise.isError) {
+            sendInternalServerError(res, "Error fetching diaries")
+        }
+    }
+
+    const diaries: any = await selectAllDiaries()
+    if (diaries.isError) {
+        sendInternalServerError(res, "Error fetching diaries")
         return
     }
 
@@ -54,34 +81,12 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     }
 
     if (username) {
-        if (Array.isArray(username)) {
-            sendBadRequestError(res, "Multiple username queries given")
-            return
-        } 
-        const user = await selectUserByUsername(username)
-        if (!user) {
-            sendNotFoundError(res, "Username not found")
-            return
-        }
-        if (user.isError) {
-            sendInternalServerError(res, "Error fetching diaries")
-            return
-        }
-
         const userQueries = diaries.filter((diary: MongoDBDiary) => diary.username === username)
         res.send({diaries: userQueries})
         return
     }
 
     if (exercise) {
-        const isExercise = await selectExerciseByName(exercise)
-        if (!isExercise) {
-            sendNotFoundError(res, "Exercise not found")
-            return
-        }
-        if (isExercise.isError) {
-            sendInternalServerError(res, "Error fetching diaries")
-        }
         const exerciseQueries = diaries.filter((diary: MongoDBDiary) => diary.exercise === exercise)
         res.send({diaries: exerciseQueries})
         return
