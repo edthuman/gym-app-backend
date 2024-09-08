@@ -966,6 +966,14 @@ describe("/api/diaries", () => {
                     expect(orderedDiaries).toEqual(diaries)
                 })
             })
+            test("GET 400: returns a Bad Request error message when passed invalid order", () => {
+                return request(app)
+                .get("/api/diaries?order=random")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid order query")
+                })
+            })
         })
     })
 })
