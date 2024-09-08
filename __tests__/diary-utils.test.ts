@@ -459,4 +459,20 @@ describe("checkDiarySort", () => {
         const output = checkDiarySort("undefined")
         expect(output).toBe(false)
     })
+    it("returns false when passed a number", () => {
+        const output = checkDiarySort(10)
+        expect(output).toBe(false)
+    })
+    it("returns false when passed an array", () => {
+        const output = checkDiarySort(["id", "username", "exercise"])
+        expect(output).toBe(false)
+    })
+    it("returns false when passed an object", () => {
+        const output = checkDiarySort({sort: "id"})
+        expect(output).toBe(false)
+    })
+    it("returns false when passed null", () => {
+        const output = checkDiarySort(null)
+        expect(output).toBe(false)
+    })
 })
