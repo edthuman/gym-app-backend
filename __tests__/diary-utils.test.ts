@@ -506,8 +506,28 @@ describe("checkDiaryOrder", () => {
         const output = checkDiaryOrder("DESC")
         expect(output).toBe(false)
     })
-        it("returns false when passed 'descending'", () => {
+    it("returns false when passed 'descending'", () => {
         const output = checkDiaryOrder("descending")
         expect(output).toBe(false)
+    })
+    it("returns true when passed an invalid order", () => {
+        const output = checkDiaryOrder("random")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed 'undefined' as a string", () => {
+        const output = checkDiaryOrder("undefined")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed a number", () => {
+        const output = checkDiaryOrder(5)
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an array", () => {
+        const output = checkDiaryOrder(["asc"])
+        expect(output).toBe(true)
+    })
+    it("returns true when passed an array", () => {
+        const output = checkDiaryOrder({order: "asc"})
+        expect(output).toBe(true)
     })
 })
