@@ -853,5 +853,71 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        describe("order", () => {
+            test("GET 200: returns diaries ordered ascending when passed no value", () => {
+                return request(app)
+                .get("/api/diaries?order")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'asc'", () => {
+                return request(app)
+                .get("/api/diaries?order=asc")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'ASC'", () => {
+                return request(app)
+                .get("/api/diaries?order=ASC")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+            test("GET 200: returns diaries ordered ascending when passed 'ascending'", () => {
+                return request(app)
+                .get("/api/diaries?order=ascending")
+                .expect(200)
+                .then(({body: {diaries}}) => {
+                    const orderedDiaries = diaries.toSorted((a: MongoDBDiary, b: MongoDBDiary) => {
+                        const x = a._id.toString().toLowerCase()
+                        const y = b._id.toString().toLowerCase()
+                        if (x < y) return -1
+                        if (x > y) return 1
+                        return 0
+                    })
+                    
+                    expect(orderedDiaries).toEqual(diaries)
+                })
+            })
+        })
     })
 })
