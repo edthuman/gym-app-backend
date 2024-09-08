@@ -1173,6 +1173,22 @@ describe("/api/diaries", () => {
                     expect(msg).toBe("Username not found")
                 })
             })
+            test("POST 400: returns a Bad Request error message when queried with username and exercise", () => {
+                return request(app)
+                .post("/api/diaries?username=gymbro&exercise=Leg Press")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("POST 400: returns a Bad Request error message when queried with empty username and exercise", () => {
+                return request(app)
+                .post("/api/diaries?username&exercise")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
         })
     })
 })
