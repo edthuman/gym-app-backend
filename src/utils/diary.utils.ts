@@ -44,5 +44,5 @@ export const generateDiaryErrorMessage = (diary: any): string => {
 
 export const checkDiarySort = (sort: any): boolean => {
     const validSorts = ["id", "_id", "username", "exercise", "", undefined]
-    return validSorts.includes(sort)
+    return !validSorts.includes(sort)
 }
