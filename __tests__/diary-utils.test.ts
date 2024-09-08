@@ -435,4 +435,24 @@ describe("checkDiarySort", () => {
         const output = checkDiarySort(undefined)
         expect(output).toBe(true)
     })
+    it("returns true when passed an empty string", () => {
+        const output = checkDiarySort("")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed 'id'", () => {
+        const output = checkDiarySort("id")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed '_id'", () => {
+        const output = checkDiarySort("_id")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed 'username'", () => {
+        const output = checkDiarySort("username")
+        expect(output).toBe(true)
+    })
+    it("returns true when passed 'exercise'", () => {
+        const output = checkDiarySort("exercise")
+        expect(output).toBe(true)
+    })
 })
