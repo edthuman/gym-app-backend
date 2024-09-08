@@ -1198,5 +1198,23 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        describe("non-existent queries", () => {
+            test("GET 200: returns a Bad Request error message when passed an invalid query", () => {
+                return request(app)
+                .get("/api/diaries?query=invalid")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+            test("GET 200: returns a Bad Request error message when passed an invalid empty query", () => {
+                return request(app)
+                .get("/api/diaries?query")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Invalid query")
+                })
+            })
+        })
     })
 })
