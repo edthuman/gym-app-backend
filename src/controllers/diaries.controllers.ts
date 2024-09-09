@@ -5,6 +5,7 @@ import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorM
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
+import { ObjectId } from "mongodb"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
     const queries = Object.keys(req.query)
@@ -164,7 +165,9 @@ export const postDiary = async (req: Request, res: Response) => {
 }
 
 export const getDiaryByID = async (req: Request, res: Response) => {
-    const diaryID = req.params.diary_id
-    const diary = await selectDiaryByID(diaryID)
+    const givenId = req.params.diary_id
+    const id = new ObjectId(givenId)
+
+    const diary = await selectDiaryByID(id)
     res.send({ diary })
 }
