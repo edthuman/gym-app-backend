@@ -195,7 +195,15 @@ export const getDiaryById = async (req: Request, res: Response) => {
 
 export const deleteDiaryById = async (req: Request, res: Response) => {
     const givenId = req.params.diary_id
-    const id = new ObjectId(givenId)
+
+    let id: ObjectId
+    try {
+        id = new ObjectId(givenId)
+    }
+    catch {
+        sendBadRequestError(res, "Invalid diary id")
+        return
+    }
     
     const successfulDeletion = await removeDiary(id)
     
