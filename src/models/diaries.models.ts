@@ -53,3 +53,11 @@ export const insertDiary = async (diary: Diary) => {
         return {isError: true}
     }
 }
+
+export const removeDiary = async (id: ObjectId) => {
+    const response = await (await db).collection("diaries").deleteOne({_id: id})
+
+    if (response.deletedCount === 1) {
+        return true
+    }
+}
