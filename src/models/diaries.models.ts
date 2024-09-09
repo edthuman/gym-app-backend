@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb"
 import db from "../../connection"
 import { Diary } from "../types"
 
@@ -15,6 +16,12 @@ export const selectAllDiaries = async () => {
     catch {
         return {isError: true}
     }
+}
+
+export const selectDiaryByID = async (id: string) => {
+    const diaryID = new ObjectId(id)
+    const diary =  await (await db).collection("diaries").findOne({ _id: diaryID})
+    return diary
 }
 
 export const selectDiary = async (username: string, exercise: string) => {
