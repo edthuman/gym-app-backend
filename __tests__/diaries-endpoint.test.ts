@@ -1287,5 +1287,25 @@ describe("/api/diaries", () => {
                 expect(body).toEqual({})
             })
         })
+        test("DELETE 400: returns a Bad Request error message when id is too short", async () => {
+            const shortId = "AAAAA11111BBBBBCCCCC333"
+
+            return request(app)
+            .delete(`/api/diaries/${shortId}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
+        test("DELETE 400: returns a Bad Request error message when id is too short", async () => {
+            const longId = "AAAAA11111BBBBBCCCCC33333"
+
+            return request(app)
+            .delete(`/api/diaries/${longId}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
     })
 })
