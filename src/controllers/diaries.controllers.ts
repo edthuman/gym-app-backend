@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById } from "../models/diaries.models"
+import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById, updateDiary } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
 import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
@@ -220,4 +220,19 @@ export const deleteDiary = async (req: Request, res: Response) => {
         sendInternalServerError(res, "Error deleting diary")
     }
     res.status(204).send()
+}
+
+export const patchDiary = async (req: Request, res: Response) => {
+    const givenId = req.params.diary_id
+    const id = new ObjectId(givenId)
+
+    const patchObject = req.body
+
+    const updateAttempt = await updateDiary(id, patchObject)
+    if (!updateAttempt.success) {
+        sendInternalServerError(res, "Error patching diary")
+    }
+
+    const updatedDiary = await selectDiaryById(id)
+    res.send({ diary: updatedDiary })
 }
