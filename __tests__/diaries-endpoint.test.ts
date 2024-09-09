@@ -1219,7 +1219,7 @@ describe("/api/diaries", () => {
         })
     })
     describe("/:diary_id", () => {
-        test("GET 200: returns the diary with given _id", async () => {
+        test("GET 200: returns the diary with given id", async () => {
             const gymbroTreadmillDiary = await (await db).collection("diaries").findOne({username: "gymbro", exercise: "Treadmill"}) || { _id: "" }
             const diaryID = gymbroTreadmillDiary._id.toString()
             
@@ -1274,6 +1274,17 @@ describe("/api/diaries", () => {
             .expect(404)
             .then(({body: {msg}}) => {
                 expect(msg).toBe("Diary not found")
+            })
+        })
+        test("DELETE 200: deletes a diary with given id, serves no response", async () => {
+            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "gymbro", exercise: "Pull Up"}) || { _id: "" }
+            const id = gymbroPullUpDiary._id.toString()
+
+            return request(app)
+            .delete(`/api/diaries/${id}`)
+            .expect(204)
+            .then(({body}) => {
+                expect(body).toEqual({})
             })
         })
     })
