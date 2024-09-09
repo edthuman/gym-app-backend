@@ -19,8 +19,13 @@ export const selectAllDiaries = async () => {
 }
 
 export const selectDiaryById = async (id: ObjectId) => {
-    const diary =  await (await db).collection("diaries").findOne({ _id: id})
-    return diary
+    try {
+        const diary =  await (await db).collection("diaries").findOne({ _id: id})
+        return diary
+    }
+    catch {
+        return { isError: true }
+    }
 }
 
 export const selectDiaryByUsernameAndExercise = async (username: string, exercise: string) => {
