@@ -1246,5 +1246,15 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        test("GET 400: returns a Bad Request error message when id is too short", async () => {
+            const twentyThreeCharacterID = "AAAAA11111BBBBBCCCCC333"
+            
+            return request(app)
+            .get(`/api/diaries/${twentyThreeCharacterID}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
     })
 })
