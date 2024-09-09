@@ -149,6 +149,10 @@ export const postDiary = async (req: Request, res: Response) => {
     }
 
     const isDiaryDuplicate = await selectDiaryByUsernameAndExercise(username, exercise)
+    if (isDiaryDuplicate && isDiaryDuplicate.isError) {
+        sendInternalServerError(res, "Error posting diary")
+        return
+    }
     if (isDiaryDuplicate) {
         sendConflictError(res, "Diary already exists")
         return
