@@ -205,9 +205,20 @@ export const deleteDiary = async (req: Request, res: Response) => {
         return
     }
     
+    const isIdValid: any = await selectDiaryById(id)
+    if (!isIdValid) {
+        sendNotFoundError(res, "Diary not found")
+        return
+    }
+    if (isIdValid.isError) {
+        sendInternalServerError(res, "Error deleting diary")
+        return
+    }
+
     const successfulDeletion = await removeDiary(id)
     
     if (successfulDeletion) {
         res.status(204).send()
     }
+    
 }
