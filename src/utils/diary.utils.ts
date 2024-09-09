@@ -64,3 +64,7 @@ export const checkDiaryQueries = (queries: any[]) => {
     
     return isInvalidQuery
 }
+
+export const formatPatchObject = (patchObject: any) => {    
+    return { $set : patchObject }
+} 
