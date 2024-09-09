@@ -28,7 +28,7 @@ export const selectDiaryById = async (id: ObjectId) => {
     }
 }
 
-export const selectDiaryByUsernameAndExercise = async (username: string, exercise: string) => {
+export const findDuplicateDiary = async (username: string, exercise: string) => {
     try {
         const diary = await (await db).collection("diaries").findOne({ username, exercise })
         return diary

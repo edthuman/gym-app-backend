@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { insertDiary, selectAllDiaries, selectDiaryByUsernameAndExercise, selectDiaryById } from "../models/diaries.models"
+import { findDuplicateDiary, insertDiary, selectAllDiaries, selectDiaryById } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
 import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
@@ -148,7 +148,7 @@ export const postDiary = async (req: Request, res: Response) => {
         return
     }
 
-    const isDiaryDuplicate = await selectDiaryByUsernameAndExercise(username, exercise)
+    const isDiaryDuplicate = await findDuplicateDiary(username, exercise)
     if (isDiaryDuplicate && isDiaryDuplicate.isError) {
         sendInternalServerError(res, "Error posting diary")
         return
