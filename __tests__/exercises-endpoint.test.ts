@@ -542,6 +542,14 @@ describe("api/exercises", () => {
                     expect(msg).toBe("No name given")
                 })
             })
+            test("GET 400: returns a Bad Request error message when given two name queries", () => {
+                return request(app)
+                .get("/api/exercises?name=Treadmill&name=Leg Press")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Multiple name queries given")
+                })
+            })
             test("GET 404: returns a Not Found error message when no exercise exists with given name", () => {
                 return request(app)
                 .get("/api/exercises?name=Rugby")
