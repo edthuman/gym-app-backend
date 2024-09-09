@@ -1,6 +1,7 @@
 import request from "supertest"
 import app from "../src"
 import { MongoDBDiary } from "../src/types"
+import db from "../connection"
 
 describe("/api/diaries", () => {
     describe("/", () => {
@@ -1213,6 +1214,35 @@ describe("/api/diaries", () => {
                 .expect(400)
                 .then(({body: {msg}}) => {
                     expect(msg).toBe("Invalid query")
+                })
+            })
+        })
+    })
+    describe("/:diary_id", () => {
+        test("GET 200: returns the diary with given _id", async () => {
+            const gymbroTreadmillDiary = await (await db).collection("diaries").findOne({username: "gymbro", exercise: "Treadmill"}) || { _id: "" }
+            const diaryID = gymbroTreadmillDiary._id.toString()
+            
+            return request(app)
+            .get(`/api/diaries/${diaryID}`)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: diaryID,
+                    username: "gymbro",
+                    exercise: "Treadmill",
+                    personalBest: 10,
+                    goal: 20,
+                    logs: [
+                        {
+                            "date": "20-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "22-08-2024",
+                            "log": 10
+                        }
+                    ]
                 })
             })
         })
