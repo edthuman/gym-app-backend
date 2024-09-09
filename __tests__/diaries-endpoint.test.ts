@@ -1256,5 +1256,15 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Invalid diary id")
             })
         })
+        test("GET 400: returns a Bad Request error message when id is too long", async () => {
+            const twentyFiveCharacterID = "AAAAA11111BBBBBCCCCC33333"
+            
+            return request(app)
+            .get(`/api/diaries/${twentyFiveCharacterID}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
     })
 })
