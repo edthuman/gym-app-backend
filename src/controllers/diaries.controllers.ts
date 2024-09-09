@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { findDuplicateDiary, insertDiary, selectAllDiaries, selectDiaryById } from "../models/diaries.models"
+import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
 import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
@@ -191,4 +191,15 @@ export const getDiaryById = async (req: Request, res: Response) => {
     }
 
     res.send({ diary })
+}
+
+export const deleteDiaryById = async (req: Request, res: Response) => {
+    const givenId = req.params.diary_id
+    const id = new ObjectId(givenId)
+    
+    const successfulDeletion = await removeDiary(id)
+    
+    if (successfulDeletion) {
+        res.status(204).send()
+    }
 }
