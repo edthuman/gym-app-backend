@@ -67,3 +67,12 @@ export const removeDiary = async (id: ObjectId) => {
         return { isError: true }
     }
 }
+
+export const updateDiary = async (id: ObjectId, patchObject: any) => {
+    const response = await (await db).collection("diaries").updateOne({_id: id}, { $set: patchObject })
+
+    if (response.modifiedCount === 1) {
+        return { success: true }
+    }
+    return { success: false }
+}
