@@ -176,7 +176,11 @@ export const getDiaryById = async (req: Request, res: Response) => {
         return
     }
     
-
     const diary = await selectDiaryById(id)
+    if (!diary) {
+        sendNotFoundError(res, "Diary not found")
+        return
+    }
+
     res.send({ diary })
 }
