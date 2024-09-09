@@ -588,4 +588,46 @@ describe("formatPatchObject", () => {
 
         expect(output).toEqual(expectedOutput)
     })
+    it("returns the correct object when passed a logs array with one item", () => {
+        const input =  { logs: [
+            { date: "20-01-2024", log: 10 }
+        ]}
+
+        const output = formatPatchObject(input)
+
+        const expectedOutput = { 
+            $addToSet: { 
+                logs: {
+                    $each: [
+                        { date: "20-01-2024", log: 10 }
+                    ]
+                }
+            }
+        }
+
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns the correct object when passed a logs array with multiple items", () => {
+        const input =  { logs: [
+            { date: "20-01-2024", log: 10 },
+            { date: "21-01-2024", log: 11 },
+            { date: "22-01-2024", log: 12 }
+        ]}
+
+        const output = formatPatchObject(input)
+
+        const expectedOutput = { 
+            $addToSet: { 
+                logs: {
+                    $each: [
+                        { date: "20-01-2024", log: 10 },
+                        { date: "21-01-2024", log: 11 },
+                        { date: "22-01-2024", log: 12 }
+                    ]
+                }
+            }
+        }
+
+        expect(output).toEqual(expectedOutput)
+    })
 })
