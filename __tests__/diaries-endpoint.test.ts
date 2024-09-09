@@ -1317,5 +1317,31 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Diary not found")
             })
         })
+        test("PATCH 200: returns updated diary when passed a higher personalBest value", async () => {
+            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = gymbroPullUpDiary._id.toString()
+            const patchObject = { personalBest: 12}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 12,
+                    goal: 15,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
     })
 })
