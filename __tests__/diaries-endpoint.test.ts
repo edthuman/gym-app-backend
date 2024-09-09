@@ -1307,5 +1307,15 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Invalid diary id")
             })
         })
+        test("DELETE 404: returns a Not Found error message when no diary exists with id", async () => {
+            const id = "AAAAA11111BBBBBCCCCC3333"
+
+            return request(app)
+            .delete(`/api/diaries/${id}`)
+            .expect(404)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Diary not found")
+            })
+        })
     })
 })
