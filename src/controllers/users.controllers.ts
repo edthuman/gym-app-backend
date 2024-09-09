@@ -26,6 +26,11 @@ export const getAllUsers = async (req: Request, res: Response) => {
         return
     }
     
+    if (Array.isArray(username)) {
+        sendBadRequestError(res, "Multiple username queries given")
+        return
+    }
+
     if (username === "") {
         sendBadRequestError(res, "No username given")
         return
