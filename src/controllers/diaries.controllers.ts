@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById, updateDiary } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
@@ -226,11 +226,14 @@ export const patchDiary = async (req: Request, res: Response) => {
     const givenId = req.params.diary_id
     const id = new ObjectId(givenId)
 
-    const patchObject = req.body
+    const body = req.body
+
+    const patchObject = formatPatchObject(body)
 
     const updateAttempt = await updateDiary(id, patchObject)
     if (!updateAttempt.success) {
         sendInternalServerError(res, "Error patching diary")
+        return
     }
 
     const updatedDiary = await selectDiaryById(id)
