@@ -18,9 +18,8 @@ export const selectAllDiaries = async () => {
     }
 }
 
-export const selectDiaryByID = async (id: string) => {
-    const diaryID = new ObjectId(id)
-    const diary =  await (await db).collection("diaries").findOne({ _id: diaryID})
+export const selectDiaryByID = async (id: ObjectId) => {
+    const diary =  await (await db).collection("diaries").findOne({ _id: id})
     return diary
 }
 
