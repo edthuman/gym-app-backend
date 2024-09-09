@@ -1499,5 +1499,44 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        test("PATCH 200: returns updated diary when passed a log with a date matching existing log", async () => {
+            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = gymbroPullUpDiary._id.toString()
+            const patchObject = { logs: [
+                {
+                    "date": "28-08-2024",
+                    "log": 14
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toMatchObject({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 14
+                        }
+                    ]
+                })
+            })
+        })
     })
 })
