@@ -13,6 +13,10 @@ export const getAllExercises = async (req: Request, res: Response) => {
 
     const { name, sort, order } = req.query
     
+    if (Array.isArray(name)) {
+        sendBadRequestError(res, "Multiple name queries given")
+        return  
+    }
     if (name === "") {
         sendBadRequestError(res, "No name given")
         return

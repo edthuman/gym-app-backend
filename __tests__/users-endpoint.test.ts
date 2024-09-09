@@ -398,6 +398,14 @@ describe("/api/users", () => {
                     expect(msg).toBe("No username given")
                 })
             })
+            test("GET 400: returns a Bad Request error message if passed two username queries", () => {
+                return request(app)
+                .get("/api/users?username=gymbro&username=liftqueen")
+                .expect(400)
+                .then(({body: {msg}}) => {
+                    expect(msg).toBe("Multiple username queries given")
+                })
+            })
             test("GET 404: returns a Not Found error message for a non-existent username", () => {
                 return request(app)
                 .get("/api/users?username=not-real-user")
