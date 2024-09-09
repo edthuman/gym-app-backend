@@ -1,11 +1,12 @@
 import express from "express";
-import { getAllDiaries, postDiary } from "../controllers/diaries.controllers";
+import { getAllDiaries, getDiaryByID, postDiary } from "../controllers/diaries.controllers";
 import { sendMethodNotAllowedError } from "../error-handlers";
 
 const diariesRouter = express.Router()
 
 diariesRouter.get("/", getAllDiaries)
 diariesRouter.post("/", postDiary)
+diariesRouter.get("/:diary_id", getDiaryByID)
 diariesRouter.use("/", sendMethodNotAllowedError)
 
 export default diariesRouter
