@@ -55,9 +55,15 @@ export const insertDiary = async (diary: Diary) => {
 }
 
 export const removeDiary = async (id: ObjectId) => {
-    const response = await (await db).collection("diaries").deleteOne({_id: id})
+    try {
+        const response = await (await db).collection("diaries").deleteOne({_id: id})
 
-    if (response.deletedCount === 1) {
-        return true
+        if (response.deletedCount === 1) {
+            return { deleted: true }
+        }
+        return { deleted: false }
+    }
+    catch {
+        return { isError: true }
     }
 }
