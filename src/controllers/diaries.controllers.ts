@@ -181,6 +181,10 @@ export const getDiaryById = async (req: Request, res: Response) => {
         sendNotFoundError(res, "Diary not found")
         return
     }
+    if (diary.isError) {
+        sendInternalServerError(res, "Error fetching diary")
+        return
+    }
 
     res.send({ diary })
 }
