@@ -1,4 +1,4 @@
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -568,5 +568,24 @@ describe("checkDiaryQueries", () => {
     it("returns true when passed an invalid query alongside other ", () => {
         const output = checkDiaryQueries(["sort", "invalid"])
         expect(output).toBe(true)
+    })
+})
+
+describe("formatPatchObject", () => {
+    it("returns the correct object when passed personalBest", () => {
+        const input =  { personalBest: 20 }
+
+        const output = formatPatchObject(input)
+        const expectedOutput = { $set: { personalBest: 20 }}
+
+        expect(output).toEqual(expectedOutput)
+    })
+    it("returns the correct object when passed goal", () => {
+        const input =  { goal: 25 }
+
+        const output = formatPatchObject(input)
+        const expectedOutput = { $set: { goal: 25 }}
+
+        expect(output).toEqual(expectedOutput)
     })
 })
