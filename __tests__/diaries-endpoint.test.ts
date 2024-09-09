@@ -1343,7 +1343,7 @@ describe("/api/diaries", () => {
                 })
             })
         })
-        test("PATCH 200: returns updated diary when passed a lower personalBest value above all logs", async () => {
+        test("PATCH 200: returns updated diary when passed a lower personalBest value above existing logs", async () => {
             const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
             const id = gymbroPullUpDiary._id.toString()
@@ -1360,6 +1360,58 @@ describe("/api/diaries", () => {
                     exercise: "Rowing Machine",
                     personalBest: 11,
                     goal: 15,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a higher goal value", async () => {
+            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = gymbroPullUpDiary._id.toString()
+            const patchObject = { goal: 20}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 20,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a lower goal value above existing logs", async () => {
+            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = gymbroPullUpDiary._id.toString()
+            const patchObject = { goal: 18}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 18,
                     logs: [ 
                         {
                             "date": "26-08-2024",
