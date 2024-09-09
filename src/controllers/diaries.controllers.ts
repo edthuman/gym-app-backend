@@ -166,7 +166,16 @@ export const postDiary = async (req: Request, res: Response) => {
 
 export const getDiaryById = async (req: Request, res: Response) => {
     const givenId = req.params.diary_id
-    const id = new ObjectId(givenId)
+
+    let id: ObjectId
+    try {
+        id = new ObjectId(givenId)
+    }
+    catch {
+        sendBadRequestError(res, "Invalid diary id")
+        return
+    }
+    
 
     const diary = await selectDiaryById(id)
     res.send({ diary })
