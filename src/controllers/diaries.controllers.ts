@@ -1,5 +1,5 @@
 import { Response, Request } from "express"
-import { insertDiary, selectAllDiaries, selectDiaryByUsernameAndExercise, selectDiaryByID } from "../models/diaries.models"
+import { insertDiary, selectAllDiaries, selectDiaryByUsernameAndExercise, selectDiaryById } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
 import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
@@ -164,10 +164,10 @@ export const postDiary = async (req: Request, res: Response) => {
     res.status(201).send({diary})
 }
 
-export const getDiaryByID = async (req: Request, res: Response) => {
+export const getDiaryById = async (req: Request, res: Response) => {
     const givenId = req.params.diary_id
     const id = new ObjectId(givenId)
 
-    const diary = await selectDiaryByID(id)
+    const diary = await selectDiaryById(id)
     res.send({ diary })
 }
