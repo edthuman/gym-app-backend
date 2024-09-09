@@ -193,7 +193,7 @@ export const getDiaryById = async (req: Request, res: Response) => {
     res.send({ diary })
 }
 
-export const deleteDiaryById = async (req: Request, res: Response) => {
+export const deleteDiary = async (req: Request, res: Response) => {
     const givenId = req.params.diary_id
 
     let id: ObjectId
