@@ -1515,7 +1515,7 @@ describe("/api/diaries", () => {
             .send(patchObject)
             .expect(200)
             .then(({body: {diary}}) => {
-                expect(diary).toMatchObject({
+                expect(diary).toEqual({
                     _id: id,
                     username: "liftqueen",
                     exercise: "Rowing Machine",
