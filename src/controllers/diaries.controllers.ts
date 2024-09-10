@@ -235,18 +235,27 @@ export const patchDiary = async (req: Request, res: Response) => {
         return
     }
 
-    let highestLog = 0
-    if (Object.keys(body).includes("logs")) {
-        for (let i = 0; i < body.logs.length; i++) {
-            if (highestLog < body.logs[i].log) {
-                highestLog = body.logs[i].log
+    const {logs, personalBest} = body
+    
+    const diaryToPatch: any = await selectDiaryById(id)
+
+    const highestDiaryLog = Math.max(...diaryToPatch.logs.map((log:any)=>log.log)) 
+    if (personalBest < highestDiaryLog) {
+        sendBadRequestError(res, "PersonalBest cannot be below a log")
+        return
+    }
+
+    let highestPatchLog = 0
+    if (logs) {
+        for (let i = 0; i < logs.length; i++) {
+            if (highestPatchLog < logs[i].log) {
+                highestPatchLog = logs[i].log
             }
         }
     }
-    
-    const diaryToPatch: any = await selectDiaryById(id)
-    if (diaryToPatch.personalBest < highestLog) {
-        body.personalBest = highestLog
+
+    if (diaryToPatch.personalBest < highestPatchLog) {
+        body.personalBest = highestPatchLog
     }
 
     const patchObject = formatPatchObject(body)
