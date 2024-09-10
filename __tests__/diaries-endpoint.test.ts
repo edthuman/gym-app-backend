@@ -1318,9 +1318,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a higher personalBest value", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { personalBest: 12}
 
             return request(app)
@@ -1344,9 +1344,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a lower personalBest value above existing logs", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { personalBest: 11}
 
             return request(app)
@@ -1370,9 +1370,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a higher goal value", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { goal: 20}
 
             return request(app)
@@ -1396,9 +1396,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a lower goal value above existing logs", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { goal: 18}
 
             return request(app)
@@ -1422,9 +1422,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a new log object and all existing logs", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { logs: [ 
                 {
                     "date": "26-08-2024",
@@ -1461,9 +1461,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a log array without existing logs", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { logs: [
                 {
                     "date": "28-08-2024",
@@ -1500,9 +1500,9 @@ describe("/api/diaries", () => {
             })
         })
         test("PATCH 200: returns updated diary when passed a log with a date matching existing log", async () => {
-            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
-            const id = gymbroPullUpDiary._id.toString()
+            const id = liftqueenRowingDiary._id.toString()
             const patchObject = { logs: [
                 {
                     "date": "28-08-2024",
