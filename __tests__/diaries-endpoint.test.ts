@@ -1441,7 +1441,7 @@ describe("/api/diaries", () => {
             .send(patchObject)
             .expect(200)
             .then(({body: {diary}}) => {
-                expect(diary).toMatchObject({
+                expect(diary).toEqual({
                     _id: id,
                     username: "liftqueen",
                     exercise: "Rowing Machine",
@@ -1467,7 +1467,7 @@ describe("/api/diaries", () => {
             const patchObject = { logs: [
                 {
                     "date": "28-08-2024",
-                    "log": 12
+                    "log": 11
                 }
             ]}
 
@@ -1476,7 +1476,7 @@ describe("/api/diaries", () => {
             .send(patchObject)
             .expect(200)
             .then(({body: {diary}}) => {
-                expect(diary).toMatchObject({
+                expect(diary).toEqual({
                     _id: id,
                     username: "liftqueen",
                     exercise: "Rowing Machine",
@@ -1493,7 +1493,7 @@ describe("/api/diaries", () => {
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 12
+                            "log": 11
                         }
                     ]
                 })
@@ -1506,7 +1506,7 @@ describe("/api/diaries", () => {
             const patchObject = { logs: [
                 {
                     "date": "28-08-2024",
-                    "log": 14
+                    "log": 10
                 }
             ]}
 
@@ -1532,7 +1532,7 @@ describe("/api/diaries", () => {
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 14
+                            "log": 10
                         }
                     ]
                 })
