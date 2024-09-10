@@ -227,6 +227,11 @@ export const patchDiary = async (req: Request, res: Response) => {
     const id = new ObjectId(givenId)
 
     const body = req.body
+    const isBodyEmpty = Object.keys(body).length === 0
+    if (isBodyEmpty) {
+        sendBadRequestError(res, "No request body given")
+        return
+    }
 
     let highestLog = 0
     if (Object.keys(body).includes("logs")) {
