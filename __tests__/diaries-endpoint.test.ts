@@ -1661,5 +1661,18 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("No request body given")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a username", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { username: "new username" }
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request should not provide a username")
+            })
+        })
     })
 })
