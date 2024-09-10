@@ -651,4 +651,16 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Request should not provide a username")
     })
+    it("returns an error message when personalBest is below a log in logs array", () => {
+        const input = { 
+            personalBest: 10,
+            logs: [ 
+                { date: "01-09-2024", log: 15 }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("PersonalBest cannot be below a log")
+    })
 })
