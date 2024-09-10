@@ -228,6 +228,20 @@ export const patchDiary = async (req: Request, res: Response) => {
 
     const body = req.body
 
+    let highestLog = 0
+    if (Object.keys(body).includes("logs")) {
+        for (let i = 0; i < body.logs.length; i++) {
+            if (highestLog < body.logs[i].log) {
+                highestLog = body.logs[i].log
+            }
+        }
+    }
+    
+    const diaryToPatch: any = await selectDiaryById(id)
+    if (diaryToPatch.personalBest < highestLog) {
+        body.personalBest = highestLog
+    }
+
     const patchObject = formatPatchObject(body)
 
     const updateAttempt = await updateDiary(id, patchObject)
