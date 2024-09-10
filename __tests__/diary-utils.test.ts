@@ -639,4 +639,16 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("No request body given")
     })
+    it("returns an error message when passed an object with an exercise property", () => {
+        const input = { exercise: "Rowing Machine" }
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Request should not provide an exercise")
+    })
+    it("returns an error message when passed an object with a username property", () => {
+        const input = { username: "gymbro" }
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Request should not provide a username")
+    })
 })
