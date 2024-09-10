@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 import db from "../../connection"
-import { Diary } from "../types"
+import { Diary, Log } from "../types"
 
 export const selectAllDiaries = async () => {
     try {
@@ -69,6 +69,22 @@ export const removeDiary = async (id: ObjectId) => {
 }
 
 export const updateDiary = async (id: ObjectId, patchInstructions: any) => {
+    const isPatchingLogs = Object.keys(patchInstructions).includes("$addToSet") 
+    if (isPatchingLogs) {
+        // removing logs with dates matching those given in request body - to allow patched logs to be added
+        const logDates = patchInstructions.$addToSet.logs.$each.map((log: Log) => log.date)
+        const duplicateLogsInstruction: any = {
+            $pull: {
+                logs: {
+                    date: {$in: logDates},
+                    log: {$type: "number"}
+                }
+            }
+        }
+
+        await (await db).collection("diaries").updateOne({_id: id}, duplicateLogsInstruction)
+    }
+
     const response = await (await db).collection("diaries").updateOne({_id: id}, patchInstructions)
 
     if (response.modifiedCount === 1) {
