@@ -236,6 +236,10 @@ export const patchDiary = async (req: Request, res: Response) => {
         sendBadRequestError(res, "Request should not provide a username")
         return
     }
+    if (body.exercise) {
+        sendBadRequestError(res, "Request should not provide an exercise")
+        return
+    }
 
     let highestLog = 0
     if (Object.keys(body).includes("logs")) {
