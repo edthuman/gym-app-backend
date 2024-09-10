@@ -232,6 +232,10 @@ export const patchDiary = async (req: Request, res: Response) => {
         sendBadRequestError(res, "No request body given")
         return
     }
+    if (body.username) {
+        sendBadRequestError(res, "Request should not provide a username")
+        return
+    }
 
     let highestLog = 0
     if (Object.keys(body).includes("logs")) {
