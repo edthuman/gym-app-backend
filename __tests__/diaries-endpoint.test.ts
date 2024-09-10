@@ -1636,5 +1636,30 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        test("PATCH 400: returns a Bad Request error message when sent no body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No request body given")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when sent an empty body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send({})
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No request body given")
+            })
+        })
     })
 })
