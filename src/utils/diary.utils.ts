@@ -67,7 +67,9 @@ export const checkDiaryQueries = (queries: any[]) => {
 
 export const formatPatchObject = (patchObject: any) => { 
     if (patchObject.hasOwnProperty("logs")) {
-        return { $addToSet: { logs: { $each : [...patchObject.logs] }}}
+        return {
+            $addToSet: { logs: { $each: [...patchObject.logs] }}
+        }
     }   
     return { $set : patchObject }
 } 
