@@ -1,4 +1,4 @@
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage, generateDiaryPatchError } from "../src/utils/diary.utils"
 
 describe("generateDiaryErrorMessage", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -629,5 +629,14 @@ describe("formatPatchObject", () => {
         }
 
         expect(output).toMatchObject(expectedOutput)
+    })
+})
+
+describe("generateDiaryPatchError", () => {
+    it("returns an error message when passed an object with no keys", () => {
+        const input = {}
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("No request body given")
     })
 })
