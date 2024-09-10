@@ -75,4 +75,21 @@ export const formatPatchObject = (patchObject: any) => {
         }
     }   
     return { $set : patchObject }
+}
+
+export const generateDiaryPatchError = (patchBody: any): string => {
+    const properties = Object.keys(patchBody)
+
+    const isEmptyBody = properties.length === 0
+    if (isEmptyBody) {
+        return "No request body given"
+    }
+
+    if (properties.includes("username")) {
+        return "Request should not provide a username"
+    }
+    if (properties.includes("exercise")) {
+        return "Request should not provide an exercise"
+    }
+    return ""
 } 
