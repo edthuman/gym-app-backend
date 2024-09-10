@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById, updateDiary } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage } from "../utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage, generateDiaryPatchError } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
@@ -227,17 +227,11 @@ export const patchDiary = async (req: Request, res: Response) => {
     const id = new ObjectId(givenId)
 
     const body = req.body
-    const isBodyEmpty = Object.keys(body).length === 0
-    if (isBodyEmpty) {
-        sendBadRequestError(res, "No request body given")
-        return
-    }
-    if (body.username) {
-        sendBadRequestError(res, "Request should not provide a username")
-        return
-    }
-    if (body.exercise) {
-        sendBadRequestError(res, "Request should not provide an exercise")
+
+    const error = generateDiaryPatchError(body)
+
+    if (error) {
+        sendBadRequestError(res, error)
         return
     }
 
