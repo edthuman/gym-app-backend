@@ -1,3 +1,5 @@
+import { Log } from "../types"
+
 export const generateDiaryErrorMessage = (diary: any): string => {
     const {username, exercise, personalBest, goal, logs } = diary
     
@@ -90,6 +92,13 @@ export const generateDiaryPatchError = (patchBody: any): string => {
     }
     if (properties.includes("exercise")) {
         return "Request should not provide an exercise"
+    }
+
+    if (properties.includes("logs") && properties.includes("personalBest") ) {
+        const highestLog = Math.max(...patchBody.logs.map((logItem: Log) => logItem.log))
+        if (highestLog > patchBody.personalBest) {
+            return "PersonalBest cannot be below a log"
+        }
     }
     return ""
 } 
