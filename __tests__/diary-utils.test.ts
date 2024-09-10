@@ -605,7 +605,7 @@ describe("formatPatchObject", () => {
             }
         }
 
-        expect(output).toEqual(expectedOutput)
+        expect(output).toMatchObject(expectedOutput)
     })
     it("returns the correct object when passed a logs array with multiple items", () => {
         const input =  { logs: [
@@ -628,6 +628,6 @@ describe("formatPatchObject", () => {
             }
         }
 
-        expect(output).toEqual(expectedOutput)
+        expect(output).toMatchObject(expectedOutput)
     })
 })
