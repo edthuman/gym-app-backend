@@ -1538,5 +1538,48 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        test("PATCH 200: returns updated diary when passed a log above personalBest", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [
+                {
+                    "date": "29-08-2024",
+                    "log": 12
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toMatchObject({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 12,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "29-08-2024",
+                            "log": 12
+                        }
+                    ]
+                })
+            })
+        })
     })
 })
