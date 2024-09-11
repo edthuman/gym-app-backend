@@ -2119,5 +2119,19 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Invalid date")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a day of 31 in a month with fewer days", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "30-02-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
     })
 })
