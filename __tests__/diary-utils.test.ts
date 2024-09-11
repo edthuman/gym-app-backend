@@ -805,4 +805,25 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("PersonalBest must be a number")
     })
+    it("returns an error message when goal is a string", () => {
+        const input = { goal: "15" }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Goal must be a number")
+    })
+    it("returns an error message when goal is an array", () => {
+        const input = { goal: [15] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Goal must be a number")
+    })
+    it("returns an error message when goal is an object", () => {
+        const input = { goal: {value: 15} }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Goal must be a number")
+    })
 })
