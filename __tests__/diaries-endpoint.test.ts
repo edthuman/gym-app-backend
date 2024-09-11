@@ -1730,5 +1730,22 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Goal cannot be below a log")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a goal below a log given on the request body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                goal: 19,
+                logs: [{ date: "02-09-2024", log: 20 }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Goal cannot be below a log")
+            })
+        })
     })
 })
