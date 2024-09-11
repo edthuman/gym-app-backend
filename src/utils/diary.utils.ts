@@ -112,6 +112,9 @@ export const generateDiaryPatchError = (patchBody: any): string => {
             if (!log) {
                 return "Logs must have a log property"
             }
+            if (typeof log !== "number") {
+                return "Log must be a number"
+            }
         }
 
         const logValues = logs.map((logItem: Log) => logItem.log)
