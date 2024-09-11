@@ -235,13 +235,17 @@ export const patchDiary = async (req: Request, res: Response) => {
         return
     }
 
-    const {logs, personalBest} = body
+    const {logs, personalBest, goal} = body
     
     const diaryToPatch: any = await selectDiaryById(id)
 
     const highestDiaryLog = Math.max(...diaryToPatch.logs.map((log:any)=>log.log)) 
     if (personalBest < highestDiaryLog) {
         sendBadRequestError(res, "PersonalBest cannot be below a log")
+        return
+    }
+    if (goal < highestDiaryLog) {
+        sendBadRequestError(res, "Goal cannot be below a log")
         return
     }
 
