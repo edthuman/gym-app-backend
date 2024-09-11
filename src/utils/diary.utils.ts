@@ -101,6 +101,9 @@ export const generateDiaryPatchError = (patchBody: any): string => {
             if (!logs[i].date) {
                 return "Logs must have a date"
             }
+            if (!logs[i].log) {
+                return "Logs must have a log property"
+            }
         }
 
         const logValues = logs.map((logItem: Log) => logItem.log)
