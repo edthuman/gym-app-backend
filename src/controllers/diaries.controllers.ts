@@ -283,7 +283,7 @@ export const patchDiary = async (req: Request, res: Response) => {
     const patchObject = formatPatchObject(body)
 
     const updateAttempt = await updateDiary(id, patchObject)
-    if (!updateAttempt.success) {
+    if (!updateAttempt.success || updateAttempt.isError) {
         sendInternalServerError(res, "Error patching diary")
         return
     }
