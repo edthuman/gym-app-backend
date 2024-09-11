@@ -6,9 +6,13 @@ const diariesRouter = express.Router()
 
 diariesRouter.get("/", getAllDiaries)
 diariesRouter.post("/", postDiary)
+
 diariesRouter.get("/:diary_id", getDiaryById)
 diariesRouter.delete("/:diary_id", deleteDiary)
 diariesRouter.patch("/:diary_id", patchDiary)
+
 diariesRouter.use("/", sendMethodNotAllowedError)
+
+diariesRouter.use("/:diary_id", ()=>console.log("hello"))
 
 export default diariesRouter
