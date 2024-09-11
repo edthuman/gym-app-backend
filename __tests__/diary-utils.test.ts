@@ -784,4 +784,25 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Log must be a number")
     })
+    it("returns an error message when personalBest is a string", () => {
+        const input = { personalBest: "10" }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("PersonalBest must be a number")
+    })
+    it("returns an error message when personalBest is an array", () => {
+        const input = { personalBest: [10] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("PersonalBest must be a number")
+    })
+    it("returns an error message when personalBest is an object", () => {
+        const input = { personalBest: {value: 10} }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("PersonalBest must be a number")
+    })
 })
