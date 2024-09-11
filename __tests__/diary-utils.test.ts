@@ -707,6 +707,39 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Logs must have a date")
     })
+    it("returns an error message when a log has date as a number", () => {
+        const input = { 
+            logs: [ 
+                { date: 10, log: 15 }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Dates must be a string")
+    })
+    it("returns an error message when a log has date as an object", () => {
+        const input = { 
+            logs: [ 
+                { date: {day: "02-09-2024"}, log: 15 }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Dates must be a string")
+    })
+    it("returns an error message when a log has date as an object", () => {
+        const input = { 
+            logs: [ 
+                { date: ["02-09-2024"], log: 15 }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Dates must be a string")
+    })
     it("returns an error message when a log in logs array has no log property", () => {
         const input = { 
             logs: [ 
