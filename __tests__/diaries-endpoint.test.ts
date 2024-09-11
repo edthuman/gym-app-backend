@@ -2007,5 +2007,47 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Goal must be a number")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed an date uses letters", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "XX-XX-XXXX", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date does not use dashes", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "01/01/2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date that is too long", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "02-09-2024-00:00am", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
+            })
+        })
     })
 })
