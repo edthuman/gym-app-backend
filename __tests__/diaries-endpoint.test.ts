@@ -2133,5 +2133,29 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Invalid date")
             })
         })
+        test("POST 405: returns a Method Not Allowed error message", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .post(`/api/diaries/${id}`)
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+        test("PUT 405: returns a Method Not Allowed error message", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .put(`/api/diaries/${id}`)
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
     })
 })
