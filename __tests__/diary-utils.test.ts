@@ -847,4 +847,39 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Dates must be formatted DD-MM-YYYY")
     })
+    it("returns an error message when a date has day 00", () => {
+        const input = { logs: [{date: "00-09-2024", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Invalid date")
+    })
+    it("returns an error message when a date has day above 31", () => {
+        const input = { logs: [{date: "32-09-2024", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Invalid date")
+    })
+    it("returns an error message when a date has month 00", () => {
+        const input = { logs: [{date: "01-00-2024", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Invalid date")
+    })
+    it("returns an error message when a date has month above 12", () => {
+        const input = { logs: [{date: "01-13-2024", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Invalid date")
+    })
+    it("returns an error message when a date has year before 2024", () => {
+        const input = { logs: [{date: "01-12-2023", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Invalid date")
+    })
 })
