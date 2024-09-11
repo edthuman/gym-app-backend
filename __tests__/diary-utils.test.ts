@@ -826,4 +826,25 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Goal must be a number")
     })
+    it("returns an error message when a date has letters", () => {
+        const input = { logs: [{ date: "XX-XX-XXXX", log: 15}] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Dates must be formatted DD-MM-YYYY")
+    })
+    it("returns an error message when a date does not use dashes", () => {
+        const input = { logs: [{ date: "01/01/2024", log: 15}] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Dates must be formatted DD-MM-YYYY")
+    })
+    it("returns an error message when a date is too long", () => {
+        const input = { logs: [{date: "02-09-2024-00:00am", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Dates must be formatted DD-MM-YYYY")
+    })
 })
