@@ -100,6 +100,10 @@ export const generateDiaryPatchError = (patchBody: any): string => {
         return "PersonalBest must be a number"
     }
 
+    if (goal && typeof goal !== "number") {
+        return "Goal must be a number"
+    }
+
     if (logs) {
         if (!Array.isArray(logs)) {
             return "Logs must be an array"
