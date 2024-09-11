@@ -686,4 +686,15 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Logs must have a date")
     })
+    it("returns an error message when a log in logs array has no log property", () => {
+        const input = { 
+            logs: [ 
+                { date: "02-09-2024" }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Logs must have a log property")
+    })
 })
