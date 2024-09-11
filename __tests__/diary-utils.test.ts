@@ -663,4 +663,16 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("PersonalBest cannot be below a log")
     })
+    it("returns an error message when goal is below a log in logs array", () => {
+        const input = { 
+            goal: 10,
+            logs: [ 
+                { date: "02-09-2024", log: 15 }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Goal cannot be below a log")
+    })
 })
