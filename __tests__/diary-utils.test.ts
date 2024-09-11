@@ -751,4 +751,37 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Logs must have a log property")
     })
+    it("returns an error message when a log has a string log property", () => {
+        const input = { 
+            logs: [ 
+                { date: "02-09-2024", log: "10" }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Log must be a number")
+    })
+    it("returns an error message when a log has an array log property", () => {
+        const input = { 
+            logs: [ 
+                { date: "02-09-2024", log: [10] }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Log must be a number")
+    })
+    it("returns an error message when a log has an object log property", () => {
+        const input = { 
+            logs: [ 
+                { date: "02-09-2024", log: {value: 10} }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Log must be a number")
+    })
 })
