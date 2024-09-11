@@ -882,4 +882,11 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Invalid date")
     })
+    it("returns an error message when a date with day 30 does not exist", () => {
+        const input = { logs: [{date: "30-02-2024", log: 15 }] }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Invalid date")
+    })
 })
