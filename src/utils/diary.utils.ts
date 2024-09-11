@@ -97,6 +97,12 @@ export const generateDiaryPatchError = (patchBody: any): string => {
     const { logs, personalBest, goal } = patchBody
 
     if (logs) {
+        for (let i = 0; i < logs.length; i++) {
+            if (!logs[i].date) {
+                return "Logs must have a date"
+            }
+        }
+
         const logValues = logs.map((logItem: Log) => logItem.log)
         const highestLog = Math.max(...logValues)
 
