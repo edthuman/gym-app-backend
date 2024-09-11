@@ -1,10 +1,11 @@
 import { Response, Request } from "express"
-import { insertDiary, selectAllDiaries, selectDiary } from "../models/diaries.models"
+import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById, updateDiary } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, generateDiaryErrorMessage } from "../utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage, generateDiaryPatchError } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
+import { ObjectId } from "mongodb"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
     const queries = Object.keys(req.query)
@@ -147,7 +148,11 @@ export const postDiary = async (req: Request, res: Response) => {
         return
     }
 
-    const isDiaryDuplicate = await selectDiary(username, exercise)
+    const isDiaryDuplicate = await findDuplicateDiary(username, exercise)
+    if (isDiaryDuplicate && isDiaryDuplicate.isError) {
+        sendInternalServerError(res, "Error posting diary")
+        return
+    }
     if (isDiaryDuplicate) {
         sendConflictError(res, "Diary already exists")
         return
@@ -161,4 +166,128 @@ export const postDiary = async (req: Request, res: Response) => {
     }
 
     res.status(201).send({diary})
+}
+
+export const getDiaryById = async (req: Request, res: Response) => {
+    const isQuery = Object.keys(req.query).length
+    if (isQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+
+    const givenId = req.params.diary_id
+
+    let id: ObjectId
+    try {
+        id = new ObjectId(givenId)
+    }
+    catch {
+        sendBadRequestError(res, "Invalid diary id")
+        return
+    }
+    
+    const diary = await selectDiaryById(id)
+    if (!diary) {
+        sendNotFoundError(res, "Diary not found")
+        return
+    }
+    if (diary.isError) {
+        sendInternalServerError(res, "Error fetching diary")
+        return
+    }
+
+    res.send({ diary })
+}
+
+export const deleteDiary = async (req: Request, res: Response) => {
+    const isQuery = Object.keys(req.query).length
+    if (isQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+
+    const givenId = req.params.diary_id
+
+    let id: ObjectId
+    try {
+        id = new ObjectId(givenId)
+    }
+    catch {
+        sendBadRequestError(res, "Invalid diary id")
+        return
+    }
+    
+    const isIdValid: any = await selectDiaryById(id)
+    if (!isIdValid) {
+        sendNotFoundError(res, "Diary not found")
+        return
+    }
+    if (isIdValid.isError) {
+        sendInternalServerError(res, "Error deleting diary")
+        return
+    }
+
+    const deletedDiary = await removeDiary(id)
+    if (deletedDiary.isError || deletedDiary.deleted === false) {
+        sendInternalServerError(res, "Error deleting diary")
+    }
+    res.status(204).send()
+}
+
+export const patchDiary = async (req: Request, res: Response) => {
+    const isQuery = Object.keys(req.query).length
+    if (isQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+    
+    const givenId = req.params.diary_id
+    const id = new ObjectId(givenId)
+
+    const body = req.body
+
+    const error = generateDiaryPatchError(body)
+
+    if (error) {
+        sendBadRequestError(res, error)
+        return
+    }
+
+    const {logs, personalBest, goal} = body
+    
+    const diaryToPatch: any = await selectDiaryById(id)
+
+    const highestDiaryLog = Math.max(...diaryToPatch.logs.map((log:any)=>log.log)) 
+    if (personalBest < highestDiaryLog) {
+        sendBadRequestError(res, "PersonalBest cannot be below a log")
+        return
+    }
+    if (goal < highestDiaryLog) {
+        sendBadRequestError(res, "Goal cannot be below a log")
+        return
+    }
+
+    let highestPatchLog = 0
+    if (logs) {
+        for (let i = 0; i < logs.length; i++) {
+            if (highestPatchLog < logs[i].log) {
+                highestPatchLog = logs[i].log
+            }
+        }
+    }
+
+    if (diaryToPatch.personalBest < highestPatchLog) {
+        body.personalBest = highestPatchLog
+    }
+
+    const patchObject = formatPatchObject(body)
+
+    const updateAttempt = await updateDiary(id, patchObject)
+    if (!updateAttempt.success || updateAttempt.isError) {
+        sendInternalServerError(res, "Error patching diary")
+        return
+    }
+
+    const updatedDiary = await selectDiaryById(id)
+    res.send({ diary: updatedDiary })
 }

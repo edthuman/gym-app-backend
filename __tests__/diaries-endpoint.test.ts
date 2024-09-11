@@ -1,6 +1,7 @@
 import request from "supertest"
 import app from "../src"
 import { MongoDBDiary } from "../src/types"
+import db from "../connection"
 
 describe("/api/diaries", () => {
     describe("/", () => {
@@ -1214,6 +1215,1078 @@ describe("/api/diaries", () => {
                 .then(({body: {msg}}) => {
                     expect(msg).toBe("Invalid query")
                 })
+            })
+        })
+    })
+    describe("/:diary_id", () => {
+        test("GET 200: returns the diary with given id", async () => {
+            const gymbroTreadmillDiary = await (await db).collection("diaries").findOne({username: "gymbro", exercise: "Treadmill"}) || { _id: "" }
+            const diaryID = gymbroTreadmillDiary._id.toString()
+            
+            return request(app)
+            .get(`/api/diaries/${diaryID}`)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: diaryID,
+                    username: "gymbro",
+                    exercise: "Treadmill",
+                    personalBest: 10,
+                    goal: 20,
+                    logs: [
+                        {
+                            "date": "20-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "22-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("GET 400: returns a Bad Request error message when id is too short", async () => {
+            const twentyThreeCharacterID = "AAAAA11111BBBBBCCCCC333"
+            
+            return request(app)
+            .get(`/api/diaries/${twentyThreeCharacterID}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
+        test("GET 400: returns a Bad Request error message when id is too long", async () => {
+            const twentyFiveCharacterID = "AAAAA11111BBBBBCCCCC33333"
+            
+            return request(app)
+            .get(`/api/diaries/${twentyFiveCharacterID}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
+        test("GET 404: returns a Not Found error message when no diary exists with id", async () => {
+            const id = "AAAAA11111BBBBBCCCCC3333"
+            
+            return request(app)
+            .get(`/api/diaries/${id}`)
+            .expect(404)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Diary not found")
+            })
+        })
+        test("DELETE 200: deletes a diary with given id, serves no response", async () => {
+            const gymbroPullUpDiary = await (await db).collection("diaries").findOne({ username: "gymbro", exercise: "Pull Up"}) || { _id: "" }
+            const id = gymbroPullUpDiary._id.toString()
+
+            return request(app)
+            .delete(`/api/diaries/${id}`)
+            .expect(204)
+            .then(({body}) => {
+                expect(body).toEqual({})
+            })
+        })
+        test("DELETE 400: returns a Bad Request error message when id is too short", async () => {
+            const shortId = "AAAAA11111BBBBBCCCCC333"
+
+            return request(app)
+            .delete(`/api/diaries/${shortId}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
+        test("DELETE 400: returns a Bad Request error message when id is too short", async () => {
+            const longId = "AAAAA11111BBBBBCCCCC33333"
+
+            return request(app)
+            .delete(`/api/diaries/${longId}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid diary id")
+            })
+        })
+        test("DELETE 404: returns a Not Found error message when no diary exists with id", async () => {
+            const id = "AAAAA11111BBBBBCCCCC3333"
+
+            return request(app)
+            .delete(`/api/diaries/${id}`)
+            .expect(404)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Diary not found")
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a higher personalBest value", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: 12}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 12,
+                    goal: 15,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a lower personalBest value above existing logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: 11}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 15,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a higher goal value", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { goal: 20}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 20,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a lower goal value above existing logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { goal: 18}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a new log object and all existing logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [ 
+                {
+                    "date": "26-08-2024",
+                    "log": 10
+                },
+                {
+                    "date": "27-08-2024",
+                    "log": 11
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a log array without existing logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [
+                {
+                    "date": "28-08-2024",
+                    "log": 11
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 11
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a log with a date matching existing log", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [
+                {
+                    "date": "28-08-2024",
+                    "log": 10
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 11,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 10
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed a log above personalBest", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [
+                {
+                    "date": "29-08-2024",
+                    "log": 12
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toMatchObject({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 12,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "29-08-2024",
+                            "log": 12
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed multiple new logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [
+                {
+                    "date": "30-09-2024",
+                    "log": 16
+                },
+                {
+                    "date": "01-09-2024",
+                    "log": 15
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toMatchObject({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 16,
+                    goal: 18,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "29-08-2024",
+                            "log": 12
+                        },
+                        {
+                            "date": "30-09-2024",
+                            "log": 16
+                        },
+                        {
+                            "date": "01-09-2024",
+                            "log": 15
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 200: returns updated diary when passed personalBest, goal, and logs to update", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                personalBest: 20,
+                goal: 25,
+                logs: [
+                {
+                    "date": "02-09-2024",
+                    "log": 20
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toMatchObject({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 20,
+                    goal: 25,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "29-08-2024",
+                            "log": 12
+                        },
+                        {
+                            "date": "30-09-2024",
+                            "log": 16
+                        },
+                        {
+                            "date": "01-09-2024",
+                            "log": 15
+                        },
+                        {
+                            "date": "02-09-2024",
+                            "log": 20
+                        }
+                    ]
+                })
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when sent no body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No request body given")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when sent an empty body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send({})
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No request body given")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a username", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { username: "new username" }
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request should not provide a username")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed an exercise", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { exercise: "Chin Up" }
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request should not provide an exercise")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a personalBest below existing logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: 0 }
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest cannot be below a log")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a personalBest below a log given on the request body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                personalBest: 18,
+                logs: [{ date: "02-09-2024", log: 20 }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest cannot be below a log")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a goal below existing logs", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { goal: 0 }
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Goal cannot be below a log")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a goal below a log given on the request body", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                goal: 19,
+                logs: [{ date: "02-09-2024", log: 20 }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Goal cannot be below a log")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a logs is an object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: { date: "02-09-2024", log: 10 }
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must be an array")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a logs is a string", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: "log"
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must be an array")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a logs is a number", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: 10
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must be an array")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log in logs array is missing a date", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ log: 20 }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must have a date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log with date as a number", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: 20, log: 15 }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be a string")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log with date as an object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: { day: "02-09-2024"}, log: 15 }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be a string")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log with date as an array", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: ["02-09-2024"], log: 15}]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be a string")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log in logs array is missing a log property", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: "02-09-2024" }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must have a log property")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log with a string log property", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: "02-09-2024", log: "15" }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Log must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log with log property being an array", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: "02-09-2024", log: ["15"] }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Log must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a log with log property being an object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: "02-09-2024", log: { value: "15" } }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Log must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a personalBest string", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: "10" }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a personalBest array", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: [10] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed an personalBest object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: {value: 10} }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a goal string", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { goal: "15" }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Goal must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a goal array", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { goal: [15] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Goal must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a goal object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { goal: { value: 15 } }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Goal must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed an date uses letters", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "XX-XX-XXXX", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date does not use dashes", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "01/01/2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date that is too long", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "02-09-2024-00:00am", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with 00 for day", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "00-09-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with day above 31", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "32-09-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with 00 for month", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "01-00-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with month above 12", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "01-13-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with year before 2024", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "31-12-2023", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a day of 31 in a month with fewer days", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "30-02-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("POST 405: returns a Method Not Allowed error message", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .post(`/api/diaries/${id}`)
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+        test("PUT 405: returns a Method Not Allowed error message", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+
+            return request(app)
+            .put(`/api/diaries/${id}`)
+            .expect(405)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Request method not allowed on this endpoint")
+            })
+        })
+    })
+    describe("/:diary_id?", () => {
+        test("GET 400: returns a Bad Request error message if passed a query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .get(`/api/diaries/${id}?query=value`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("GET 400: returns a Bad Request error message if passed an empty query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .get(`/api/diaries/${id}?query`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("DELETE 400: returns a Bad Request error message if passed a query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .delete(`/api/diaries/${id}?query=value`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("DELETE 400: returns a Bad Request error message if passed an empty query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .delete(`/api/diaries/${id}?query`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message if passed a query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .patch(`/api/diaries/${id}?query=value`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message if passed an empty query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .patch(`/api/diaries/${id}?query`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
             })
         })
     })

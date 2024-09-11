@@ -79,8 +79,8 @@
                     "_id": "1",
                     "username": "goodUsername",
                     "exercise": "Pull up",
-                    "personalBest": 4,
-                    "goal": 10,
+                    "personalBest": 10,
+                    "goal": 12,
                     "logs": [
                         {
                             "date": "20-08-2024",
@@ -94,8 +94,8 @@
                     "_id": "2",
                     "username": "badUsername",
                     "exercise": "Chin Up",
-                    "personalBest": 4,
-                    "goal": 10,
+                    "personalBest": 40,
+                    "goal": 50,
                     "logs": [
                         {
                             "date": "20-08-2024",
@@ -105,7 +105,6 @@
                 }
             ]
         }
-
     },
     "POST /api/diaries": {
         "description": "adds a given diary, returns the added object",
@@ -114,8 +113,8 @@
                 "_id": "3",
                 "username": "goodUsername",
                 "exercise": "Chin up",
-                "personalBest": 8,
-                "goal": 10,
+                "personalBest": 10,
+                "goal": 12,
                 "logs": [
                     {
                         "date": "20-08-2024",
@@ -124,5 +123,52 @@
                 ]
             }
         }
+    },
+    "GET /api/diaries/:diary_id": {
+        "description": "serves the diary object with given _id",
+        "queries": [],
+        "example response": {
+            "diary": {
+                "_id": "1",
+                "username": "goodUsername",
+                "exercise": "Pull up",
+                "personalBest": 10,
+                "goal": 12,
+                "logs": [
+                    {
+                        "date": "20-08-2024",
+                        "log": 10
+                    }
+                ]
+            }
+        }
+    },
+    "PATCH /api/diaries/:diary_id": {
+        "description": "serves the updated diary object",
+        "queries": [],
+        "example response": {
+            "diary": {
+                "_id": "1",
+                "username": "goodUsername",
+                "exercise": "Pull up",
+                "personalBest": 11,
+                "goal": 12,
+                "logs": [
+                    {
+                        "date": "20-08-2024",
+                        "log": 10
+                    },
+                    {
+                        "date": "21-08-2024",
+                        "log": 11
+                    }
+                ]
+            }
+        }
+    },
+    "DELETE /api/diaries/:diary_id": {
+        "description": "deletes the diary object with given _id, serves no response",
+        "queries": [],
+        "example response": {}
     }
 }
