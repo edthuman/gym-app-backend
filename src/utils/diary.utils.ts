@@ -102,10 +102,14 @@ export const generateDiaryPatchError = (patchBody: any): string => {
         }
 
         for (let i = 0; i < logs.length; i++) {
-            if (!logs[i].date) {
+            const {date, log} = logs[i]
+            if (!date) {
                 return "Logs must have a date"
             }
-            if (!logs[i].log) {
+            if (typeof date !== "string") {
+                return "Dates must be a string"
+            }
+            if (!log) {
                 return "Logs must have a log property"
             }
         }
