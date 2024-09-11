@@ -675,4 +675,15 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Goal cannot be below a log")
     })
+    it("returns an error message when a log in logs array is missing a date", () => {
+        const input = { 
+            logs: [ 
+                { log: 15 }
+            ]
+        }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Logs must have a date")
+    })
 })
