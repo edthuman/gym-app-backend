@@ -2183,7 +2183,53 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Invalid query")
             })
         })
+        test("DELETE 400: returns a Bad Request error message if passed a query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .delete(`/api/diaries/${id}?query=value`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("DELETE 400: returns a Bad Request error message if passed an empty query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .delete(`/api/diaries/${id}?query`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message if passed a query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .patch(`/api/diaries/${id}?query=value`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message if passed an empty query", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            
+            return request(app)
+            .patch(`/api/diaries/${id}?query`)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid query")
+            })
+        })
     })
-    //delete
-    //patch
 })
