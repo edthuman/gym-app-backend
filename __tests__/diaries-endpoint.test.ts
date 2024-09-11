@@ -1923,5 +1923,47 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Log must be a number")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a personalBest string", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: "10" }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a personalBest array", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: [10] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest must be a number")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed an personalBest object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { personalBest: {value: 10} }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("PersonalBest must be a number")
+            })
+        })
     })
 })
