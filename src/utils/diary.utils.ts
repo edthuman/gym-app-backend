@@ -94,12 +94,20 @@ export const generateDiaryPatchError = (patchBody: any): string => {
         return "Request should not provide an exercise"
     }
 
-    if (properties.includes("logs") && properties.includes("personalBest") ) {
-        const logValues = patchBody.logs.map((logItem: Log) => logItem.log)
+    const { logs, personalBest, goal } = patchBody
+
+    if (logs) {
+        const logValues = logs.map((logItem: Log) => logItem.log)
         const highestLog = Math.max(...logValues)
-        if (highestLog > patchBody.personalBest) {
-            return "PersonalBest cannot be below a log"
+
+        if (properties.includes("personalBest") && highestLog > personalBest) {
+                return "PersonalBest cannot be below a log"
         }
+        if (properties.includes("goal") && highestLog > goal) {
+            return "Goal cannot be below a log"
     }
+        
+    }
+
     return ""
 } 
