@@ -95,7 +95,8 @@ export const generateDiaryPatchError = (patchBody: any): string => {
     }
 
     if (properties.includes("logs") && properties.includes("personalBest") ) {
-        const highestLog = Math.max(...patchBody.logs.map((logItem: Log) => logItem.log))
+        const logValues = patchBody.logs.map((logItem: Log) => logItem.log)
+        const highestLog = Math.max(...logValues)
         if (highestLog > patchBody.personalBest) {
             return "PersonalBest cannot be below a log"
         }
