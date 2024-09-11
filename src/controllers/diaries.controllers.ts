@@ -200,6 +200,12 @@ export const getDiaryById = async (req: Request, res: Response) => {
 }
 
 export const deleteDiary = async (req: Request, res: Response) => {
+    const isQuery = Object.keys(req.query).length
+    if (isQuery) {
+        sendInvalidQueryError(res)
+        return
+    }
+
     const givenId = req.params.diary_id
 
     let id: ObjectId
