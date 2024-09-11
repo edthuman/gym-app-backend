@@ -2049,5 +2049,75 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Dates must be formatted DD-MM-YYYY")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a date with 00 for day", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "00-09-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with day above 31", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "32-09-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with 00 for month", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "01-00-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with month above 12", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "01-13-2024", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a date with year before 2024", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { logs: [{ date: "31-12-2023", log: 15 }] }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Invalid date")
+            })
+        })
     })
 })
