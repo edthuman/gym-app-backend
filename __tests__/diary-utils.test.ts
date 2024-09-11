@@ -675,6 +675,27 @@ describe("generateDiaryPatchError", () => {
 
         expect(output).toBe("Goal cannot be below a log")
     })
+    it("returns an error message when a logs is an object", () => {
+        const input = { logs: { date: "02-09-2024", log: 10 } }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Logs must be an array")
+    })
+    it("returns an error message when a logs is a string", () => {
+        const input = { logs: "log" }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Logs must be an array")
+    })
+    it("returns an error message when a logs is a number", () => {
+        const input = { logs: 10 }
+
+        const output = generateDiaryPatchError(input)
+
+        expect(output).toBe("Logs must be an array")
+    })
     it("returns an error message when a log in logs array is missing a date", () => {
         const input = { 
             logs: [ 
