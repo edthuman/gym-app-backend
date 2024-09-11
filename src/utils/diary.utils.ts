@@ -97,6 +97,10 @@ export const generateDiaryPatchError = (patchBody: any): string => {
     const { logs, personalBest, goal } = patchBody
 
     if (logs) {
+        if (!Array.isArray(logs)) {
+            return "Logs must be an array"
+        }
+
         for (let i = 0; i < logs.length; i++) {
             if (!logs[i].date) {
                 return "Logs must have a date"
