@@ -117,6 +117,12 @@ export const generateDiaryPatchError = (patchBody: any): string => {
             if (typeof date !== "string") {
                 return "Dates must be a string"
             }
+            const dateRegex = /^\d\d-\d\d-\d\d\d\d$/
+            const isInvalidDate = !dateRegex.test(date)
+            if (isInvalidDate) {
+                return "Dates must be formatted DD-MM-YYYY"
+            }
+
             if (!log) {
                 return "Logs must have a log property"
             }
