@@ -1636,6 +1636,64 @@ describe("/api/diaries", () => {
                 })
             })
         })
+        test("PATCH 200: returns updated diary when passed personalBest, goal, and logs to update", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                personalBest: 20,
+                goal: 25,
+                logs: [
+                {
+                    "date": "02-09-2024",
+                    "log": 20
+                }
+            ]}
+
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(200)
+            .then(({body: {diary}}) => {
+                expect(diary).toMatchObject({
+                    _id: id,
+                    username: "liftqueen",
+                    exercise: "Rowing Machine",
+                    personalBest: 20,
+                    goal: 25,
+                    logs: [ 
+                        {
+                            "date": "26-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "27-08-2024",
+                            "log": 11
+                        },
+                        {
+                            "date": "28-08-2024",
+                            "log": 10
+                        },
+                        {
+                            "date": "29-08-2024",
+                            "log": 12
+                        },
+                        {
+                            "date": "30-09-2024",
+                            "log": 16
+                        },
+                        {
+                            "date": "01-09-2024",
+                            "log": 15
+                        },
+                        {
+                            "date": "02-09-2024",
+                            "log": 20
+                        }
+                    ]
+                })
+            })
+        })
         test("PATCH 400: returns a Bad Request error message when sent no body", async () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
