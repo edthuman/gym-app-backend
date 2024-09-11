@@ -122,6 +122,16 @@ export const generateDiaryPatchError = (patchBody: any): string => {
             if (isInvalidDate) {
                 return "Dates must be formatted DD-MM-YYYY"
             }
+            const day = Number(date.slice(0, 2))
+            const isInvalidDay = day < 1 || day > 31
+            const month = Number(date.slice(3, 5))
+            const isInvalidMonth = month < 1 || month > 12
+            const year = Number(date.slice(6, 10))
+            const isInvalidYear = year < 2024
+            
+            if (isInvalidDay || isInvalidMonth || isInvalidYear) {
+                return "Invalid date"
+            }
 
             if (!log) {
                 return "Logs must have a log property"
