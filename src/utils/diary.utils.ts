@@ -96,6 +96,10 @@ export const generateDiaryPatchError = (patchBody: any): string => {
 
     const { logs, personalBest, goal } = patchBody
 
+    if (personalBest && typeof personalBest !== "number") {
+        return "PersonalBest must be a number"
+    }
+
     if (logs) {
         if (!Array.isArray(logs)) {
             return "Logs must be an array"
@@ -126,7 +130,6 @@ export const generateDiaryPatchError = (patchBody: any): string => {
         if (properties.includes("goal") && highestLog > goal) {
             return "Goal cannot be below a log"
     }
-        
     }
 
     return ""
