@@ -1763,5 +1763,21 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Logs must have a date")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a log in logs array is missing a log property", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: [{ date: "02-09-2024" }]
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must have a log property")
+            })
+        })
     })
 })
