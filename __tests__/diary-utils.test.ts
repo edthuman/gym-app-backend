@@ -630,6 +630,32 @@ describe("formatPatchObject", () => {
 
         expect(output).toMatchObject(expectedOutput)
     })
+    it("returns the correct object when passed personalBest, goal, and logs", () => {
+        const input =  { 
+            personalBest: 10,
+            goal: 20,
+            logs: [
+            { date: "20-01-2024", log: 10 }
+        ]}
+
+        const output = formatPatchObject(input)
+
+        const expectedOutput = {
+            $set: {
+                goal: 20
+            },
+            $addToSet: { 
+                logs: {
+                    $each: [
+                        { date: "20-01-2024", log: 10 },
+                    ]
+                }
+            },
+            $max: { personalBest: 10 }
+        }
+
+        expect(output).toEqual(expectedOutput)
+    })
 })
 
 describe("generateDiaryPatchError", () => {
