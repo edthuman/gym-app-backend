@@ -1747,6 +1747,54 @@ describe("/api/diaries", () => {
                 expect(msg).toBe("Goal cannot be below a log")
             })
         })
+        test("PATCH 400: returns a Bad Request error message when passed a logs is an object", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: { date: "02-09-2024", log: 10 }
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must be an array")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a logs is a string", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: "log"
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must be an array")
+            })
+        })
+        test("PATCH 400: returns a Bad Request error message when passed a logs is a number", async () => {
+            const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
+
+            const id = liftqueenRowingDiary._id.toString()
+            const patchObject = { 
+                logs: 10
+            }
+            
+            return request(app)
+            .patch(`/api/diaries/${id}`)
+            .send(patchObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Logs must be an array")
+            })
+        })
         test("PATCH 400: returns a Bad Request error message when passed a log in logs array is missing a date", async () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
 
