@@ -122,13 +122,32 @@ export const generateDiaryPatchError = (patchBody: any): string => {
             if (isInvalidDate) {
                 return "Dates must be formatted DD-MM-YYYY"
             }
+
+            const calendar: any = {
+                "01": 31,
+                "02": 29,
+                "03": 31,
+                "04": 30,
+                "05": 31,
+                "06": 30,
+                "07": 31,
+                "08": 31,
+                "09": 30,
+                "10": 31,
+                "11": 30,
+                "12": 31,
+            }
+
             const day = Number(date.slice(0, 2))
-            const isInvalidDay = day < 1 || day > 31
             const month = Number(date.slice(3, 5))
-            const isInvalidMonth = month < 1 || month > 12
             const year = Number(date.slice(6, 10))
+
+            const daysInMonth = calendar[date.slice(3,5)]
+
+            const isInvalidDay: any = day < 1 || day > daysInMonth
+            const isInvalidMonth = month < 1 || month > 12
             const isInvalidYear = year < 2024
-            
+
             if (isInvalidDay || isInvalidMonth || isInvalidYear) {
                 return "Invalid date"
             }
