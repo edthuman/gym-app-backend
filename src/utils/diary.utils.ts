@@ -1,6 +1,6 @@
 import { Log } from "../types"
 
-export const generateDiaryErrorMessage = (diary: any): string => {
+export const getDiaryError = (diary: any): string => {
     const {username, exercise, personalBest, goal, logs } = diary
     
     if (username === "" || username === undefined) {
