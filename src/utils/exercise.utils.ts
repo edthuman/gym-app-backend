@@ -6,7 +6,6 @@ export const getExerciseError = (exercise: any): string => {
         return "No request body given"
     }
 
-    // checks for missing properties, returned error message states first missing property found
     if (!name) {
         return "No name given"
     }

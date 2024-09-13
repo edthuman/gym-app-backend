@@ -87,7 +87,7 @@ describe("/api/users", () => {
             })
         })
         test("POST 409: returns a Conflict error message if username already exists", () => {
-            const duplicateUser = { username: "gymbro" } // exists in seed data
+            const duplicateUser = { username: "gymbro" }
             
             return request(app)
             .post("/api/users")

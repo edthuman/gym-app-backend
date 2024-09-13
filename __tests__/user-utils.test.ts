@@ -50,7 +50,6 @@ describe("getUserError", () => {
 
         expect(output).toBe("Request body should only provide a username")
     })
-    // no need for a test checking user is an object, as this is req.body
 })
 
 describe("sortUsers", () => {

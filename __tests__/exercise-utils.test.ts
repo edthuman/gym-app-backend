@@ -161,7 +161,6 @@ describe("getExerciseError", () => {
 
         expect(output).toBe("Request body should only include name, description, and icon")
     })
-    // no test for exercise being an object, as this will be req.body
 })
 
 describe("sortExercises", () => {
