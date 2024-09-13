@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { insertUser, selectAllUsers, selectUserById, selectUserByUsername } from "../models/users.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
-import { checkUserOrder, checkUserSort, findInvalidUserQueries, getUserErrorMessage, sortUsers } from "../utils/user.utils"
+import { checkUserOrder, checkUserSort, findInvalidUserQueries, getUserError, sortUsers } from "../utils/user.utils"
 import { ObjectId } from "mongodb"
 
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -59,7 +59,7 @@ export const postUser = async (req: Request, res: Response) => {
     }
 
     const userObject = req.body
-    const userErrorMessage = getUserErrorMessage(userObject) // returns empty string if no error, else provides error message
+    const userErrorMessage = getUserError(userObject) // returns empty string if no error, else provides error message
 
     if (userErrorMessage) {
         sendBadRequestError(res, userErrorMessage)
