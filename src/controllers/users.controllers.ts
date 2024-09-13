@@ -51,10 +51,10 @@ export const postUser = async (req: Request, res: Response) => {
     }
 
     const userObject = req.body
-    const userErrorMessage = getUserError(userObject)
+    const userError = getUserError(userObject)
 
-    if (userErrorMessage) {
-        return sendBadRequestError(res, userErrorMessage)
+    if (userError) {
+        return sendBadRequestError(res, userError)
     }
 
     const user = await insertUser(userObject)    
