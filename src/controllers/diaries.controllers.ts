@@ -136,6 +136,7 @@ export const postDiary = async (req: Request, res: Response) => {
     }
     if (isValidUsername.isError) {
         sendInternalServerError(res, "Error posting diary")
+        return
     }
 
     const isValidExercise = await selectExerciseByName(exercise)
@@ -230,6 +231,7 @@ export const deleteDiary = async (req: Request, res: Response) => {
     const deletedDiary = await removeDiary(id)
     if (deletedDiary.isError || deletedDiary.deleted === false) {
         sendInternalServerError(res, "Error deleting diary")
+        return
     }
     res.status(204).send()
 }
