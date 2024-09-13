@@ -1,4 +1,4 @@
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, getDiaryError, generateDiaryPatchError } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, getDiaryError, getDiaryPatchError } from "../src/utils/diary.utils"
 
 describe("getDiaryError", () => {
     it("returns an empty string for a valid diary object", () => {
@@ -658,22 +658,22 @@ describe("formatPatchObject", () => {
     })
 })
 
-describe("generateDiaryPatchError", () => {
+describe("getDiaryPatchError", () => {
     it("returns an error message when passed an object with no keys", () => {
         const input = {}
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("No request body given")
     })
     it("returns an error message when passed an object with an exercise property", () => {
         const input = { exercise: "Rowing Machine" }
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Request should not provide an exercise")
     })
     it("returns an error message when passed an object with a username property", () => {
         const input = { username: "gymbro" }
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Request should not provide a username")
     })
@@ -685,7 +685,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("PersonalBest cannot be below a log")
     })
@@ -697,28 +697,28 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Goal cannot be below a log")
     })
     it("returns an error message when a logs is an object", () => {
         const input = { logs: { date: "02-09-2024", log: 10 } }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Logs must be an array")
     })
     it("returns an error message when a logs is a string", () => {
         const input = { logs: "log" }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Logs must be an array")
     })
     it("returns an error message when a logs is a number", () => {
         const input = { logs: 10 }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Logs must be an array")
     })
@@ -729,7 +729,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Logs must have a date")
     })
@@ -740,7 +740,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Dates must be a string")
     })
@@ -751,7 +751,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Dates must be a string")
     })
@@ -762,7 +762,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Dates must be a string")
     })
@@ -773,7 +773,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Logs must have a log property")
     })
@@ -784,7 +784,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Log must be a number")
     })
@@ -795,7 +795,7 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Log must be a number")
     })
@@ -806,112 +806,112 @@ describe("generateDiaryPatchError", () => {
             ]
         }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Log must be a number")
     })
     it("returns an error message when personalBest is a string", () => {
         const input = { personalBest: "10" }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("PersonalBest must be a number")
     })
     it("returns an error message when personalBest is an array", () => {
         const input = { personalBest: [10] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("PersonalBest must be a number")
     })
     it("returns an error message when personalBest is an object", () => {
         const input = { personalBest: {value: 10} }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("PersonalBest must be a number")
     })
     it("returns an error message when goal is a string", () => {
         const input = { goal: "15" }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Goal must be a number")
     })
     it("returns an error message when goal is an array", () => {
         const input = { goal: [15] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Goal must be a number")
     })
     it("returns an error message when goal is an object", () => {
         const input = { goal: {value: 15} }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Goal must be a number")
     })
     it("returns an error message when a date has letters", () => {
         const input = { logs: [{ date: "XX-XX-XXXX", log: 15}] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Dates must be formatted DD-MM-YYYY")
     })
     it("returns an error message when a date does not use dashes", () => {
         const input = { logs: [{ date: "01/01/2024", log: 15}] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Dates must be formatted DD-MM-YYYY")
     })
     it("returns an error message when a date is too long", () => {
         const input = { logs: [{date: "02-09-2024-00:00am", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Dates must be formatted DD-MM-YYYY")
     })
     it("returns an error message when a date has day 00", () => {
         const input = { logs: [{date: "00-09-2024", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Invalid date")
     })
     it("returns an error message when a date has day above 31", () => {
         const input = { logs: [{date: "32-09-2024", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Invalid date")
     })
     it("returns an error message when a date has month 00", () => {
         const input = { logs: [{date: "01-00-2024", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Invalid date")
     })
     it("returns an error message when a date has month above 12", () => {
         const input = { logs: [{date: "01-13-2024", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Invalid date")
     })
     it("returns an error message when a date has year before 2024", () => {
         const input = { logs: [{date: "01-12-2023", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Invalid date")
     })
     it("returns an error message when a date with day 30 does not exist", () => {
         const input = { logs: [{date: "30-02-2024", log: 15 }] }
 
-        const output = generateDiaryPatchError(input)
+        const output = getDiaryPatchError(input)
 
         expect(output).toBe("Invalid date")
     })
