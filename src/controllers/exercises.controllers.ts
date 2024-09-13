@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { insertExercise, selectAllExercises, selectExerciseByName } from "../models/exercises.models";
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers";
-import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../utils/exercise.utils";
+import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseError, sortExercises } from "../utils/exercise.utils";
 
 export const getAllExercises = async (req: Request, res: Response) => {
     const queries = Object.keys(req.query)
@@ -57,7 +57,7 @@ export const postExercise = async (req: Request, res: Response) => {
     }
     const exerciseInput = req.body
 
-    const exerciseError = getExerciseErrorMessage(exerciseInput)
+    const exerciseError = getExerciseError(exerciseInput)
     if (exerciseError) {
         sendBadRequestError(res, exerciseError)
         return
