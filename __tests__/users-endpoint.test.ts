@@ -478,10 +478,13 @@ describe("/api/users", () => {
             })
         })
     })
-    describe("/:user_id", () => {
+})
+
+describe("/api/users/:user_id", () => {
+    describe("/", () => {
         test("GET 200: returns the correct user when given a valid id", async () => {
             const gymbro = await (await db).collection("users").findOne({username: "gymbro"}) || { _id: "" }
-
+    
             return request(app)
             .get(`/api/users/${gymbro._id.toString()}`)
             .expect(200)
@@ -552,7 +555,7 @@ describe("/api/users", () => {
             })
         })
     })
-    describe("/:user_id?", () => {
+    describe("?", () => {
         test("GET 400: returns a Bad Request error message if passed a query", () => {
             return request(app)
             .get("/api/users/aaaaa11111bbbbb22222cccc?query=this")
