@@ -1,6 +1,6 @@
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage, generateDiaryPatchError } from "../src/utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, getDiaryError, generateDiaryPatchError } from "../src/utils/diary.utils"
 
-describe("generateDiaryErrorMessage", () => {
+describe("getDiaryError", () => {
     it("returns an empty string for a valid diary object", () => {
         const input = {
             username: "gymbro",
@@ -10,7 +10,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("")
     })
@@ -22,7 +22,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("No username given")
     })
@@ -35,7 +35,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("No username given")
     })
@@ -48,7 +48,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Username must be a string")
     })
@@ -61,7 +61,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Username must be a string")
     })
@@ -74,7 +74,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Username must be a string")
     })
@@ -86,7 +86,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("No exercise given")
     })
@@ -99,7 +99,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("No exercise given")
     })
@@ -112,7 +112,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Exercise must be a string")
     })
@@ -125,7 +125,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Exercise must be a string")
     })
@@ -138,7 +138,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Exercise must be a string")
     })
@@ -151,7 +151,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("PersonalBest must be a number")
     })
@@ -164,7 +164,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("PersonalBest must be a number")
     })
@@ -177,7 +177,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("PersonalBest must be a number")
     })
@@ -190,7 +190,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Goal must be a number")
     })
@@ -203,7 +203,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Goal must be a number")
     })
@@ -216,7 +216,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: []
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Goal must be a number")
     })
@@ -229,7 +229,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: "string"
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -242,7 +242,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: 1
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -255,7 +255,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: {date: "20-01-2024", log: 20}
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -268,7 +268,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: ["string"]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -281,7 +281,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [1]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -294,7 +294,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [[{date: "20-01-2024", log: 20}]]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -307,7 +307,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{log: 20}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -320,7 +320,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: 1, log: 20}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -333,7 +333,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: ["20-01-2024"], log: 20}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -346,7 +346,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: {day: "20-01-2024"}, log: 20}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -359,7 +359,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: "", log: 20}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -372,7 +372,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: "XX-XX-XXXX", log: 20}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -385,7 +385,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: "20-01-2024"}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -398,7 +398,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: "20-01-2024", log: "two"}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -411,7 +411,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: "20-01-2024", log: [2, 2]}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
@@ -424,7 +424,7 @@ describe("generateDiaryErrorMessage", () => {
             logs: [{date: "20-01-2024", log: {value: 2}}]
         }
 
-        const output = generateDiaryErrorMessage(input)
+        const output = getDiaryError(input)
 
         expect(output).toBe("Logs must be an array of log objects")
     })
