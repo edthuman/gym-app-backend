@@ -1,4 +1,4 @@
-export const getExerciseErrorMessage = (exercise: any): string => {
+export const getExerciseError = (exercise: any): string => {
     const numberOfProperties = Object.keys(exercise).length
     const { name, description, icon } = exercise
     
