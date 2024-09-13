@@ -1,7 +1,7 @@
 import { Response, Request } from "express"
 import { findDuplicateDiary, insertDiary, removeDiary, selectAllDiaries, selectDiaryById, updateDiary } from "../models/diaries.models"
 import { sendBadRequestError, sendConflictError, sendInternalServerError, sendInvalidOrderError, sendInvalidQueryError, sendInvalidSortError, sendNotFoundError } from "../error-handlers"
-import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, generateDiaryErrorMessage, generateDiaryPatchError } from "../utils/diary.utils"
+import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, getDiaryError, generateDiaryPatchError } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
 import { MongoDBDiary } from "../types"
@@ -121,7 +121,7 @@ export const postDiary = async (req: Request, res: Response) => {
 
     const diaryObject = req.body
 
-    const diaryError = generateDiaryErrorMessage(diaryObject)
+    const diaryError = getDiaryError(diaryObject)
     if (diaryError) {
         sendBadRequestError(res, diaryError)
         return
