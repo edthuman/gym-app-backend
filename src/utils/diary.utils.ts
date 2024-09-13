@@ -83,7 +83,7 @@ export const formatPatchObject = (patchObject: any) => {
     return { $set : patchObject }
 }
 
-export const generateDiaryPatchError = (patchBody: any): string => {
+export const getDiaryPatchError = (patchBody: any): string => {
     const properties = Object.keys(patchBody)
 
     const isEmptyBody = properties.length === 0
