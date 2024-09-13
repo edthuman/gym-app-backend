@@ -12,70 +12,58 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     
     const isInvalidQuery = checkDiaryQueries(queries)
     if (isInvalidQuery) {
-        sendInvalidQueryError(res)
-        return
+        return sendInvalidQueryError(res)
     }
     
     const { sort, order, username, exercise } = req.query
 
     const isInvalidSort = checkDiarySort(sort)
     if (isInvalidSort) {
-        sendInvalidSortError(res)
-        return
+        return sendInvalidSortError(res)
     }
 
     const isInvalidOrder = checkDiaryOrder(order)
     if (isInvalidOrder) {
-        sendInvalidOrderError(res)
-        return
+        return sendInvalidOrderError(res)
     }
 
     if (username === "") {
-        sendBadRequestError(res, "No username given")
-        return
+        return sendBadRequestError(res, "No username given")
     }
 
     if (username) {
         if (Array.isArray(username)) {
-            sendBadRequestError(res, "Multiple username queries given")
-            return
+            return sendBadRequestError(res, "Multiple username queries given")
         } 
         const user = await selectUserByUsername(username)
         if (!user) {
-            sendNotFoundError(res, "Username not found")
-            return
+            return sendNotFoundError(res, "Username not found")
         }
         if (user.isError) {
-            sendInternalServerError(res, "Error fetching diaries")
-            return
+            return sendInternalServerError(res, "Error fetching diaries")
         }
     }
     
     if (exercise === "") {
-        sendBadRequestError(res, "No exercise given")
-        return
+        return sendBadRequestError(res, "No exercise given")
     }
 
     if (exercise) {
         if (Array.isArray(exercise)) {
-            sendBadRequestError(res, "Multiple exercise queries given")
-            return
+            return sendBadRequestError(res, "Multiple exercise queries given")
         }
         const isExercise = await selectExerciseByName(exercise)
         if (!isExercise) {
-            sendNotFoundError(res, "Exercise not found")
-            return
+            return sendNotFoundError(res, "Exercise not found")     
         }
         if (isExercise.isError) {
-            sendInternalServerError(res, "Error fetching diaries")
-            return
+            return sendInternalServerError(res, "Error fetching diaries")
         }
     }
 
     let diaries: any = await selectAllDiaries()
     if (diaries.isError) {
-        sendInternalServerError(res, "Error fetching diaries")
-        return
+        return sendInternalServerError(res, "Error fetching diaries")
     }
 
     if (sort === "username" || sort === "exercise") {
@@ -105,8 +93,7 @@ export const getAllDiaries = async (req: Request, res: Response) => {
     }
 
     if (diaries.length === 0) {
-        sendNotFoundError(res, "No diaries found")
-        return
+        return sendNotFoundError(res, "No diaries found")
     }
 
     res.send({ diaries })
@@ -115,55 +102,47 @@ export const getAllDiaries = async (req: Request, res: Response) => {
 export const postDiary = async (req: Request, res: Response) => {
     const isQuery = Object.keys(req.query).length !== 0
     if (isQuery) {
-        sendInvalidQueryError(res)
-        return
+        return sendInvalidQueryError(res)
     }
 
     const diaryObject = req.body
 
     const diaryError = getDiaryError(diaryObject)
     if (diaryError) {
-        sendBadRequestError(res, diaryError)
-        return
+        return sendBadRequestError(res, diaryError)
     }
 
     const { username, exercise } = diaryObject
     const isValidUsername = await selectUserByUsername(username)
 
     if (!isValidUsername) {
-        sendBadRequestError(res, "No user exists with given username")
-        return
+        return sendBadRequestError(res, "No user exists with given username")
     }
     if (isValidUsername.isError) {
-        sendInternalServerError(res, "Error posting diary")
-        return
+        return sendInternalServerError(res, "Error posting diary")
     }
 
     const isValidExercise = await selectExerciseByName(exercise)
     if (!isValidExercise) {
-        sendBadRequestError(res, "Exercise does not exist")
-        return
+        return sendBadRequestError(res, "Exercise does not exist")
     }
     if (isValidExercise.isError) {
-        sendInternalServerError(res, "Error posting diary")
-        return
+        return sendInternalServerError(res, "Error posting diary")
     }
 
     const isDiaryDuplicate = await findDuplicateDiary(username, exercise)
     if (isDiaryDuplicate && isDiaryDuplicate.isError) {
-        sendInternalServerError(res, "Error posting diary")
-        return
+        return sendInternalServerError(res, "Error posting diary")
     }
     if (isDiaryDuplicate) {
-        sendConflictError(res, "Diary already exists")
-        return
+        return sendConflictError(res, "Diary already exists")
+        
     }
 
     const diary = await insertDiary(diaryObject)
 
     if (diary.isError) {
-        sendInternalServerError(res, "Error posting diary")
-        return
+        return sendInternalServerError(res, "Error posting diary")
     }
 
     res.status(201).send({diary})
@@ -172,8 +151,7 @@ export const postDiary = async (req: Request, res: Response) => {
 export const getDiaryById = async (req: Request, res: Response) => {
     const isQuery = Object.keys(req.query).length
     if (isQuery) {
-        sendInvalidQueryError(res)
-        return
+        return sendInvalidQueryError(res)
     }
 
     const givenId = req.params.diary_id
@@ -183,18 +161,15 @@ export const getDiaryById = async (req: Request, res: Response) => {
         id = new ObjectId(givenId)
     }
     catch {
-        sendBadRequestError(res, "Invalid diary id")
-        return
+        return sendBadRequestError(res, "Invalid diary id")
     }
     
     const diary = await selectDiaryById(id)
     if (!diary) {
-        sendNotFoundError(res, "Diary not found")
-        return
+        return sendNotFoundError(res, "Diary not found")
     }
     if (diary.isError) {
-        sendInternalServerError(res, "Error fetching diary")
-        return
+        return sendInternalServerError(res, "Error fetching diary")
     }
 
     res.send({ diary })
@@ -203,8 +178,7 @@ export const getDiaryById = async (req: Request, res: Response) => {
 export const deleteDiary = async (req: Request, res: Response) => {
     const isQuery = Object.keys(req.query).length
     if (isQuery) {
-        sendInvalidQueryError(res)
-        return
+        return sendInvalidQueryError(res)
     }
 
     const givenId = req.params.diary_id
@@ -214,24 +188,20 @@ export const deleteDiary = async (req: Request, res: Response) => {
         id = new ObjectId(givenId)
     }
     catch {
-        sendBadRequestError(res, "Invalid diary id")
-        return
+        return sendBadRequestError(res, "Invalid diary id")
     }
     
     const isIdValid: any = await selectDiaryById(id)
     if (!isIdValid) {
-        sendNotFoundError(res, "Diary not found")
-        return
+        return sendNotFoundError(res, "Diary not found")
     }
     if (isIdValid.isError) {
-        sendInternalServerError(res, "Error deleting diary")
-        return
+        return sendInternalServerError(res, "Error deleting diary")
     }
 
     const deletedDiary = await removeDiary(id)
     if (deletedDiary.isError || deletedDiary.deleted === false) {
-        sendInternalServerError(res, "Error deleting diary")
-        return
+        return sendInternalServerError(res, "Error deleting diary")
     }
     res.status(204).send()
 }
@@ -239,8 +209,7 @@ export const deleteDiary = async (req: Request, res: Response) => {
 export const patchDiary = async (req: Request, res: Response) => {
     const isQuery = Object.keys(req.query).length
     if (isQuery) {
-        sendInvalidQueryError(res)
-        return
+        return sendInvalidQueryError(res)
     }
     
     const givenId = req.params.diary_id
@@ -251,8 +220,7 @@ export const patchDiary = async (req: Request, res: Response) => {
     const error = getDiaryPatchError(body)
 
     if (error) {
-        sendBadRequestError(res, error)
-        return
+        return sendBadRequestError(res, error)
     }
 
     const {logs, personalBest, goal} = body
@@ -261,12 +229,10 @@ export const patchDiary = async (req: Request, res: Response) => {
 
     const highestDiaryLog = Math.max(...diaryToPatch.logs.map((log:any)=>log.log)) 
     if (personalBest < highestDiaryLog) {
-        sendBadRequestError(res, "PersonalBest cannot be below a log")
-        return
+        return sendBadRequestError(res, "PersonalBest cannot be below a log")
     }
     if (goal < highestDiaryLog) {
-        sendBadRequestError(res, "Goal cannot be below a log")
-        return
+        return sendBadRequestError(res, "Goal cannot be below a log")
     }
 
     let highestPatchLog = 0
@@ -286,8 +252,7 @@ export const patchDiary = async (req: Request, res: Response) => {
 
     const updateAttempt = await updateDiary(id, patchObject)
     if (!updateAttempt.success || updateAttempt.isError) {
-        sendInternalServerError(res, "Error patching diary")
-        return
+        return sendInternalServerError(res, "Error patching diary")
     }
 
     const updatedDiary = await selectDiaryById(id)
