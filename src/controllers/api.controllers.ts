@@ -6,14 +6,12 @@ export const getEndpoints = async (req: Request, res: Response) => {
     const isQuery = Object.keys(req.query).length !== 0
 
     if (isQuery) {
-        sendInvalidQueryError(res)
-        return
+        return sendInvalidQueryError(res)
     }
 
     const endpoints = selectEndpoints()
     if (endpoints === "") {
-        sendInternalServerError(res, "Error fetching endpoints")
-        return
+        return sendInternalServerError(res, "Error fetching endpoints")
     }
     res.send({ endpoints })
 }
