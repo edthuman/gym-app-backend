@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "app": "npx nodemon src/listen.ts"
+    "app": "npx nodemon src/listen.ts",
+    "prod": "npx ts-node src/listen.ts"
   },
   "keywords": [],
   "author": "",
