@@ -1,6 +1,6 @@
 import { Document, WithId } from "mongodb";
 import db from "../connection";
-import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseErrorMessage, sortExercises } from "../src/utils/exercise.utils";
+import { checkExerciseOrder, checkExerciseSort, findInvalidExerciseQueries, getExerciseError, sortExercises } from "../src/utils/exercise.utils";
 
 const exercises: WithId<Document>[] = []
 
@@ -11,7 +11,7 @@ beforeAll( async () => {
     }
 })
 
-describe("getExerciseErrorMessage", () => {
+describe("getExerciseError", () => {
     it("returns an empty string for a valid exercise object", () => {
         const input = { 
             name: "exercise name",
@@ -19,13 +19,13 @@ describe("getExerciseErrorMessage", () => {
             icon: "filename"
         }
 
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("")
     })
     it("returns correct error message when given an empty object", () => {
         const input = {}
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No request body given")
     })
@@ -34,7 +34,7 @@ describe("getExerciseErrorMessage", () => {
             description: "description",
             icon: "filename"
         }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No name given")
     })
@@ -43,7 +43,7 @@ describe("getExerciseErrorMessage", () => {
             name: "exercise name",
             icon: "filename"
         }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No description given")
     })
@@ -52,13 +52,13 @@ describe("getExerciseErrorMessage", () => {
             name: "exercise name",
             description: "description",
         }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No icon given")
     })
     it("returns correct error message when exercise missing multiple properties", () => {
         const input = { icon: "file" }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No name given")
     })
@@ -68,7 +68,7 @@ describe("getExerciseErrorMessage", () => {
             description: "description",
             icon: "filename"
         }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No name given")
     })
@@ -78,7 +78,7 @@ describe("getExerciseErrorMessage", () => {
             description: "",
             icon: "filename"
         }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No description given")
     })
@@ -88,7 +88,7 @@ describe("getExerciseErrorMessage", () => {
             description: "description",
             icon: ""
         }
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("No icon given")
     })
@@ -97,13 +97,13 @@ describe("getExerciseErrorMessage", () => {
         const icon = "icon"
 
         const numberName = { name : 1, description, icon }
-        const numberOutput = getExerciseErrorMessage(numberName)
+        const numberOutput = getExerciseError(numberName)
 
         const arrayName = { name: [], description, icon }
-        const arrayOutput = getExerciseErrorMessage(arrayName)
+        const arrayOutput = getExerciseError(arrayName)
         
         const objectName = { name: {}, description, icon }
-        const objectOutput = getExerciseErrorMessage(objectName)
+        const objectOutput = getExerciseError(objectName)
 
         const expectedOutput = "Name must be a string"
 
@@ -116,13 +116,13 @@ describe("getExerciseErrorMessage", () => {
         const icon = "icon"
 
         const numberDescription = { name, description: 1, icon }
-        const numberOutput = getExerciseErrorMessage(numberDescription)
+        const numberOutput = getExerciseError(numberDescription)
 
         const arrayDescription = { name, description: [], icon }
-        const arrayOutput = getExerciseErrorMessage(arrayDescription)
+        const arrayOutput = getExerciseError(arrayDescription)
         
         const objectDescription = { name, description: {}, icon }
-        const objectOutput = getExerciseErrorMessage(objectDescription)
+        const objectOutput = getExerciseError(objectDescription)
 
         const expectedOutput = "Description must be a string"
 
@@ -135,13 +135,13 @@ describe("getExerciseErrorMessage", () => {
         const description = "description"
 
         const numberIcon = { name, description, icon: 1}
-        const numberOutput = getExerciseErrorMessage(numberIcon)
+        const numberOutput = getExerciseError(numberIcon)
 
         const arrayIcon = { name, description, icon: []}
-        const arrayOutput = getExerciseErrorMessage(arrayIcon)
+        const arrayOutput = getExerciseError(arrayIcon)
         
         const objectIcon = { name, description, icon: {}}
-        const objectOutput = getExerciseErrorMessage(objectIcon)
+        const objectOutput = getExerciseError(objectIcon)
 
         const expectedOutput = "Icon must be a string"
 
@@ -157,11 +157,10 @@ describe("getExerciseErrorMessage", () => {
             extraProperty: "value"
         }
 
-        const output = getExerciseErrorMessage(input)
+        const output = getExerciseError(input)
 
         expect(output).toBe("Request body should only include name, description, and icon")
     })
-    // no test for exercise being an object, as this will be req.body
 })
 
 describe("sortExercises", () => {

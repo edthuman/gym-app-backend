@@ -1,4 +1,4 @@
-export const getUserErrorMessage = (user: any): string => {
+export const getUserError = (user: any): string => {
     const {username} = user
     const userProperties = Object.keys(user).length
 
