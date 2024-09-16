@@ -57,9 +57,7 @@ Copy the connection string provided. Then, at the root of your project folder, c
 URI = "<connection string>"
 ```
 
-For your production cluster, follow the same initial steps to get your connection string. Add this to a file called ".env.production", formatted in the same way as your development cluster's connection string.
-
-You will also need to add the production connection string to your host as an environmental variable called "URI". Your host also needs an environmental variable called "NODE_ENV" with the value "production".
+For your production cluster, follow the same initial steps to get your connection string. Add this to your host as an environmental variable called "URI". The host should also have an environmental variable called "NODE_ENV" with the value "production".
 
 > [!NOTE]
 > The directions for adding environmental variables vary by host, seek host's docs for advice on how to do this.
