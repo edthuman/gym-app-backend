@@ -4,7 +4,7 @@ import { sendBadRequestError, sendConflictError, sendInternalServerError, sendIn
 import { checkDiaryOrder, checkDiaryQueries, checkDiarySort, formatPatchObject, getDiaryError, getDiaryPatchError } from "../utils/diary.utils"
 import { selectUserByUsername } from "../models/users.models"
 import { selectExerciseByName } from "../models/exercises.models"
-import { MongoDBDiary } from "../types"
+import { Log, MongoDBDiary } from "../types"
 import { ObjectId } from "mongodb"
 
 export const getAllDiaries = async (req: Request, res: Response) => {
@@ -226,8 +226,8 @@ export const patchDiary = async (req: Request, res: Response) => {
     const {logs, personalBest, goal} = body
     
     const diaryToPatch: any = await selectDiaryById(id)
-
-    const highestDiaryLog = Math.max(...diaryToPatch.logs.map((log:any)=>log.log)) 
+    const diaryLogValues = diaryToPatch.logs.map((log: Log)=>log.log)
+    const highestDiaryLog = Math.max(...diaryLogValues)
     if (personalBest < highestDiaryLog) {
         return sendBadRequestError(res, "PersonalBest cannot be below a log")
     }

@@ -54,7 +54,7 @@ export const checkDiaryOrder = (order: any): boolean => {
     return !validOrder.includes(order)
 }
 
-export const checkDiaryQueries = (queries: any[]) => {
+export const checkDiaryQueries = (queries: any[]): boolean => {
     const validQueries = ["sort", "order", "username", "exercise"]
     let isInvalidQuery = false
 
@@ -67,7 +67,7 @@ export const checkDiaryQueries = (queries: any[]) => {
     return isInvalidQuery
 }
 
-export const formatPatchObject = (patchObject: any) => { 
+export const formatPatchObject = (patchObject: any): any => { 
     if (patchObject.hasOwnProperty("logs")) {
         const {logs, personalBest, goal} = patchObject
 
