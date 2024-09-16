@@ -1,4 +1,4 @@
-[
+module.exports = [
     {
         "name": "Pull Up",
         "description": "Hang from a bar or handles, pull yourself fully up and then back down",
