@@ -1,6 +1,6 @@
 # Gym Tracking API
 
-This API allows users to connect and interact with a database of tracking data for various machines at the gym.
+This API allows users to connect and interact with a database of tracking data for various machines at the gym. It has been written in Typescript, and uses MongoDB Atlas for its development and production databases, with a Memory Server (via [mongodb-memory-server](https://github.com/typegoose/mongodb-memory-server)) used for testing.
 
 ## Get started
 
@@ -17,36 +17,64 @@ npm install
 npm i
 ```
 
-## Connecting to a MongoDB database
-
-In order to connect to a database, you need to create a file containing a connection string.
-
-Create a file at the root of your project's folder called uri.ts and add the text below, replacing \<connection string> with your connection string:
+Finally, to avoid revealing secrets or adding unnecessary files to GitHub, add a file called ".gitignore" with the following text:
 
 ```
-const uri = "<connection string>"
-
-export { uri }
+.gitignore
+node_modules
+.env*
 ```
+
+## Connecting to MongoDB
+
+To create your own version of this project, you will need a MongoDB Atlas account (via https://www.mongodb.com/).
+
+Once you have an Atlas account, you should create two clusters - one for development data and another for production data - which can be named anything you deem appropriate.
+
+Within each cluster you should add a collection called "gym-app", in which you add three empty databases: "users", "exercises", and "diaries".
+
+To allow connection with the clusters, you need to add the relevant IP addresses to each. For the development cluster, this will be IP addresses for any networks you or someone else will use when working on the project.
 
 > [!NOTE]
-> For information on obtaining a connection string, refer to the MongoDB docs: https://www.mongodb.com/docs/
->
-> Or see this page about connection strings: https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string
->
-> Links correct as of 17th August 2024 - they may be updated, moved, or removed
+> You do not need to know your IP address, simply go to the 'Overview' tab once in MongoDB Atlas. There should be this warning at the top of the page: "Current IP Address not added. You will not be able to connect to databases from this address". Click the 'Add Current IP Address" button to the right of this message, and your IP address will be added. You may need to refresh the page for this to take effect.
+
+For your production cluster, you can add all of the same IP addresses as the development cluster has - although you may not need to add all of them, as connection with the production cluster should only be needed for initially seeding it, and after that only if things go wrong.
+
+The production cluster will also need the IP address(es) used by your project's host. These are added to MongoDB in the 'Network Access' tab (under 'Security') by clicking the "ADD IP ADDRESS" button.
+
+> [!NOTE]
+> The method for obtaining IP addresses from hosts varies by provider, seek further information on getting them from your host's docs. 
+
+### Connection Strings
+
+The final step of connecting MongoDB to your project is to use connection strings.
+
+Go to the "Clusters" tab of MongoDB Atlas, and next to the name you gave your development database will be a "Connect" button. Click this, then select the "Drivers" option. You can ignore steps 1 and 2; step three provides your connection string (ensure 'View full code sample' is toggled off).
+
+Copy the connection string provided. Then, at the root of your project folder, create a file called ".env.development" and add your connection string in the formate below, replacing \<connection string> with your connection string:
+
+```
+URI = "<connection string>"
+```
+
+For your production cluster, follow the same initial steps to get your connection string. Add this to a file called ".env.production", formatted in the same way as your development cluster's connection string.
+
+You will also need to add the production connection string to your host as an environmental variable called "URI". Your host also needs an environmental variable called "NODE_ENV" with the value "production".
+
+> [!NOTE]
+> The directions for adding environmental variables vary by host, seek host's docs for advice on how to do this.
 
 ## Working on the API
 
 You're now set up to begin working on the API!
 
-To create a version of the server that updates with live changes made, run the command:
+To create a live version of the server that updates with changes made, run the command:
 
 ```
 npm run app
 ```
 
-This sets up a live development server using nodemon that allows you to make requests to your API via your browser or a platform like Insomnia (https://insomnia.rest/).
+This sets up a development server using nodemon that allows you to make requests to your API via your browser or a platform like [Insomnia](https://insomnia.rest/).
 
 ## Testing
 
