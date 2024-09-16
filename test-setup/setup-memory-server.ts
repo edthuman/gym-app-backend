@@ -3,9 +3,7 @@ import db from "../connection";
 import seed from "../src/seeding/seed";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
-const users = require("../src/seeding/data/users.json");
-const exercises = require("../src/seeding/data/exercises.json");
-const diaries = require("../src/seeding/data/diaries.json")
+const { users, exercises, diaries } = require("../src/seeding/data/test-data")
 
 beforeAll(async () => {
     await seed(await db, users, exercises, diaries);
