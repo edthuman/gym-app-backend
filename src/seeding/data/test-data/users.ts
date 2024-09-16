@@ -1,27 +1,27 @@
 module.exports = [
     { 
-        "username" : "HumptyDumpty",
-        "exercises": [
+        username: "HumptyDumpty",
+        exercises: [
             "Leg Press"
         ]
     },
     { 
-        "username": "gymbro",
-        "exercises": [
+        username: "gymbro",
+        exercises: [
             "Pull Up",
             "Treadmill"
         ]
     },
     { 
-        "username": "liftqueen",
-        "exercises": [
+        username: "liftqueen",
+        exercises: [
             "Rowing",
             "Stair Machine"
         ]
     },
     { 
-        "username": "legituser",
-        "exercises": [
+        username: "legituser",
+        exercises: [
             "Chin Up"
         ]
     }
