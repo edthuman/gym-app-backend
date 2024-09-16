@@ -62,6 +62,16 @@ For your production cluster, follow the same initial steps to get your connectio
 > [!NOTE]
 > The directions for adding environmental variables vary by host, seek host's docs for advice on how to do this.
 
+## Seeding
+
+To seed your development cluster with dummy data from the ['development-data' folder](https://github.com/edthuman/gym-app-backend/tree/main/src/seeding/data/development-data), run the script: 
+
+```
+npm run seed
+```
+
+This script can be re-run at any time to return the database to its original state, allowing you to freely edit or delete items within it without any long-term consequences.
+
 ## Working on the API
 
 You're now set up to begin working on the API!
@@ -72,7 +82,7 @@ To create a live version of the server that updates with changes made, run the c
 npm run app
 ```
 
-This sets up a development server using nodemon that allows you to make requests to your API via your browser or a platform like [Insomnia](https://insomnia.rest/).
+This sets up a server using nodemon that allows you to make requests to your API via your browser or a platform like [Insomnia](https://insomnia.rest/).
 
 ## Testing
 
