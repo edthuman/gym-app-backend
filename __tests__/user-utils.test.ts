@@ -53,7 +53,7 @@ describe("getUserError", () => {
 })
 
 describe("sortUsers", () => {
-    const users = require("../src/seeding/data/users.json")
+    const users = require("../src/seeding/data/test-data/users.ts")
 
     it("returns user array sorted by ascending _id when given undefined sort and order", () => {
         const output = sortUsers(users, undefined, undefined)
