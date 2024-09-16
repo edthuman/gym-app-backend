@@ -490,11 +490,7 @@ describe("/api/users/:user_id", () => {
             .expect(200)
             .then(({body: {user}}) => {
                 expect(user).toEqual({
-                    username: "gymbro",
-                    exercises: [
-                        "Pull Up",
-                        "Treadmill"
-                    ]
+                    username: "gymbro"
                 })
             })
         })
