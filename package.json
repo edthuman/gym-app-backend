@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "app": "npx nodemon src/listen.ts",
-    "prod": "npx ts-node src/listen.ts"
+    "prod": "npx ts-node src/listen.ts",
+    "seed": "npx ts-node src/seeding/seed-development.ts"
   },
   "keywords": [],
   "author": "",
