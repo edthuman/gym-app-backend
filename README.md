@@ -2,6 +2,8 @@
 
 This API allows users to connect and interact with a database of tracking data for various machines at the gym. It has been written in Typescript, and uses MongoDB Atlas for its development and production databases, with a Memory Server (via [mongodb-memory-server](https://github.com/typegoose/mongodb-memory-server)) used for testing.
 
+Link to the live project hosted by Render: https://gym-app-0nbt.onrender.com/api
+
 ## Get started
 
 To begin working on this project, first download the repo using shell command:
