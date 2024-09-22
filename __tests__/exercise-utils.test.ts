@@ -50,6 +50,16 @@ describe("getExerciseError", () => {
 
         expect(output).toBe("No description given")
     })
+    it("returns correct error message when exercise missing category property", () => {
+        const input = { 
+            name: "exercise name",
+            description: "description",
+            icon: "filename"
+        }
+        const output = getExerciseError(input)
+
+        expect(output).toBe("No category given")
+    })
     it("returns correct error message when exercise missing icon property", () => {
         const input = { 
             name: "exercise name",
@@ -88,6 +98,17 @@ describe("getExerciseError", () => {
 
         expect(output).toBe("No description given")
     })
+    it("returns correct error message when exercise category is an empty string", () => {
+        const input = {
+            name: "exercise name",
+            description: "description",
+            category: "",
+            icon: "filename"
+        }
+        const output = getExerciseError(input)
+
+        expect(output).toBe("No category given")
+    })
     it("returns correct error message when exercise icon is an empty string", () => {
         const input = { 
             name: "exercise name",
@@ -114,6 +135,26 @@ describe("getExerciseError", () => {
         const objectOutput = getExerciseError(objectName)
 
         const expectedOutput = "Name must be a string"
+
+        expect(numberOutput).toBe(expectedOutput)
+        expect(arrayOutput).toBe(expectedOutput)
+        expect(objectOutput).toBe(expectedOutput)
+    })
+    it("returns correct error message when exercise description is not a string", () => {
+        const name = "name"
+        const description = "description"
+        const icon = "icon"
+
+        const numberCategory = { name, description, category : 1, icon }
+        const numberOutput = getExerciseError(numberCategory)
+
+        const arrayCategory = { name, description, category : [], icon }
+        const arrayOutput = getExerciseError(arrayCategory)
+        
+        const objectCategory = { name, description, category : {}, icon }
+        const objectOutput = getExerciseError(objectCategory)
+
+        const expectedOutput = "Category must be a string"
 
         expect(numberOutput).toBe(expectedOutput)
         expect(arrayOutput).toBe(expectedOutput)
