@@ -204,6 +204,7 @@ describe("getExerciseError", () => {
         const input = { 
             name: "exercise name",
             description: "description",
+            category: "category",
             icon: "filename",
             extraProperty: "value"
         }
