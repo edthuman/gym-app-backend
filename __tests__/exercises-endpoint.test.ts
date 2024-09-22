@@ -127,7 +127,36 @@ describe("api/exercises", () => {
                 expect(msg).toBe("Description must be a string")
             })
         })
-        
+        test("POST 400: returns a Bad Request error message when given an object with no category", () => {
+            const exerciseObject = { name: "name", description: "description", icon: "icon" }
+            return request(app)
+            .post("/api/exercises")
+            .send(exerciseObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No category given")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object with an empty string category", () => {
+            const exerciseObject = { name: "name", description: "description", category: "", icon: "icon" }
+            return request(app)
+            .post("/api/exercises")
+            .send(exerciseObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No category given")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object with a non-string category", () => {
+            const exerciseObject = { name: "name", description: "description", category: 12, icon: "icon" }
+            return request(app)
+            .post("/api/exercises")
+            .send(exerciseObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Category must be a string")
+            })
+        })
         test("POST 400: returns a Bad Request error message when given an object with no icon", () => {
             const exerciseObject = { name: "name", description: "description", category: "category" }
 
