@@ -9,6 +9,7 @@ export interface MongoDBUser extends User {
 export interface Exercise {
     name: string,
     description: string,
+    category: string,
     icon: string
 }
 

@@ -16,6 +16,7 @@ describe("api/exercises", () => {
                         _id: expect.any(String),
                         name: expect.any(String),
                         description: expect.any(String),
+                        category: expect.any(String),
                         icon: expect.any(String)
                     })
                 })
@@ -25,6 +26,7 @@ describe("api/exercises", () => {
             const exerciseObject = {
                 name: "Star Jump",
                 description: "Jump up and down quickly, opening and closing your arms and legs in synch with your jumps",
+                category: "Cardio",
                 icon: "star"
             }
             
@@ -37,6 +39,7 @@ describe("api/exercises", () => {
                     _id: expect.any(String),
                     name: "Star Jump",
                     description: "Jump up and down quickly, opening and closing your arms and legs in synch with your jumps",
+                    category: "Cardio",
                     icon: "star"
                 })
             })
@@ -59,7 +62,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with no name", () => {
-            const exerciseObject = { description: "description", icon: "icon" }
+            const exerciseObject = { description: "description", category: "category", icon: "icon" }
 
             return request(app)
             .post("/api/exercises")
@@ -70,7 +73,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with an empty string name", () => {
-            const exerciseObject = { name: "", description: "description", icon: "icon" }
+            const exerciseObject = { name: "", description: "description", category: "category", icon: "icon" }
 
             return request(app)
             .post("/api/exercises")
@@ -81,7 +84,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with a non-string name", () => {
-            const exerciseObject = { name: [], description: "description", icon: "icon" }
+            const exerciseObject = { name: [], description: "description", category: "category", icon: "icon" }
 
             return request(app)
             .post("/api/exercises")
@@ -92,7 +95,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with no description", () => {
-            const exerciseObject = { name: "name", icon: "icon" }
+            const exerciseObject = { name: "name", category: "category", icon: "icon" }
 
             return request(app)
             .post("/api/exercises")
@@ -103,7 +106,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with an empty string description", () => {
-            const exerciseObject = { name: "name", description: "", icon: "icon" }
+            const exerciseObject = { name: "name", description: "", category: "category", icon: "icon" }
 
             return request(app)
             .post("/api/exercises")
@@ -114,7 +117,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with a non-string description", () => {
-            const exerciseObject = { name: "name", description: {}, icon: "icon" }
+            const exerciseObject = { name: "name", description: {}, category: "category", icon: "icon" }
 
             return request(app)
             .post("/api/exercises")
@@ -124,8 +127,38 @@ describe("api/exercises", () => {
                 expect(msg).toBe("Description must be a string")
             })
         })
+        test("POST 400: returns a Bad Request error message when given an object with no category", () => {
+            const exerciseObject = { name: "name", description: "description", icon: "icon" }
+            return request(app)
+            .post("/api/exercises")
+            .send(exerciseObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No category given")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object with an empty string category", () => {
+            const exerciseObject = { name: "name", description: "description", category: "", icon: "icon" }
+            return request(app)
+            .post("/api/exercises")
+            .send(exerciseObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("No category given")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when given an object with a non-string category", () => {
+            const exerciseObject = { name: "name", description: "description", category: 12, icon: "icon" }
+            return request(app)
+            .post("/api/exercises")
+            .send(exerciseObject)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toBe("Category must be a string")
+            })
+        })
         test("POST 400: returns a Bad Request error message when given an object with no icon", () => {
-            const exerciseObject = { name: "name", description: "description" }
+            const exerciseObject = { name: "name", description: "description", category: "category" }
 
             return request(app)
             .post("/api/exercises")
@@ -136,7 +169,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with an empty string icon", () => {
-            const exerciseObject = { name: "name", description: "description", icon: "" }
+            const exerciseObject = { name: "name", description: "description", category: "category", icon: "" }
 
             return request(app)
             .post("/api/exercises")
@@ -147,7 +180,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 400: returns a Bad Request error message when given an object with a non-string icon", () => {
-            const exerciseObject = { name: "name", description: "description", icon: 3 }
+            const exerciseObject = { name: "name", description: "description", category: "category", icon: 3 }
 
             return request(app)
             .post("/api/exercises")
@@ -168,19 +201,19 @@ describe("api/exercises", () => {
                 expect(msg).toBe("No description given")
             })
         })
-        test("POST 400: returns a Bad Request error message when given an object missing multiple properties", () => {
-            const exerciseObject = { name: "name", description: "description", icon: "icon", extraProperty: "value"}
+        test("POST 400: returns a Bad Request error message when given an object with an invalid property", () => {
+            const exerciseObject = { name: "name", description: "description", category: "category", icon: "icon", extraProperty: "value"}
 
             return request(app)
             .post("/api/exercises")
             .send(exerciseObject)
             .expect(400)
             .then(({body: {msg}}) => {
-                expect(msg).toBe("Request body should only include name, description, and icon")
+                expect(msg).toBe("Request body should only include name, description, category, and icon")
             })
         })
         test("POST 409: returns a Conflict error message when given a duplicate exercise name", () => {
-            const exerciseObject = { name: "Treadmill", description: "description", icon: "icon"}
+            const exerciseObject = { name: "Treadmill", description: "description", category: "category", icon: "icon"}
 
             return request(app)
             .post("/api/exercises")
@@ -191,7 +224,7 @@ describe("api/exercises", () => {
             })
         })
         test("POST 409: returns a Conflict error message when given a duplicate exercise name with different casing", () => {
-            const exerciseObject = { name: "treadmill", description: "description", icon: "icon"}
+            const exerciseObject = { name: "treadmill", description: "description", category: "category", icon: "icon"}
 
             return request(app)
             .post("/api/exercises")
@@ -514,6 +547,7 @@ describe("api/exercises", () => {
                         _id: expect.any(String),
                         name: "Treadmill",
                         description: "Walk or run on the machine",
+                        category: "Cardio",
                         icon: "treadmill"
                         }
                     ])
@@ -529,6 +563,7 @@ describe("api/exercises", () => {
                         _id: expect.any(String),
                         name: "Stair Machine",
                         description: "Climb stairs continuously",
+                        category: "Cardio",
                         icon: "stairs"
                         }
                     ])

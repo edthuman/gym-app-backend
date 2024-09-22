@@ -23,12 +23,13 @@ export const insertExercise = async (exercise: Exercise) => {
         }
 
         const { insertedId } = await (await db).collection("exercises").insertOne(exercise)
-        const { name, description, icon } = exercise
+        const { name, description, category, icon } = exercise
 
         return { 
             _id: insertedId,
             name,
             description,
+            category,
             icon 
         }
     }

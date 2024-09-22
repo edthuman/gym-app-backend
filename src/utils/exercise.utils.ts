@@ -1,6 +1,6 @@
 export const getExerciseError = (exercise: any): string => {
     const numberOfProperties = Object.keys(exercise).length
-    const { name, description, icon } = exercise
+    const { name, description, category, icon } = exercise
     
     if (numberOfProperties === 0) {
         return "No request body given"
@@ -18,6 +18,12 @@ export const getExerciseError = (exercise: any): string => {
     if (typeof description !== "string") {
         return "Description must be a string"
     }
+    if (!category) {
+        return "No category given"
+    }
+    if (typeof category !== "string") {
+        return "Category must be a string"
+    }
     if (!icon) {
         return "No icon given"
     }
@@ -25,8 +31,8 @@ export const getExerciseError = (exercise: any): string => {
         return "Icon must be a string"
     }
 
-    if (numberOfProperties > 3) {
-        return "Request body should only include name, description, and icon"
+    if (numberOfProperties > 4) {
+        return "Request body should only include name, description, category, and icon"
     }
 
     return ""
