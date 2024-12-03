@@ -37,7 +37,10 @@ export const getDiaryError = (diary: any): string => {
         const isDateValid = typeof element.date === "string" && /\d\d-\d\d-\d\d\d\d/.test(element.date)
 
         const isLogValid = typeof element.log === "number"
-        if (!isDateValid || !isLogValid) {
+
+        const validUnits = ["kg", "lb", "mins", "km", "miles", "count"]
+        const isUnitsValid = typeof element.units === "string" && validUnits.includes(element.units)
+        if (!isDateValid || !isLogValid || !isUnitsValid) {
             return "Logs must be an array of log objects"
         }
     }
