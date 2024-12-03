@@ -7,7 +7,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: []
+            logs: [{ date: "05-01-2024", log: 10, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -304,7 +304,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{log: 20}]
+            logs: [{log: 20, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -317,7 +317,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: 1, log: 20}]
+            logs: [{date: 1, log: 20, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -330,7 +330,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: ["20-01-2024"], log: 20}]
+            logs: [{date: ["20-01-2024"], log: 20, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -343,7 +343,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: {day: "20-01-2024"}, log: 20}]
+            logs: [{date: {day: "20-01-2024"}, log: 20, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -356,7 +356,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: "", log: 20}]
+            logs: [{date: "", log: 20, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -369,7 +369,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: "XX-XX-XXXX", log: 20}]
+            logs: [{date: "XX-XX-XXXX", log: 20, units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -382,7 +382,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: "20-01-2024"}]
+            logs: [{date: "20-01-2024", units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -395,7 +395,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: "20-01-2024", log: "two"}]
+            logs: [{date: "20-01-2024", log: "two", units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -408,7 +408,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: "20-01-2024", log: [2, 2]}]
+            logs: [{date: "20-01-2024", log: [2, 2], units: "kg"}]
         }
 
         const output = getDiaryError(input)
@@ -421,7 +421,7 @@ describe("getDiaryError", () => {
             exercise: "Leg Press",
             personalBest: 2,
             goal: 4,
-            logs: [{date: "20-01-2024", log: {value: 2}}]
+            logs: [{date: "20-01-2024", log: {value: 2}, units: "kg"}]
         }
 
         const output = getDiaryError(input)
