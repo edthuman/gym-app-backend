@@ -506,6 +506,19 @@ describe("getDiaryError", () => {
 
         expect(output).toBe("Logs must be an array of log objects")
     })
+    it("returns correct error string for a diary with an extra property", () => {
+        const input = {
+            username: "gymbro",
+            exercise: "Leg Press",
+            personalBest: 2,
+            goal: 4,
+            logs: [{ date: "05-01-2024", log: 10, units: "kg", extra: "other" }]
+        }
+
+        const output = getDiaryError(input)
+
+        expect(output).toBe("Logs must be an array of log objects")
+    })
 })
 
 describe("checkDiarySort", () => {
