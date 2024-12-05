@@ -6,16 +6,18 @@ module.exports = [
         goal: 50,
         logs: [
             {
-                date: "24-08-2024",
-                log: 27.5
+                log: 27.5,
+                units: "kg"
             },
             {
                 date: "26-08-2024",
-                log: 27.5
+                log: 27.5,
+                units: "kg"
             },
             {
                 date: "29-08-2024",
-                log: 30
+                log: 30,
+                units: "kg"
             }
         ]
     },
@@ -34,11 +36,13 @@ module.exports = [
         logs: [
             {
                 date: "20-08-2024",
-                log: 10
+                log: 10,
+                units: "km"
             },
             {
                 date: "22-08-2024",
-                log: 10
+                log: 10,
+                units: "km"
             }
         ]
     },
@@ -50,7 +54,8 @@ module.exports = [
         logs: [
             {
                 date: "26-08-2024",
-                log: 10
+                log: 10,
+                units: "km"
             }
         ]
     },
@@ -62,11 +67,13 @@ module.exports = [
         logs: [
             {
                 date: "26-08-2024",
-                log: 10
+                log: 10,
+                units: "mins"
             },
             {
                 date: "28-08-2024",
-                log: 15
+                log: 15,
+                units: "mins"
             }
         ]
     },
@@ -77,7 +84,8 @@ module.exports = [
         logs: [
             {
                 date: "29-08-2024",
-                log: 1
+                log: 1,
+                units: "count"
             }
         ]
     },
@@ -88,15 +96,18 @@ module.exports = [
         logs: [
             {
                 date: "08-09-2024",
-                log: 20
+                log: 20,
+                units: "count"
             },
             {
                 date: "09-09-2024",
-                log: 20
+                log: 20,
+                units: "count"
             },
             {
                 date: "10-09-2024",
-                log: 20
+                log: 20,
+                units: "count"
             }
         ]
     },
@@ -108,15 +119,18 @@ module.exports = [
         logs: [
             {
                 date: "08-09-2024",
-                log: 15
+                log: 15,
+                units: "km"
             },
             {
                 date: "09-09-2024",
-                log: 15
+                log: 15,
+                units: "km"
             },
             {
                 date: "10-09-2024",
-                log: 15
+                log: 15,
+                units: "km"
             }
         ]
     },
@@ -127,7 +141,8 @@ module.exports = [
         logs: [
             {
                 date: "11-09-2024",
-                log: 25
+                log: 25,
+                units: "km"
             }
         ]
     },
@@ -138,15 +153,18 @@ module.exports = [
         logs: [
             {
                 date: "11-09-2024",
-                log: 47.5
+                log: 47.5,
+                units: "kg"
             },
             {
                 date: "12-09-2024",
-                log: 47.5
+                log: 47.5,
+                units: "kg"
             },
             {
                 date: "13-09-2024",
-                log: 50
+                log: 50,
+                units: "kg"
             }
         ]
     },
