@@ -23,7 +23,8 @@ describe("/api/diaries", () => {
                     diary.logs.forEach((element: any) => {
                         expect(element).toEqual({
                             date: expect.stringMatching(/\d\d-\d\d-\d\d\d\d/),
-                            log: expect.any(Number)
+                            log: expect.any(Number),
+                            units: expect.any(String)
                         })
                     })
                 })
@@ -532,7 +533,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{log: 20 }]
+                logs: [{log: 20, units: "kg" }]
             }
 
             return request(app)
@@ -549,7 +550,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: 10, log: 20 }]
+                logs: [{date: 10, log: 20, units: "kg" }]
             }
 
             return request(app)
@@ -566,7 +567,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: ["20-01-2024", "21-01-2024"], log: 20 }]
+                logs: [{date: ["20-01-2024", "21-01-2024"], log: 20, units: "kg" }]
             }
 
             return request(app)
@@ -583,7 +584,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: {day: "20-01-2024"}, log: 20 }]
+                logs: [{date: {day: "20-01-2024"}, log: 20, units: "kg" }]
             }
 
             return request(app)
@@ -600,7 +601,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: "", log: 20 }]
+                logs: [{date: "", log: 20, units: "kg" }]
             }
 
             return request(app)
@@ -617,7 +618,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: "XX-XX-XXXX", log: 20 }]
+                logs: [{date: "XX-XX-XXXX", log: 20, units: "kg" }]
             }
 
             return request(app)
@@ -634,7 +635,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: "20-01-2024"}]
+                logs: [{date: "20-01-2024", units: "kg"}]
             }
 
             return request(app)
@@ -651,7 +652,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: "20-01-2024", log: "two"}]
+                logs: [{date: "20-01-2024", log: "two", units: "kg"}]
             }
 
             return request(app)
@@ -668,7 +669,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: "20-01-2024", log: [2, 3]}]
+                logs: [{date: "20-01-2024", log: [2, 3], units: "kg"}]
             }
 
             return request(app)
@@ -685,7 +686,7 @@ describe("/api/diaries", () => {
                 exercise: "Leg Press",
                 personalBest: 20,
                 goal: 40,
-                logs: [{date: "20-01-2024", log: {value: 2}}]
+                logs: [{date: "20-01-2024", log: {value: 2}, units: "kg"}]
             }
 
             return request(app)
@@ -705,11 +706,13 @@ describe("/api/diaries", () => {
                 logs: [
                     {
                         date: "26-08-2024",
-                        log: 10
+                        log: 10,
+                        units: "mins"
                     },
                     {
                         date: "28-08-2024",
-                        log: 15
+                        log: 15, 
+                        units: "mins"
                     }
                 ]
             }
@@ -1239,11 +1242,13 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [
                         {
                             "date": "20-08-2024",
-                            "log": 10
+                            "log": 10, 
+                            "units": "km"
                         },
                         {
                             "date": "22-08-2024",
-                            "log": 10
+                            "log": 10, 
+                            "units": "km"
                         }
                     ]
                 })
@@ -1340,7 +1345,8 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1366,7 +1372,8 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1392,7 +1399,8 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1418,7 +1426,8 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10, 
+                            "units": "km"
                         }
                     ]
                 })
@@ -1431,11 +1440,13 @@ describe("/api/diaries/:diary_id", () => {
             const patchObject = { logs: [ 
                 {
                     "date": "26-08-2024",
-                    "log": 10
+                    "log": 10,
+                    "units": "km"
                 },
                 {
                     "date": "27-08-2024",
-                    "log": 11
+                    "log": 11,
+                    "units": "km"
                 }
             ]}
     
@@ -1453,11 +1464,13 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "27-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1470,7 +1483,8 @@ describe("/api/diaries/:diary_id", () => {
             const patchObject = { logs: [
                 {
                     "date": "28-08-2024",
-                    "log": 11
+                    "log": 11,
+                    "units": "km"
                 }
             ]}
     
@@ -1488,15 +1502,18 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "27-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1509,7 +1526,8 @@ describe("/api/diaries/:diary_id", () => {
             const patchObject = { logs: [
                 {
                     "date": "28-08-2024",
-                    "log": 10
+                    "log": 10,
+                    "units": "km"
                 }
             ]}
     
@@ -1527,15 +1545,18 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "27-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1548,7 +1569,8 @@ describe("/api/diaries/:diary_id", () => {
             const patchObject = { logs: [
                 {
                     "date": "29-08-2024",
-                    "log": 12
+                    "log": 12,
+                    "units": "km"
                 }
             ]}
     
@@ -1566,19 +1588,23 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "27-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "29-08-2024",
-                            "log": 12
+                            "log": 12,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1591,11 +1617,13 @@ describe("/api/diaries/:diary_id", () => {
             const patchObject = { logs: [
                 {
                     "date": "30-09-2024",
-                    "log": 16
+                    "log": 16,
+                    "units": "km"
                 },
                 {
                     "date": "01-09-2024",
-                    "log": 15
+                    "log": 15,
+                    "units": "km"
                 }
             ]}
     
@@ -1613,27 +1641,33 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "27-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "29-08-2024",
-                            "log": 12
+                            "log": 12,
+                            "units": "km"
                         },
                         {
                             "date": "30-09-2024",
-                            "log": 16
+                            "log": 16,
+                            "units": "km"
                         },
                         {
                             "date": "01-09-2024",
-                            "log": 15
+                            "log": 15,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1649,7 +1683,8 @@ describe("/api/diaries/:diary_id", () => {
                 logs: [
                 {
                     "date": "02-09-2024",
-                    "log": 20
+                    "log": 20,
+                    "units": "km"
                 }
             ]}
     
@@ -1667,31 +1702,38 @@ describe("/api/diaries/:diary_id", () => {
                     logs: [ 
                         {
                             "date": "26-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "27-08-2024",
-                            "log": 11
+                            "log": 11,
+                            "units": "km"
                         },
                         {
                             "date": "28-08-2024",
-                            "log": 10
+                            "log": 10,
+                            "units": "km"
                         },
                         {
                             "date": "29-08-2024",
-                            "log": 12
+                            "log": 12,
+                            "units": "km"
                         },
                         {
                             "date": "30-09-2024",
-                            "log": 16
+                            "log": 16,
+                            "units": "km"
                         },
                         {
                             "date": "01-09-2024",
-                            "log": 15
+                            "log": 15,
+                            "units": "km"
                         },
                         {
                             "date": "02-09-2024",
-                            "log": 20
+                            "log": 20,
+                            "units": "km"
                         }
                     ]
                 })
@@ -1767,7 +1809,7 @@ describe("/api/diaries/:diary_id", () => {
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
                 personalBest: 18,
-                logs: [{ date: "02-09-2024", log: 20 }]
+                logs: [{ date: "02-09-2024", log: 20, units: "km" }]
             }
             
             return request(app)
@@ -1797,7 +1839,7 @@ describe("/api/diaries/:diary_id", () => {
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
                 goal: 19,
-                logs: [{ date: "02-09-2024", log: 20 }]
+                logs: [{ date: "02-09-2024", log: 20, units: "km" }]
             }
             
             return request(app)
@@ -1808,12 +1850,12 @@ describe("/api/diaries/:diary_id", () => {
                 expect(msg).toBe("Goal cannot be below a log")
             })
         })
-        test("PATCH 400: returns a Bad Request error message when passed a logs is an object", async () => {
+        test("PATCH 400: returns a Bad Request error message when passed a log object", async () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: { date: "02-09-2024", log: 10 }
+                logs: { date: "02-09-2024", log: 10, units: "km" }
             }
             
             return request(app)
@@ -1893,7 +1935,7 @@ describe("/api/diaries/:diary_id", () => {
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: [{ date: { day: "02-09-2024"}, log: 15 }]
+                logs: [{ date: { day: "02-09-2024"}, log: 15, units: "km" }]
             }
             
             return request(app)
@@ -1909,7 +1951,7 @@ describe("/api/diaries/:diary_id", () => {
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: [{ date: ["02-09-2024"], log: 15}]
+                logs: [{ date: ["02-09-2024"], log: 15, units: "km"}]
             }
             
             return request(app)
@@ -1925,7 +1967,7 @@ describe("/api/diaries/:diary_id", () => {
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: [{ date: "02-09-2024" }]
+                logs: [{ date: "02-09-2024", units: "km" }]
             }
             
             return request(app)
@@ -1941,7 +1983,7 @@ describe("/api/diaries/:diary_id", () => {
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: [{ date: "02-09-2024", log: "15" }]
+                logs: [{ date: "02-09-2024", log: "15", units: "km" }]
             }
             
             return request(app)
@@ -1957,7 +1999,7 @@ describe("/api/diaries/:diary_id", () => {
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: [{ date: "02-09-2024", log: ["15"] }]
+                logs: [{ date: "02-09-2024", log: ["15"], units: "km" }]
             }
             
             return request(app)
@@ -1973,7 +2015,7 @@ describe("/api/diaries/:diary_id", () => {
     
             const id = liftqueenRowingDiary._id.toString()
             const patchObject = { 
-                logs: [{ date: "02-09-2024", log: { value: "15" } }]
+                logs: [{ date: "02-09-2024", log: { value: "15" }, units: "km" }]
             }
             
             return request(app)
@@ -2072,7 +2114,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "XX-XX-XXXX", log: 15 }] }
+            const patchObject = { logs: [{ date: "XX-XX-XXXX", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2086,7 +2128,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "01/01/2024", log: 15 }] }
+            const patchObject = { logs: [{ date: "01/01/2024", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2100,7 +2142,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "02-09-2024-00:00am", log: 15 }] }
+            const patchObject = { logs: [{ date: "02-09-2024-00:00am", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2114,7 +2156,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "00-09-2024", log: 15 }] }
+            const patchObject = { logs: [{ date: "00-09-2024", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2128,7 +2170,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "32-09-2024", log: 15 }] }
+            const patchObject = { logs: [{ date: "32-09-2024", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2142,7 +2184,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "01-00-2024", log: 15 }] }
+            const patchObject = { logs: [{ date: "01-00-2024", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2156,7 +2198,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "01-13-2024", log: 15 }] }
+            const patchObject = { logs: [{ date: "01-13-2024", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2170,7 +2212,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "31-12-2023", log: 15 }] }
+            const patchObject = { logs: [{ date: "31-12-2023", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
@@ -2184,7 +2226,7 @@ describe("/api/diaries/:diary_id", () => {
             const liftqueenRowingDiary = await (await db).collection("diaries").findOne({ username: "liftqueen", exercise: "Rowing Machine"}) || { _id: "" }
     
             const id = liftqueenRowingDiary._id.toString()
-            const patchObject = { logs: [{ date: "30-02-2024", log: 15 }] }
+            const patchObject = { logs: [{ date: "30-02-2024", log: 15, units: "km" }] }
             
             return request(app)
             .patch(`/api/diaries/${id}`)
