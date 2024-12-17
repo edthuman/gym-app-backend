@@ -139,6 +139,10 @@ export const postDiary = async (req: Request, res: Response) => {
         
     }
 
+    if (diaryObject.logs === undefined) {
+        diaryObject.logs = []
+    }
+
     const diary = await insertDiary(diaryObject)
 
     if (diary.isError) {

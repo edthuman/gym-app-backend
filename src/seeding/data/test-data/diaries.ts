@@ -7,15 +7,18 @@ module.exports = [
         logs: [
             {
                 date: "24-08-2024",
-                log: 27.5
+                log: 27.5,
+                units: "kg"
             },
             {
                 date: "26-08-2024",
-                log: 27.5
+                log: 27.5,
+                units: "kg"
             },
             {
                 date: "29-08-2024",
-                log: 30
+                log: 30,
+                units: "kg"
             }
         ]
     },
@@ -34,11 +37,13 @@ module.exports = [
         logs: [
             {
                 date: "20-08-2024",
-                log: 10
+                log: 10,
+                units: "km"
             },
             {
                 date: "22-08-2024",
-                log: 10
+                log: 10,
+                units: "km"
             }
         ]
     },
@@ -50,7 +55,8 @@ module.exports = [
         logs: [
             {
                 date: "26-08-2024",
-                log: 10
+                log: 10,
+                units: "km"
             }
         ]
     },
@@ -62,11 +68,13 @@ module.exports = [
         logs: [
             {
                 date: "26-08-2024",
-                log: 10
+                log: 10,
+                units: "mins"
             },
             {
                 date: "28-08-2024",
-                log: 15
+                log: 15,
+                units: "mins"
             }
         ]
     },
@@ -77,7 +85,8 @@ module.exports = [
         logs: [
             {
                 date: "29-08-2024",
-                log: 1
+                log: 1,
+                units: "count"
             }
         ]
     }
