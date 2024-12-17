@@ -733,6 +733,108 @@ describe("/api/diaries", () => {
                 expect(msg).toEqual("Logs must be an array of log objects")
             })
         })
+        test("POST 400: returns a Bad Request error message when logs array has no units property", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [{ date: "25-01-2024", log: 10 }]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when logs array has a number units property", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [{ date: "25-01-2024", log: 10, units: 1 }]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when logs array has an array units property", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [{ date: "25-01-2024", log: 10, units: ["kg"] }]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when logs array has an object units property", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [{ date: "25-01-2024", log: 10, units: { unit: "kg"} }]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when logs array has an empty string units property", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [{ date: "25-01-2024", log: 10, units: "" }]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
+        test("POST 400: returns a Bad Request error message when logs array has an invalid units property", () => {
+            const diary = {
+                username: "gymbro",
+                exercise: "Leg Press",
+                personalBest: 20,
+                goal: 40,
+                logs: [{ date: "25-01-2024", log: 10, units: "unit" }]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(400)
+            .then(({body: {msg}}) => {
+                expect(msg).toEqual("Logs must be an array of log objects")
+            })
+        })
         test("POST 409: returns a Conflict error message when existing diary exists for username and exercise", () => {
             const diary = {
                 username: "liftqueen",
