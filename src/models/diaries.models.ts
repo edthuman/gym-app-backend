@@ -42,11 +42,10 @@ export const insertDiary = async (diary: Diary) => {
     try {
         const response = await (await db).collection("diaries").insertOne(diary)
         const id = response.insertedId
-    
+
         return {
             _id: id,
-            ...diary,
-            logs: []
+            ...diary
         }
     }
     catch {
