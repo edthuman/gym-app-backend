@@ -30,7 +30,7 @@ describe("/api/diaries", () => {
                 })
             })
         })
-        test("POST 201: returns the posted diary object", () => {
+        test("POST 201: returns the posted diary object when given an empty log array", () => {
             const diary = {
                 username: "gymbro",
                 exercise: "Leg Press",
@@ -74,6 +74,42 @@ describe("/api/diaries", () => {
                     personalBest: 22.5,
                     goal: 40,
                     logs: []
+                })
+            })
+        })
+        test("POST 201: returns the posted diary object when given a populated log array", () => {
+            const diary = {
+                username: "legituser",
+                exercise: "Treadmill",
+                personalBest: 22.5,
+                goal: 40,
+                logs: [
+                    {
+                        date: "02-11-2024",
+                        log: 10,
+                        units: "km"
+                    }
+                ]
+            }
+
+            return request(app)
+            .post("/api/diaries")
+            .send(diary)
+            .expect(201)
+            .then(({body: {diary}}) => {
+                expect(diary).toEqual({
+                    _id: expect.any(String),
+                    username: "legituser",
+                    exercise: "Treadmill",
+                    personalBest: 22.5,
+                    goal: 40,
+                    logs: [
+                        {
+                            date: "02-11-2024",
+                            log: 10,
+                            units: "km"
+                        }
+                    ]
                 })
             })
         })
